@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::HexTile
   id: mountain
   variants:
-  - {fileID: 919132149155446097, guid: e5f4a9af9012a2b4fa9c4dbdce41ff90, type: 3}
-  - {fileID: 919132149155446097, guid: b372b3d2401dc0f40866ed125b486212, type: 3}
+  - prefab: {fileID: 919132149155446097, guid: e5f4a9af9012a2b4fa9c4dbdce41ff90, type: 3}
+    probability: 0
