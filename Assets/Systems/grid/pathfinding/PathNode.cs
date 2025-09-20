@@ -6,7 +6,9 @@ public class PathNode
     public int G { get; set; } // Cost from start to this node
     public int H { get; set; } // Heuristic cost from this node to end
     public int F => G + H; // Total cost
-    public HexCoordinate Position { get; set; }
+    public Node instance;
+
+    public HexCoordinate Position => instance.position;
 
     public int Distance(PathNode other)
     {
@@ -25,5 +27,10 @@ public class PathNode
     public override int GetHashCode()
     {
         return Position.GetHashCode();
+    }
+
+    public override string ToString()
+    {
+        return $"{Position}-H:{H},G:{G}F:{F}-connection:{Connection?.Position}";
     }
 }
