@@ -8,7 +8,6 @@ public class HexGridGizmo : MonoBehaviour
     public bool drawCenters = true;
     public bool drawOutlines = true;
     public bool flatTop = false;     // false = point-top, true = flat-top
-    public float visualRadius = 0.5f; // world units (outer radius)
 
     void OnDrawGizmos()
     {
@@ -30,7 +29,7 @@ public class HexGridGizmo : MonoBehaviour
 
                 if (drawOutlines)
                 {
-                    DrawHex(center, visualRadius, flatTop);
+                    DrawHex(center, grid.cellSize.y / 2, flatTop);
                 }
             }
         }

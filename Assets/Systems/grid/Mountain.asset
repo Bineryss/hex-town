@@ -10,7 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 93d7c96664a96f249b8d46e7a29adf4d, type: 3}
-  m_Name: Grass
+  m_Name: Mountain
   m_EditorClassIdentifier: Assembly-CSharp::HexTile
-  tileName: 
-  variants: []
+  id: mountain
+  variants:
+  - {fileID: 919132149155446097, guid: e5f4a9af9012a2b4fa9c4dbdce41ff90, type: 3}
+  - {fileID: 919132149155446097, guid: b372b3d2401dc0f40866ed125b486212, type: 3}
