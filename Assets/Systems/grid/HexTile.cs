@@ -5,7 +5,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "HexTile", menuName = "Hex Tile")]
 public class HexTile : ScriptableObject
 {
-    [SerializeField] private string id;
+    [SerializeField] public string id;
     [SerializeField] private List<HexTileVariant> variants;
 
     public List<HexTileVariant> Variants => variants;

@@ -12,7 +12,7 @@ public class HexGridGenerator : SerializedMonoBehaviour
 
     [SerializeField] private ITileFactory tileFactory;
 
-    [OdinSerialize] private Dictionary<HexCoordinate, Node> nodes = new();
+    [OdinSerialize] public Dictionary<HexCoordinate, Node> nodes = new();
 
     public void GenerateGrid()
     {

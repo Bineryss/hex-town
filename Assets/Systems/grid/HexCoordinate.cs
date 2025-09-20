@@ -5,13 +5,13 @@ namespace Systems.Grid
 {
     [System.Serializable]
     [InlineProperty]
-    public readonly struct HexCoordinate
+    public struct HexCoordinate
     {
 
-        [ShowInInspector, LabelWidth(13), HorizontalGroup("Cube", 0.33f)]
-        private readonly int q;
-        [ShowInInspector, LabelWidth(13), HorizontalGroup("Cube", 0.33f)]
-        private readonly int r;
+        [SerializeField, LabelWidth(13), HorizontalGroup("Cube", 0.33f)]
+        private int q;
+        [SerializeField, LabelWidth(13), HorizontalGroup("Cube", 0.33f)]
+        private int r;
 
         public readonly int Q => q;
         public readonly int R => r;

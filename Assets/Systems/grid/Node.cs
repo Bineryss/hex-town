@@ -25,9 +25,4 @@ public class Node
 
         return neighbors;
     }
-
-    public int Distance(Node other)
-    {
-        return position.Distance(other.position);
-    }
 }

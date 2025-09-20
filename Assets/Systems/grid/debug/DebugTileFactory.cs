@@ -15,6 +15,10 @@ public class DebugTileFactory : MonoBehaviour, ITileFactory
         instance.name = $"node_{cellPosition.Q}:{cellPosition.R}:{cellPosition.S}";
         instance.transform.Find("Canvas/label").GetComponent<TMP_Text>().text =
             $"-{cellPosition.Distance(new(0, 0))}-\n{cellPosition.Q},{cellPosition.R},{cellPosition.S}";
-        return new Node(instance, cellPosition);
+        return new Node()
+        {
+            instance = instance,
+            position = cellPosition
+        }; ;
     }
 }

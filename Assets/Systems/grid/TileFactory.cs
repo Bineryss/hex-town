@@ -13,12 +13,17 @@ public class GameTileFactory : MonoBehaviour, ITileFactory
         HexTile tile = hexTiles[Random.Range(0, hexTiles.Count)];
         if (tile == null || tile.Variants == null || tile.Variants.Count == 0) return null;
 
-        HexTileVariant variant = tile.Variants[Random.Range(0, tile.Variants.Count)];
+        HexTileVariant variant = tile.Variants[0];
         if (variant == null) return null;
 
 
         GameObject instance = Instantiate(variant.Prefab, worldPosition, Quaternion.identity, transform);
         instance.name = $"node_{cellPosition}";
-        return new Node(instance, cellPosition);
+        return new Node()
+        {
+            instance = instance,
+            position = cellPosition,
+            isWalkable = tile.id != "mountain"
+        };
     }
 }
