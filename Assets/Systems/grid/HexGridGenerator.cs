@@ -36,7 +36,7 @@ public class HexGridGenerator : SerializedMonoBehaviour
 
     void Awake()
     {
-        GenerateGrid();
+        // GenerateGrid();
     }
 
     [ContextMenu("Generate Test Grid")]

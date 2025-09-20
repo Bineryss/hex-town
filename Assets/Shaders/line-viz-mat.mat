@@ -119,10 +119,10 @@ Material:
     - _WorkflowMode: 1
     - _ZWrite: 1
     - _batch_gap: 8
-    - _batch_size: 2
+    - _batch_size: 5
     - _border: 0.9
-    - _reverse: 0
-    - _speed: 2
+    - _reverse: 1
+    - _speed: 1
     - _tilling: 1
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
