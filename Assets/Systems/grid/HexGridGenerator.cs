@@ -14,7 +14,7 @@ public class HexGridGenerator : SerializedMonoBehaviour
 
     [OdinSerialize] public Dictionary<HexCoordinate, Node> nodes = new();
 
-    public void GenerateGrid()
+    public Dictionary<HexCoordinate, Node> GenerateGrid()
     {
         if (grid == null) grid = GetComponent<GridLayout>();
 
@@ -32,11 +32,7 @@ public class HexGridGenerator : SerializedMonoBehaviour
                 }
             }
         }
-    }
-
-    void Awake()
-    {
-        // GenerateGrid();
+        return nodes;
     }
 
     [ContextMenu("Generate Test Grid")]

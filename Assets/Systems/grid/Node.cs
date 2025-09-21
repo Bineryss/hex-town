@@ -25,4 +25,20 @@ public class Node
 
         return neighbors;
     }
+
+    public void Select()
+    {
+        instance.transform.position += Vector3.up * 0.1f;
+    }
+
+    public void Deselect()
+    {
+        if(instance == null) return;
+        instance.transform.position -= Vector3.up * 0.1f;
+    }
+
+    public override string ToString()
+    {
+        return $"Node({position}, Walkable: {isWalkable})";
+    }
 }

@@ -19,27 +19,8 @@ public class SmoothLineRenderer : MonoBehaviour
         }
     }
 
-
-    // void OnValidate()
-    // {
-    //     if (lineRenderer == null)
-    //     {
-    //         lineRenderer = GetComponent<LineRenderer>();
-    //     }
-
-    //     lineVertices = CornerSmoothing.RoundCorners(points.ConvertAll(p => p.position).ToArray(), cornerRadius, arcSamples);
-
-    //     lineRenderer.positionCount = lineVertices.Count;
-    //     lineRenderer.SetPositions(lineVertices.ToArray());
-    // }
-
-    void OnDrawGizmos()
+    void Update()
     {
-        if (lineRenderer == null)
-        {
-            lineRenderer = GetComponent<LineRenderer>();
-        }
-
         lineVertices = PathUtils.RoundCorners(points.ToArray(), cornerRadius, arcSamples);
 
         lineRenderer.positionCount = lineVertices.Count;

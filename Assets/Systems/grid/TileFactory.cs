@@ -19,6 +19,14 @@ public class GameTileFactory : MonoBehaviour, ITileFactory
 
         GameObject instance = Instantiate(variant.Prefab, worldPosition, Quaternion.identity, transform);
         instance.name = $"node_{cellPosition}";
+        
+        MeshFilter meshFilter = instance.GetComponent<MeshFilter>();
+        if (meshFilter != null)
+        {
+            MeshCollider meshCollider = instance.AddComponent<MeshCollider>();
+            meshCollider.sharedMesh = meshFilter.sharedMesh;
+        }
+
         return new Node()
         {
             instance = instance,
