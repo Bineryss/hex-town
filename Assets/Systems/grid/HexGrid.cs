@@ -9,23 +9,23 @@ public class HexGrid : SerializedMonoBehaviour
 {
     [SerializeField] private GridLayout grid;
     [SerializeField] private HexGridGenerator generator;
-    [OdinSerialize] private Dictionary<HexCoordinate, Node> nodes = new();
+    [OdinSerialize, ReadOnly] private Dictionary<HexCoordinate, INode> nodes = new();
     public HexCoordinate WorldToHex(Vector3 position)
     {
         Vector3Int cell = grid.WorldToCell(position);
         return HexCoordinate.FromOffsetCoordinates(cell.x, cell.y);
     }
 
-    public Node GetNode(HexCoordinate hex)
+    public INode GetNode(HexCoordinate hex)
     {
-        if (nodes.TryGetValue(hex, out Node node))
+        if (nodes.TryGetValue(hex, out INode node))
         {
             return node;
         }
         return null;
     }
 
-    public Node GetNode(Vector3 position)
+    public INode GetNode(Vector3 position)
     {
         HexCoordinate hex = WorldToHex(position);
         return GetNode(hex);

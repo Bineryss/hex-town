@@ -4,9 +4,9 @@ using Systems.Grid;
 
 public class PathFinder
 {
-    public static List<HexCoordinate> FindPath(Node start, Node end, Dictionary<HexCoordinate, Node> allNodes)
+    public static List<HexCoordinate> FindPath(INode start, INode end, Dictionary<HexCoordinate, INode> allNodes)
     {
-        if (start.isWalkable == false || end.isWalkable == false)
+        if (start.IsWalkable == false || end.IsWalkable == false)
         {
             return new List<HexCoordinate>();
         }
@@ -50,7 +50,7 @@ public class PathFinder
             toSearch.Remove(current);
 
             List<PathNode> neighbors = allNodes[current.Position].Neighbors(allNodes)
-            .Where(n => n.isWalkable)
+            .Where(n => n.IsWalkable)
             .Select(n => new PathNode { instance = n, G = 0, H = 0 })
             .Where(n => !processed.Contains(n))
             .ToList();

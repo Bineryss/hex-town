@@ -3,5 +3,7 @@ using UnityEngine;
 
 public interface ITileFactory
 {
-    Node CreateTile(HexCoordinate cellPosition, Vector3 worldPosition);
+    INode CreateTile(HexCoordinate cellPosition, Vector3 worldPosition);
+
+    void PregenerateTiles(int size) { }
 }

@@ -6,7 +6,7 @@ public class DebugTileFactory : MonoBehaviour, ITileFactory
 {
     [SerializeField] private GameObject debugTilePrefab;
 
-    public Node CreateTile(HexCoordinate cellPosition, Vector3 worldPosition)
+    public INode CreateTile(HexCoordinate cellPosition, Vector3 worldPosition)
     {
         if (debugTilePrefab == null) return null;
 
@@ -19,9 +19,9 @@ public class DebugTileFactory : MonoBehaviour, ITileFactory
             $"-{cellPosition.Distance(new(0, 0))}-\n{cellPosition.Q},{cellPosition.R},{cellPosition.S}\n{walkable}";
         return new Node()
         {
-            instance = instance,
-            position = cellPosition,
-            isWalkable = isWalkable
+            Instance = instance,
+            Position = cellPosition,
+            IsWalkable = isWalkable
         };
     }
 }

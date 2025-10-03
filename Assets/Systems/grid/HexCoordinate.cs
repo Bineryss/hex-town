@@ -62,6 +62,7 @@ namespace Systems.Grid
 
         public override bool Equals(object obj)
         {
+            if (obj is null) return false;
             if (obj is not HexCoordinate) return false;
             var hc = (HexCoordinate)obj;
             return q == hc.q && r == hc.r;

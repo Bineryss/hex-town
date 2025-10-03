@@ -12,11 +12,14 @@ public class HexGridGenerator : SerializedMonoBehaviour
 
     [SerializeField] private ITileFactory tileFactory;
 
-    [OdinSerialize] public Dictionary<HexCoordinate, Node> nodes = new();
+    public Dictionary<HexCoordinate, INode> nodes;
 
-    public Dictionary<HexCoordinate, Node> GenerateGrid()
+    public Dictionary<HexCoordinate, INode> GenerateGrid()
     {
+        if (nodes == null) nodes = new Dictionary<HexCoordinate, INode>();
         if (grid == null) grid = GetComponent<GridLayout>();
+
+        tileFactory.PregenerateTiles(gridRadius);
 
         for (int y = -gridRadius; y <= gridRadius; y++)
         {
@@ -25,7 +28,7 @@ public class HexGridGenerator : SerializedMonoBehaviour
                 var cell = new Vector3Int(x, y, 0);
                 Vector3 worldPos = grid.CellToWorld(cell);
                 HexCoordinate hexCoord = HexCoordinate.FromOffsetCoordinates(cell.x, cell.y);
-                Node instance = tileFactory.CreateTile(hexCoord, worldPos);
+                INode instance = tileFactory.CreateTile(hexCoord, worldPos);
                 if (instance != null)
                 {
                     nodes[hexCoord] = instance;

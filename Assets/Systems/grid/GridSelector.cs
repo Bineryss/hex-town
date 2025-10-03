@@ -10,12 +10,12 @@ public class GridSelector : MonoBehaviour
     [SerializeField] private PlayerInput playerInput;
     [SerializeField] private PathfindingController pathfindingController;
 
-    [SerializeField] private Node selectedNode;
+    [SerializeField] private INode selectedNode;
 
-    private Node a;
+    private INode a;
     private RTSCameraInputs inputActions;
 
-    public Node GetNodeUnderMouse()
+    public INode GetNodeUnderMouse()
     {
         Vector2 mousePosition = Mouse.current.position.ReadValue();
         Ray ray = Camera.main.ScreenPointToRay(mousePosition);
@@ -28,10 +28,10 @@ public class GridSelector : MonoBehaviour
 
     public void Update()
     {
-        Node node = GetNodeUnderMouse();
+        INode node = GetNodeUnderMouse();
 
         if (node == null) return;
-        if (node.position.Equals(selectedNode?.position)) return;
+        if (node.Position.Equals(selectedNode?.Position)) return;
 
         selectedNode?.Deselect();
         node.Select();
@@ -53,7 +53,7 @@ public class GridSelector : MonoBehaviour
 
     private void OnClick()
     {
-        Node node = GetNodeUnderMouse();
+        INode node = GetNodeUnderMouse();
         if (node == null) return;
         if (a == null)
         {
@@ -61,7 +61,7 @@ public class GridSelector : MonoBehaviour
             a.Select();
             return;
         }
-        if (a.position.Equals(node.position))
+        if (a.Position.Equals(node.Position))
         {
             a = null;
             return;

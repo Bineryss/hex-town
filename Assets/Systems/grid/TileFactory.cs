@@ -8,7 +8,7 @@ public class GameTileFactory : MonoBehaviour, ITileFactory
     [SerializeField] private List<HexTile> hexTiles;
 
 
-    public Node CreateTile(HexCoordinate cellPosition, Vector3 worldPosition)
+    public INode CreateTile(HexCoordinate cellPosition, Vector3 worldPosition)
     {
         HexTile tile = hexTiles[Random.Range(0, hexTiles.Count)];
         if (tile == null || tile.Variants == null || tile.Variants.Count == 0) return null;
@@ -29,9 +29,9 @@ public class GameTileFactory : MonoBehaviour, ITileFactory
 
         return new Node()
         {
-            instance = instance,
-            position = cellPosition,
-            isWalkable = tile.id != "mountain"
+            Instance = instance,
+            Position = cellPosition,
+            IsWalkable = tile.id != "mountain"
         };
     }
 }

@@ -3,12 +3,12 @@ using Systems.Grid;
 using UnityEngine;
 
 [System.Serializable]
-public class Node
+public class Node: INode
 {
-    public GameObject instance;
-    public HexCoordinate position;
-    public int movementCost = 1;
-    public bool isWalkable = true;
+    public GameObject Instance { get; set; }
+    public HexCoordinate Position { get; set; }
+    public int MovementCost { get; set; } = 1;
+    public bool IsWalkable { get; set; } = true;
 
     public List<Node> Neighbors(Dictionary<HexCoordinate, Node> allNodes)
     {
@@ -16,7 +16,7 @@ public class Node
 
         foreach (var dir in HexMetrics.Directions)
         {
-            HexCoordinate neighborPos = position + dir;
+            HexCoordinate neighborPos = Position + dir;
             if (allNodes.TryGetValue(neighborPos, out Node neighbor))
             {
                 neighbors.Add(neighbor);
@@ -28,17 +28,32 @@ public class Node
 
     public void Select()
     {
-        instance.transform.position += Vector3.up * 0.1f;
+        Instance.transform.position += Vector3.up * 0.1f;
     }
 
     public void Deselect()
     {
-        if(instance == null) return;
-        instance.transform.position -= Vector3.up * 0.1f;
+        if (Instance == null) return;
+        Instance.transform.position -= Vector3.up * 0.1f;
     }
 
     public override string ToString()
     {
-        return $"Node({position}, Walkable: {isWalkable})";
+        return $"Node({Position}, Walkable: {IsWalkable})";
     }
+
+    public List<INode> Neighbors(Dictionary<HexCoordinate, INode> allNodes)
+    {
+        throw new System.NotImplementedException();
+    }
+}
+
+public interface INode
+{
+    HexCoordinate Position { get; }
+    bool IsWalkable { get; }
+    int MovementCost { get; }
+    List<INode> Neighbors(Dictionary<HexCoordinate, INode> allNodes);
+    void Select();
+    void Deselect();
 }

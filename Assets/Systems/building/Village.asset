@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c79953c82e522e4fae19ea271886369, type: 3}
+  m_Name: Village
+  m_EditorClassIdentifier: Assembly-CSharp::WorldTile
+  prefab: {fileID: 7400701854268612895, guid: 0a149faedead1e241be1b1e67fe2f480, type: 3}
+  resourceType: 0
+  resourceAmount: 0
+  movementCost: 1
+  isWalkable: 1
+  isBuildable: 1
