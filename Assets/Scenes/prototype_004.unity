@@ -3984,7 +3984,7 @@ MonoBehaviour:
       Data: 
   tilePrefab: {fileID: 4942448372873898910, guid: 6168dc7723b98a04abe10d44029e5cca, type: 3}
   defaultTileType: 0
-  mountainCount: 7
+  mountainCount: 9
   mountainSize: 6
   mountainSpread: 0
   mountainToForestCurve:
@@ -4344,6 +4344,9 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 8b6c0034f7f197448ae786038f997e4e, type: 2}
     - {fileID: 11400000, guid: 873f5b155ba6f7443b4154dc2d2733e5, type: 2}
     - {fileID: 11400000, guid: 63c8a39275555c044926e197bfbb355b, type: 2}
+    - {fileID: 11400000, guid: 346012ba7b132c6468f18685dba47e0b, type: 2}
+    - {fileID: 11400000, guid: 6bca83a88b5dd0d438493a94cae0a33a, type: 2}
+    - {fileID: 11400000, guid: 5ac87306b5ef06e4cb9a89b612a25412, type: 2}
     SerializedBytesString: 
     Prefab: {fileID: 0}
     PrefabModificationsReferencedUnityObjects: []
@@ -4362,7 +4365,7 @@ MonoBehaviour:
       Data: 
     - Name: 
       Entry: 12
-      Data: 5
+      Data: 8
     - Name: 
       Entry: 7
       Data: 
@@ -4420,6 +4423,42 @@ MonoBehaviour:
     - Name: $v
       Entry: 10
       Data: 4
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 1
+      Data: b
+    - Name: $v
+      Entry: 10
+      Data: 5
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 1
+      Data: i
+    - Name: $v
+      Entry: 10
+      Data: 6
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 1
+      Data: h
+    - Name: $v
+      Entry: 10
+      Data: 7
     - Name: 
       Entry: 8
       Data: 

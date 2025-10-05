@@ -119,7 +119,7 @@ Material:
     - _WorkflowMode: 1
     - _ZWrite: 1
     - _batch_gap: 8
-    - _batch_size: 5
+    - _batch_size: 2
     - _border: 0.9
     - _reverse: 1
     - _speed: 1

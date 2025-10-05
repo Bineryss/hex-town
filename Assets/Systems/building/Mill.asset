@@ -10,16 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4c79953c82e522e4fae19ea271886369, type: 3}
-  m_Name: Market
+  m_Name: Mill
   m_EditorClassIdentifier: Assembly-CSharp::WorldTile
-  prefab: {fileID: 7993072611907022274, guid: c1be83975c844c94798b9d54d999864c, type: 3}
+  prefab: {fileID: 2259304291639566087, guid: c5d4680b161c7a846b4555ac4b455247, type: 3}
   movementCost: 1
   isWalkable: 1
   isBuildable: 1
-  resourceType: 0
+  resourceType: 4
   resourceAmount: 1
   inputBonuses:
-  - input: 5
-    bonusMultiplier: 10
-  - input: 1
+  - input: 3
     bonusMultiplier: 2

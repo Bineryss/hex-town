@@ -33,6 +33,7 @@ public enum ResourceType
     SHEEP,
     WOOD,
     WHEAT,
+    FLOUR,
     BREAD,
 }
 
