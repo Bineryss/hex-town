@@ -238,6 +238,56 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 139ecd87ced8cdf41b034fa81bf7404c, type: 3}
   m_PrefabInstance: {fileID: 1968842343}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &59688591
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 59688593}
+  - component: {fileID: 59688592}
+  m_Layer: 0
+  m_Name: player-manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &59688592
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 59688591}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2eaec973edd88fb4dbe2740333813967, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Systems.Player.PlayerController
+  currentState: 0
+  hexGrid: {fileID: 1626731401}
+  buildManager: {fileID: 1888661101}
+  transportManager: {fileID: 734100045}
+  selectedNodeA: {fileID: 0}
+  selectedNodeB: {fileID: 0}
+--- !u!4 &59688593
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 59688591}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &72812404 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: eee60c93226d52842be98ac6938215a9, type: 3}
@@ -1974,7 +2024,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 734100044}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8b2502e41e7a61246af0d8eaedc92c66, type: 3}
   m_Name: 
@@ -2017,7 +2067,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 734100044}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
   m_Name: 
@@ -3073,7 +3123,7 @@ PrefabInstance:
       objectReference: {fileID: 390285218007749007, guid: c3449e063e6a62245a9f89947c155531, type: 3}
     - target: {fileID: 8854486563968269141, guid: c3449e063e6a62245a9f89947c155531, type: 3}
       propertyPath: gridRadius
-      value: 1
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 8854486563968269141, guid: c3449e063e6a62245a9f89947c155531, type: 3}
       propertyPath: serializationData.Prefab
@@ -4151,7 +4201,7 @@ MonoBehaviour:
       Data: 
   tilePrefab: {fileID: 4942448372873898910, guid: 6168dc7723b98a04abe10d44029e5cca, type: 3}
   defaultTileType: 0
-  mountainCount: 0
+  mountainCount: 7
   mountainSize: 6
   mountainSpread: 0
   mountainToForestCurve:
@@ -4597,8 +4647,6 @@ MonoBehaviour:
       Entry: 8
       Data: 
   hexGrid: {fileID: 1626731401}
-  playerInput: {fileID: 1888661103}
-  selected: {fileID: 0}
 --- !u!4 &1888661102
 Transform:
   m_ObjectHideFlags: 0
@@ -5120,3 +5168,4 @@ SceneRoots:
   - {fileID: 1888661102}
   - {fileID: 734100047}
   - {fileID: 393566550}
+  - {fileID: 59688593}

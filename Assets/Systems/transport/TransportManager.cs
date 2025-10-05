@@ -72,7 +72,7 @@ namespace Systems.Transport
         {
             if (!CanCreateRoute(origin, destination, out string errorMessage, out List<HexCoordinate> path))
             {
-                Debug.LogError($"Cannot create route: {errorMessage}");
+                Debug.Log($"Cannot create route: {errorMessage}");
                 return null;
             }
 
