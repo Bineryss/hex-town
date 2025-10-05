@@ -13,8 +13,9 @@ MonoBehaviour:
   m_Name: Grass
   m_EditorClassIdentifier: Assembly-CSharp::WorldTile
   prefab: {fileID: 52801587995007633, guid: 1636130fe1f316f42a846bbd0c8f595e, type: 3}
-  resourceType: 0
-  resourceAmount: 0
   movementCost: 1
   isWalkable: 1
   isBuildable: 1
+  resourceType: 0
+  resourceAmount: 0
+  inputBonuses: []

@@ -52,7 +52,7 @@ namespace Systems.Grid
         }
         public override string ToString()
         {
-            return $"(Q {Q},R {R},S {S})";
+            return $"({Q},{R},{S})";
         }
 
         public string ToStringOnSeparateLines()

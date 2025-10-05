@@ -18,12 +18,14 @@ public class PathfindingController : MonoBehaviour
         smoothLineRenderer.points = worldPositions.ToList();
     }
 
-    public void FindPath(INode a, INode b)
+    public List<HexCoordinate> FindPath(INode a, INode b)
     {
         List<HexCoordinate> path = PathFinder.FindPath(generator.nodes[a.Position], generator.nodes[b.Position], generator.nodes);
 
         Vector3[] worldPositions = path.Select(p => generator.grid.CellToWorld(p.ToOffset())).Select(v => new Vector3(v.x, 0.3f, v.z)).ToArray();
         smoothLineRenderer.points = worldPositions.ToList();
+
+        return path;
     }
 
 }

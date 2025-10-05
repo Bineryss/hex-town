@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using RTSCamera;
 using Sirenix.OdinInspector;
@@ -38,7 +37,8 @@ public class BuildManager : SerializedMonoBehaviour
 
         if (buildables.TryGetValue(ctx, out WorldTile tile))
         {
-            selected.worldTile = tile;
+            selected.name = $"{tile.resourceType}-{selected.Position}";
+            selected.Initialize(tile, selected.Position);
             selected.Deselect();
             selected = null;
         }
