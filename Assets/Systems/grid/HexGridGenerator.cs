@@ -20,6 +20,7 @@ public class HexGridGenerator : SerializedMonoBehaviour
         if (grid == null) grid = GetComponent<GridLayout>();
 
         tileFactory.PregenerateTiles(gridRadius);
+        tileFactory.SetParent(grid.transform);
 
         for (int y = -gridRadius; y <= gridRadius; y++)
         {

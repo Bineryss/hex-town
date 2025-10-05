@@ -77,9 +77,9 @@ namespace Systems.Transport
             }
 
             TransportRoute newRoute = new(origin, destination, origin.ResourceType, origin.GetAvailableProduction(), path);
-            transportRoutes[newRoute.id] = newRoute;
-            origin.AddOutgoingRoute(newRoute.id);
-            destination.AddIncomingRoute(newRoute.id);
+            transportRoutes[newRoute.Id] = newRoute;
+            origin.AddOutgoingRoute(newRoute.Id);
+            destination.AddIncomingRoute(newRoute.Id);
             return newRoute;
         }
 
@@ -120,11 +120,11 @@ namespace Systems.Transport
                 {
                     if (resources.TryGetValue(route.resourceType, out int currentAmount))
                     {
-                        resources[route.resourceType] = currentAmount + route.quantity;
+                        resources[route.resourceType] = currentAmount + route.GetDeliveredAmount();
                     }
                     else
                     {
-                        resources[route.resourceType] = route.quantity;
+                        resources[route.resourceType] = route.GetDeliveredAmount();
                     }
                 }
             }

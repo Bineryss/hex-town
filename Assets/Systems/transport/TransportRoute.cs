@@ -14,7 +14,7 @@ namespace Systems.Transport
         public static readonly float DECAY_CONSTANT = 3.5f;
 
 
-        public Guid id;
+        public Guid Id { get; private set; }
         public WorldNode origin;
         public WorldNode destination;
         public ResourceType resourceType;
@@ -24,7 +24,7 @@ namespace Systems.Transport
 
         public TransportRoute(WorldNode origin, WorldNode destination, ResourceType resourceType, int quantity, List<HexCoordinate> path)
         {
-            id = Guid.NewGuid();
+            Id = Guid.NewGuid();
             this.origin = origin;
             this.destination = destination;
             this.resourceType = resourceType;
@@ -38,16 +38,14 @@ namespace Systems.Transport
             if (distance <= TransportRoute.MIN_DISTANCE) return 1.0f; // 100% delivery
             if (distance >= TransportRoute.MAX_DISTANCE) return 0f; // Nothing arrives
 
-            // Exponential decay between 3 and 10
-            // Formula: e^(-k * (distance - 3)) where k controls decay rate
             float normalizedDistance = (distance - TransportRoute.MIN_DISTANCE) / (TransportRoute.MAX_DISTANCE - TransportRoute.MIN_DISTANCE); // Normalize to 0-1
             float k = TransportRoute.DECAY_CONSTANT; // Decay constant (adjust for desired curve)
             return Mathf.Exp(-k * normalizedDistance);
         }
 
-        public float GetDeliveredAmount(float producedAmount)
+        public int GetDeliveredAmount()
         {
-            return producedAmount * efficiencyMultiplier;
+            return Mathf.FloorToInt(quantity * efficiencyMultiplier);
         }
     }
 }

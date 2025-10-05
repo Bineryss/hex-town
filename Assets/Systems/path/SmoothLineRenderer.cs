@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
+[RequireComponent(typeof(LineRenderer))]
 public class SmoothLineRenderer : MonoBehaviour
 {
     [SerializeField] private LineRenderer lineRenderer;
@@ -19,11 +20,21 @@ public class SmoothLineRenderer : MonoBehaviour
         }
     }
 
-    void Update()
+    public void RenderLine(List<Vector3> newPoints)
     {
+        points = newPoints;
         lineVertices = PathUtils.RoundCorners(points.ToArray(), cornerRadius, arcSamples);
 
         lineRenderer.positionCount = lineVertices.Count;
-        lineRenderer.SetPositions(lineVertices.Select(el => new Vector3(el.x, 0.3f, el.z)).ToArray());
+        lineRenderer.SetPositions(lineVertices.ToArray());
+    }
+    public void HideLine()
+    {
+        lineRenderer.enabled = false;
+    }
+
+    public void ShowLine()
+    {
+        lineRenderer.enabled = true;
     }
 }

@@ -15,12 +15,17 @@ public class WorldTileFactory : SerializedMonoBehaviour, ITileFactory
     [SerializeField] private int mountainSpread = 2;
     [SerializeField] private AnimationCurve mountainToForestCurve;
 
+    private Transform parentTransform;
     private Dictionary<HexCoordinate, WorldType> tileMap = new();
 
+    public void SetParent(Transform parent)
+    {
+        parentTransform = parent;
+    }
     public INode CreateTile(HexCoordinate cellPosition, Vector3 worldPosition)
     {
-        WorldNode instance = Instantiate(tilePrefab, worldPosition, Quaternion.identity);
-        instance.name = $"node_{cellPosition}";
+        WorldNode instance = Instantiate(tilePrefab, worldPosition, Quaternion.identity, parentTransform);
+        instance.name = $"{instance.ResourceType}_{cellPosition}";
 
         if (tileMap.TryGetValue(cellPosition, out WorldType type))
         {

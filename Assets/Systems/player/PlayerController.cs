@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Systems.Transport;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -7,6 +8,8 @@ namespace Systems.Player
     public class PlayerController : MonoBehaviour
     {
         [SerializeField] private PlayerState currentState = PlayerState.EXPLORING;
+        [SerializeField] private SmoothLineRenderer smoothLineRendererPrefab;
+        [SerializeField] private float offsetHeight = 0.4f;
         [Header("Managers")]
         [SerializeField] private HexGrid hexGrid;
         [SerializeField] private BuildManager buildManager;
@@ -15,6 +18,8 @@ namespace Systems.Player
         [Header("Debug Info")]
         [SerializeField] private WorldNode selectedNodeA;
         [SerializeField] private WorldNode selectedNodeB;
+
+        private readonly List<SmoothLineRenderer> activeLines = new();
 
         void Awake()
         {
@@ -79,11 +84,21 @@ namespace Systems.Player
             if (key == 'k')
             {
                 if (selectedNodeA == null || selectedNodeB == null) return;
-                transportManager.CreateRoute(selectedNodeA, selectedNodeB);
+                TransportRoute created = transportManager.CreateRoute(selectedNodeA, selectedNodeB);
                 selectedNodeA.Deselect();
                 selectedNodeB.Deselect();
                 selectedNodeA = null;
                 selectedNodeB = null;
+
+                if (created == null)
+                {
+                    Debug.Log("Route could not be created");
+                    return;
+                }
+
+                SmoothLineRenderer newLine = Instantiate(smoothLineRendererPrefab, transform);
+                newLine.RenderLine(created.path.ConvertAll(p => hexGrid.Grid.CellToWorld(p.ToOffset())).ConvertAll(v => new Vector3(v.x, offsetHeight, v.z)));
+                activeLines.Add(newLine);
             }
             else if (key == 'r')
             {
@@ -91,6 +106,20 @@ namespace Systems.Player
                 selectedNodeB?.Deselect();
                 selectedNodeA = null;
                 selectedNodeB = null;
+            }
+            else if (key == 'h')
+            {
+                foreach (var line in activeLines)
+                {
+                    line.HideLine();
+                }
+            }
+            else if (key == 'v')
+            {
+                foreach (var line in activeLines)
+                {
+                    line.ShowLine();
+                }
             }
         }
 

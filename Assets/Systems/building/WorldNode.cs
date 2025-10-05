@@ -124,8 +124,8 @@ public class WorldNode : SerializedMonoBehaviour, INode
             Dictionary<ResourceType, int> incomingResources = TransportManager.GetIncomingResourcesFor(incomingRoutes);
             if (incomingResources.TryGetValue(bonus.input, out int amount))
             {
-                Debug.Log($"Applying bonus for {bonus.input} with amount {amount} and multiplier {bonus.bonusMultiplier}: {newProduction * (bonus.bonusMultiplier * amount)}");
-                newProduction = Mathf.CeilToInt(newProduction * (bonus.bonusMultiplier * amount));
+                Debug.Log($"Applying bonus for {bonus.input} with amount {amount} and multiplier {Mathf.CeilToInt(newProduction * (bonus.bonusMultiplier * amount)) + worldTile.resourceAmount}");
+                newProduction = Mathf.CeilToInt(newProduction * (bonus.bonusMultiplier * amount)) + worldTile.resourceAmount;
             }
         }
         Production = newProduction;

@@ -8,6 +8,7 @@ using UnityEngine;
 public class HexGrid : SerializedMonoBehaviour
 {
     [SerializeField] private GridLayout grid;
+    public GridLayout Grid => grid;
     [SerializeField] private HexGridGenerator generator;
     [OdinSerialize, ReadOnly] private Dictionary<HexCoordinate, INode> nodes = new();
     public HexCoordinate WorldToHex(Vector3 position)
