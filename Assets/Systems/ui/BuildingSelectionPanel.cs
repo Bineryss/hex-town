@@ -5,8 +5,6 @@ using UnityEngine.UIElements;
 
 public class BuildingSelectionPanel : VisualElement
 {
-    public new class UxmlFactory : UxmlFactory<BuildingSelectionPanel, UxmlTraits> { }
-
     public event Action<WorldTile> OnBuildingSelected;
 
     private VisualElement detailContainer;

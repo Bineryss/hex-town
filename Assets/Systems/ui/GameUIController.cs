@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Sirenix.OdinInspector;
 using UnityEngine;
+using UnityEngine.Assertions;
 using UnityEngine.UIElements;
 
 public class GameUIController : MonoBehaviour
@@ -8,7 +9,6 @@ public class GameUIController : MonoBehaviour
     [SerializeField] private UIDocument uiDocument;
     [SerializeField] private PlayerGridSelector playerGridSelector;
     [SerializeField] private List<WorldTile> buildings;
-    [SerializeField] private BuildManager buildManager;
 
     [Header("Debug Info")]
     [SerializeField, ReadOnly] private WorldNode selectedNodeA;
@@ -18,6 +18,7 @@ public class GameUIController : MonoBehaviour
     private VisualElement Root => uiDocument.rootVisualElement;
     private InspectPanel inspectPanel;
     private BuildingSelectionPanel buildingListPanel;
+    private WorldTile selectedBuilding;
 
     void Start()
     {
@@ -29,16 +30,24 @@ public class GameUIController : MonoBehaviour
 
     void OnEnable()
     {
+        inspectPanel = new InspectPanel();
+        buildingListPanel = new BuildingSelectionPanel();
+
         BuildUI();
         playerGridSelector.OnNodeSelected += HandleSelection;
-
+        buildingListPanel.OnBuildingSelected += HandleBuildingSelection;
     }
 
+    private void HandleBuildingSelection(WorldTile building)
+    {
+        if (building == null) return;
+        selectedBuilding = building;
+    }
     private void HandleSelection(WorldNode node)
     {
         if (node == null) return;
 
-        if (currentState == UIState.BUILDING || currentState == UIState.INSPECTING)
+        if (currentState == UIState.INSPECTING)
         {
             if (selectedNodeA != null)
             {
@@ -54,6 +63,21 @@ public class GameUIController : MonoBehaviour
                 AvailableResources = node.GetAvailableProduction(),
                 AcceptedResources = node.AcceptedInputResources.ToArray()
             });
+        }
+        else if (currentState == UIState.BUILDING)
+        {
+            if (selectedNodeA != null)
+            {
+                selectedNodeA.Deselect();
+            }
+            if (selectedBuilding == null) return;
+            if (!selectedNodeA.worldTile.isBuildable) return;
+            selectedNodeA = node;
+
+            selectedNodeA.name = $"{selectedBuilding.resourceType}-{selectedNodeA.Position}";
+            selectedNodeA.Initialize(selectedBuilding, selectedNodeA.Position);
+            selectedNodeA.Select();
+            selectedNodeA = null;
         }
         else if (currentState == UIState.MANAGING_TRANSPORT)
         {
@@ -90,11 +114,10 @@ public class GameUIController : MonoBehaviour
         var label = new Label("Game UI Initialized");
         Root.Add(label);
 
-        inspectPanel = new InspectPanel();
         Root.Add(inspectPanel);
 
-        buildingListPanel = new BuildingSelectionPanel();
         Root.Add(buildingListPanel);
         buildingListPanel.UpdateBuildingList(buildings);
+        Root.style.maxWidth = 300;
     }
 }

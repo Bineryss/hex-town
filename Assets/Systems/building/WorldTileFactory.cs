@@ -12,7 +12,6 @@ public class WorldTileFactory : SerializedMonoBehaviour, ITileFactory
 
     [SerializeField] private int mountainCount = 3;
     [SerializeField] private int mountainSize = 2;
-    [SerializeField] private int mountainSpread = 2;
     [SerializeField] private AnimationCurve mountainToForestCurve;
 
     private Transform parentTransform;

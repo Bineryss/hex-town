@@ -3990,7 +3990,6 @@ MonoBehaviour:
   defaultTileType: 0
   mountainCount: 100
   mountainSize: 6
-  mountainSpread: 0
   mountainToForestCurve:
     serializedVersion: 2
     m_Curve:
@@ -4274,7 +4273,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GameUIController
   uiDocument: {fileID: 1816141382}
   playerGridSelector: {fileID: 1816141384}
-  selectedNode: {fileID: 0}
+  buildings:
+  - {fileID: 11400000, guid: e4766c15c10e2f2429077ffadc1914fd, type: 2}
+  - {fileID: 11400000, guid: b668ed18ac4bde54f9327806caf03b5c, type: 2}
+  - {fileID: 11400000, guid: 63c8a39275555c044926e197bfbb355b, type: 2}
+  - {fileID: 11400000, guid: 346012ba7b132c6468f18685dba47e0b, type: 2}
+  - {fileID: 11400000, guid: f09dbe704844f7f499aeca3dbb084169, type: 2}
+  - {fileID: 11400000, guid: 873f5b155ba6f7443b4154dc2d2733e5, type: 2}
+  - {fileID: 11400000, guid: 6bca83a88b5dd0d438493a94cae0a33a, type: 2}
+  selectedNodeA: {fileID: 0}
+  selectedNodeB: {fileID: 0}
+  currentState: 2
 --- !u!114 &1816141382
 MonoBehaviour:
   m_ObjectHideFlags: 0
