@@ -49,8 +49,6 @@ namespace Systems.Player
             }
             else if (currentState == PlayerState.EXPLORING)
             {
-                selectedNodeA?.Deselect();
-                selectedNodeB?.Deselect();
                 selectedNodeA = null;
                 selectedNodeB = null;
             }
@@ -76,7 +74,6 @@ namespace Systems.Player
         private void HandleBuildingInput(char key)
         {
             buildManager.HandleKeyPressed(key, selectedNodeA);
-            selectedNodeA?.Deselect();
             selectedNodeA = null;
         }
         private void HandleTransportInput(char key)
@@ -85,8 +82,6 @@ namespace Systems.Player
             {
                 if (selectedNodeA == null || selectedNodeB == null) return;
                 TransportRoute created = transportManager.CreateRoute(selectedNodeA, selectedNodeB);
-                selectedNodeA.Deselect();
-                selectedNodeB.Deselect();
                 selectedNodeA = null;
                 selectedNodeB = null;
 
@@ -102,8 +97,6 @@ namespace Systems.Player
             }
             else if (key == 'r')
             {
-                selectedNodeA?.Deselect();
-                selectedNodeB?.Deselect();
                 selectedNodeA = null;
                 selectedNodeB = null;
             }
@@ -131,35 +124,26 @@ namespace Systems.Player
 
             if (currentState == PlayerState.BUILDING)
             {
-                if (selectedNodeA != null)
-                {
-                    selectedNodeA.Deselect();
-                }
                 selectedNodeA = node;
-                selectedNodeA.Select();
             }
             else if (currentState == PlayerState.MANAGING_TRANSPORT)
             {
                 if (selectedNodeA == null)
                 {
                     selectedNodeA = node;
-                    selectedNodeA.Select();
                 }
                 else if (selectedNodeB == null && selectedNodeA != null && !node.Position.Equals(selectedNodeA.Position))
                 {
                     selectedNodeB = node;
-                    selectedNodeB.Select();
                 }
                 else
                 {
                     if (selectedNodeA.Position.Equals(node.Position))
                     {
-                        selectedNodeA.Deselect();
                         selectedNodeA = null;
                     }
                     else if (selectedNodeB != null && selectedNodeB.Position.Equals(node.Position))
                     {
-                        selectedNodeB.Deselect();
                         selectedNodeB = null;
                     }
                 }

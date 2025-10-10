@@ -1,0 +1,7 @@
+public enum UIState
+{
+    EXPLORING,
+    INSPECTING,
+    BUILDING,
+    MANAGING_TRANSPORT
+}

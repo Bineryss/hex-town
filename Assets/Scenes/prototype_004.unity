@@ -862,6 +862,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: simple-hex
       objectReference: {fileID: 0}
+    - target: {fileID: 8925113016567116326, guid: 19e62935e27fd63459ae14b48ca02fb1, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -2906,7 +2910,7 @@ PrefabInstance:
       objectReference: {fileID: 390285218007749007, guid: c3449e063e6a62245a9f89947c155531, type: 3}
     - target: {fileID: 8854486563968269141, guid: c3449e063e6a62245a9f89947c155531, type: 3}
       propertyPath: gridRadius
-      value: 9
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 8854486563968269141, guid: c3449e063e6a62245a9f89947c155531, type: 3}
       propertyPath: serializationData.Prefab
@@ -3984,7 +3988,7 @@ MonoBehaviour:
       Data: 
   tilePrefab: {fileID: 4942448372873898910, guid: 6168dc7723b98a04abe10d44029e5cca, type: 3}
   defaultTileType: 0
-  mountainCount: 9
+  mountainCount: 100
   mountainSize: 6
   mountainSpread: 0
   mountainToForestCurve:
@@ -4169,6 +4173,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2884369269980521513, guid: 8be031b9513c6d34b9a26a405c1dd7fc, type: 3}
+      propertyPath: VerticalAxis.Range.x
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: 3669689580876414801, guid: 8be031b9513c6d34b9a26a405c1dd7fc, type: 3}
       propertyPath: m_Name
       value: rts-camera
@@ -4233,6 +4241,90 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: d3c71811521654c4ca3cf82e253871cb, type: 3}
   m_PrefabInstance: {fileID: 1272009169}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1816141380
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1816141383}
+  - component: {fileID: 1816141382}
+  - component: {fileID: 1816141381}
+  - component: {fileID: 1816141384}
+  m_Layer: 5
+  m_Name: UIDocument
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1816141381
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1816141380}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f3492b8467ebd34286f9cc38fd07563, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GameUIController
+  uiDocument: {fileID: 1816141382}
+  playerGridSelector: {fileID: 1816141384}
+  selectedNode: {fileID: 0}
+--- !u!114 &1816141382
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1816141380}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 19102, guid: 0000000000000000e000000000000000, type: 0}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.dll::UnityEngine.UIElements.UIDocument
+  m_PanelSettings: {fileID: 11400000, guid: ab27d8d59b262ff46b3e3c981151fcd3, type: 2}
+  m_ParentUI: {fileID: 0}
+  sourceAsset: {fileID: 0}
+  m_SortingOrder: 0
+  m_Position: 0
+  m_WorldSpaceSizeMode: 1
+  m_WorldSpaceWidth: 1920
+  m_WorldSpaceHeight: 1080
+  m_PivotReferenceSize: 0
+  m_Pivot: 0
+  m_WorldSpaceCollider: {fileID: 0}
+--- !u!4 &1816141383
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1816141380}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1816141384
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1816141380}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45b28e332c9d31d498ee778fab73e43c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerGridSelector
 --- !u!4 &1837962395 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: d3c71811521654c4ca3cf82e253871cb, type: 3}
@@ -4990,3 +5082,4 @@ SceneRoots:
   - {fileID: 1888661102}
   - {fileID: 734100047}
   - {fileID: 59688593}
+  - {fileID: 1816141383}
