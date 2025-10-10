@@ -42,6 +42,8 @@ public class GameUIController : MonoBehaviour
     {
         if (building == null) return;
         selectedBuilding = building;
+        selectedNodeA = null;
+        selectedNodeB = null;
     }
     private void HandleSelection(WorldNode node)
     {
@@ -71,7 +73,7 @@ public class GameUIController : MonoBehaviour
                 selectedNodeA.Deselect();
             }
             if (selectedBuilding == null) return;
-            if (!selectedNodeA.worldTile.isBuildable) return;
+            if (!node.worldTile.isBuildable) return;
             selectedNodeA = node;
 
             selectedNodeA.name = $"{selectedBuilding.resourceType}-{selectedNodeA.Position}";

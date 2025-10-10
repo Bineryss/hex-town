@@ -84,7 +84,8 @@ public class BuildingSelectionPanel : VisualElement
             fixedItemHeight = 30,
             makeItem = MakeBuildingListItem,
             bindItem = BindBuildingListItem,
-            selectionType = SelectionType.Single
+            selectionType = SelectionType.Single,
+            focusable = false
         };
 
         buildingListView.selectionChanged += OnListSelectionChanged;
