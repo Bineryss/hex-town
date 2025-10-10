@@ -17,7 +17,7 @@ public class GameUIController : MonoBehaviour
 
     private VisualElement Root => uiDocument.rootVisualElement;
     private InspectPanel inspectPanel;
-    private BuildingListPanel buildingListPanel;
+    private BuildingSelectionPanel buildingListPanel;
 
     void Start()
     {
@@ -93,8 +93,8 @@ public class GameUIController : MonoBehaviour
         inspectPanel = new InspectPanel();
         Root.Add(inspectPanel);
 
-        buildingListPanel = new BuildingListPanel();
+        buildingListPanel = new BuildingSelectionPanel();
         Root.Add(buildingListPanel);
-        buildingListPanel.UpdateBuildings(buildings);
+        buildingListPanel.UpdateBuildingList(buildings);
     }
 }
