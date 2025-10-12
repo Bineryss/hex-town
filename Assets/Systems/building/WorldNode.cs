@@ -32,6 +32,7 @@ public class WorldNode : SerializedMonoBehaviour, INode
     public List<Guid> incomingRoutes = new();
     [OdinSerialize, ReadOnly]
     public List<ResourceType> AcceptedInputResources => worldTile.TradeableResources;
+    private bool isSelected;
 
 
 
@@ -92,12 +93,16 @@ public class WorldNode : SerializedMonoBehaviour, INode
 
     public void Select()
     {
-        tile.transform.position += Vector3.up * 0.1f;
+        if (isSelected) return;
+        transform.position += Vector3.up * 0.1f;
+        isSelected = true;
     }
 
     public void Deselect()
     {
-        tile.transform.position -= Vector3.up * 0.1f;
+        if (!isSelected) return;
+        transform.position -= Vector3.up * 0.1f;
+        isSelected = false;
     }
 
 
