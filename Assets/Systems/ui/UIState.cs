@@ -1,7 +1,10 @@
-public enum UIState
+namespace Systems.UI
 {
-    EXPLORING,
-    INSPECTING,
-    BUILDING,
-    MANAGING_TRANSPORT
+    public enum UIState
+    {
+        EXPLORING,
+        INSPECTING,
+        BUILDING,
+        MANAGING_TRANSPORT
+    }
 }

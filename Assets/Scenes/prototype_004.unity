@@ -2910,7 +2910,7 @@ PrefabInstance:
       objectReference: {fileID: 390285218007749007, guid: c3449e063e6a62245a9f89947c155531, type: 3}
     - target: {fileID: 8854486563968269141, guid: c3449e063e6a62245a9f89947c155531, type: 3}
       propertyPath: gridRadius
-      value: 25
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 8854486563968269141, guid: c3449e063e6a62245a9f89947c155531, type: 3}
       propertyPath: serializationData.Prefab
@@ -3988,7 +3988,7 @@ MonoBehaviour:
       Data: 
   tilePrefab: {fileID: 4942448372873898910, guid: 6168dc7723b98a04abe10d44029e5cca, type: 3}
   defaultTileType: 0
-  mountainCount: 100
+  mountainCount: 9
   mountainSize: 6
   mountainToForestCurve:
     serializedVersion: 2
@@ -4281,6 +4281,15 @@ MonoBehaviour:
   - {fileID: 11400000, guid: f09dbe704844f7f499aeca3dbb084169, type: 2}
   - {fileID: 11400000, guid: 873f5b155ba6f7443b4154dc2d2733e5, type: 2}
   - {fileID: 11400000, guid: 6bca83a88b5dd0d438493a94cae0a33a, type: 2}
+  modes:
+  - <Name>k__BackingField: Erkunden
+    <State>k__BackingField: 0
+  - <Name>k__BackingField: "Detail Men\xFC"
+    <State>k__BackingField: 1
+  - <Name>k__BackingField: "Bau Men\xFC"
+    <State>k__BackingField: 2
+  - <Name>k__BackingField: "Handles Men\xFC"
+    <State>k__BackingField: 3
   selectedNodeA: {fileID: 0}
   selectedNodeB: {fileID: 0}
   currentState: 2
