@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Systems.Transport
 {
 
-    [System.Serializable]
+    [Serializable]
     public class TransportRoute
     {
         public static readonly float MAX_DISTANCE = 10f;
@@ -20,7 +20,7 @@ namespace Systems.Transport
         public ResourceType resourceType;
         public int quantity;
         public List<HexCoordinate> path = new();
-        private float efficiencyMultiplier = 0f;
+        private readonly float efficiencyMultiplier;
 
         public TransportRoute(WorldNode origin, WorldNode destination, ResourceType resourceType, int quantity, List<HexCoordinate> path)
         {
@@ -35,11 +35,11 @@ namespace Systems.Transport
 
         private float CalculateEfficiency(int distance)
         {
-            if (distance <= TransportRoute.MIN_DISTANCE) return 1.0f; // 100% delivery
-            if (distance >= TransportRoute.MAX_DISTANCE) return 0f; // Nothing arrives
+            if (distance <= MIN_DISTANCE) return 1.0f; // 100% delivery
+            if (distance >= MAX_DISTANCE) return 0f; // Nothing arrives
 
-            float normalizedDistance = (distance - TransportRoute.MIN_DISTANCE) / (TransportRoute.MAX_DISTANCE - TransportRoute.MIN_DISTANCE); // Normalize to 0-1
-            float k = TransportRoute.DECAY_CONSTANT; // Decay constant (adjust for desired curve)
+            float normalizedDistance = (distance - MIN_DISTANCE) / (MAX_DISTANCE - MIN_DISTANCE); // Normalize to 0-1
+            float k = DECAY_CONSTANT; // Decay constant (adjust for desired curve)
             return Mathf.Exp(-k * normalizedDistance);
         }
 

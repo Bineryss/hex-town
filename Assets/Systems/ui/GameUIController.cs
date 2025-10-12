@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Sirenix.OdinInspector;
+using Systems.Transport;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -14,6 +15,11 @@ namespace Systems.UI
         [SerializeField] private List<WorldTile> buildings;
         [SerializeField] private List<ModeElement> modes = new();
 
+        [Header("Transport UI")]
+        [SerializeField] private SmoothLineRenderer smoothLineRendererPrefab;
+        [SerializeField] private HexGrid grid;
+        [SerializeField] private TransportManager transportManager;
+
         [Header("Debug Info")]
         [SerializeField, ReadOnly] private WorldNode selectedNodeA;
         [SerializeField, ReadOnly] private WorldNode selectedNodeB;
@@ -22,9 +28,11 @@ namespace Systems.UI
         private VisualElement Root => uiDocument.rootVisualElement;
         private InspectPanel inspectPanel;
         private BuildingSelectionPanel buildingListPanel;
+        private TransportRoutePanel transportRoutePanel;
         private ModeSelectionPanel modeSelectionPanel;
         private WorldTile selectedBuilding;
         private readonly Dictionary<UIState, IUIModeSegment> uiModes = new();
+        private readonly Dictionary<Guid, SmoothLineRenderer> transportVisuailizer = new();
 
         void Start()
         {
@@ -34,19 +42,38 @@ namespace Systems.UI
             }
         }
 
+        void Update()
+        {
+            transportRoutePanel.UpdateRoutes(transportManager.GetAllRoutes());
+        }
+
         void OnEnable()
         {
-            inspectPanel = new InspectPanel();
-            buildingListPanel = new BuildingSelectionPanel();
-            modeSelectionPanel = new ModeSelectionPanel(modes);
+            inspectPanel = new();
+            buildingListPanel = new(buildings);
+            modeSelectionPanel = new(modes);
+            transportRoutePanel = new(transportManager.GetAllRoutes());
 
-            BuildUI();
             playerGridSelector.OnNodeSelected += HandleSelection;
             buildingListPanel.OnBuildingSelected += HandleBuildingSelection;
+            transportRoutePanel.OnRouteDeleted += HandleRouteDeletion;
             modeSelectionPanel.OnModeSelected += HandleModeSelection;
 
             uiModes[UIState.INSPECTING] = inspectPanel;
             uiModes[UIState.BUILDING] = buildingListPanel;
+            uiModes[UIState.MANAGING_TRANSPORT] = transportRoutePanel;
+
+            BuildUI();
+        }
+
+        private void HandleRouteDeletion(Guid guid)
+        {
+            transportManager.RemoveRoute(guid);
+            if (transportVisuailizer.TryGetValue(guid, out SmoothLineRenderer line))
+            {
+                transportVisuailizer.Remove(guid);
+                Destroy(line);
+            }
         }
 
         private void HandleModeSelection(UIState state)
@@ -104,6 +131,7 @@ namespace Systems.UI
                 if (!node.worldTile.isBuildable) return;
                 selectedNodeA = node;
 
+                transportManager.RemoveAllRoutesForTile(selectedNodeA);
                 selectedNodeA.name = $"{selectedBuilding.resourceType}-{selectedNodeA.Position}";
                 selectedNodeA.Initialize(selectedBuilding, selectedNodeA.Position);
                 selectedNodeA.Select();
@@ -144,15 +172,17 @@ namespace Systems.UI
             Label label = new("Game UI Initialized");
             Root.Add(label);
 
+
             VisualElement menuContainer = new();
             menuContainer.style.maxWidth = 300;
-            buildingListPanel.ExitMode();
-            buildingListPanel.UpdateBuildingList(buildings);
-            inspectPanel.ExitMode();
-            menuContainer.Add(buildingListPanel);
-            menuContainer.Add(inspectPanel);
             menuContainer.style.flexGrow = 1;
             menuContainer.style.flexDirection = FlexDirection.Column;
+            foreach (IUIModeSegment segment in uiModes.Values)
+            {
+                segment.ExitMode();
+                menuContainer.Add(segment as VisualElement);
+            }
+
             Root.Add(menuContainer);
 
             Root.Add(modeSelectionPanel);

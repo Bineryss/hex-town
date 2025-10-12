@@ -37,8 +37,6 @@ namespace Systems.Player
 
         private void HandleKeyPressed(char key)
         {
-            HandleModeSelection(key);
-
             if (currentState == PlayerState.BUILDING)
             {
                 HandleBuildingInput(key);
@@ -51,23 +49,6 @@ namespace Systems.Player
             {
                 selectedNodeA = null;
                 selectedNodeB = null;
-            }
-        }
-        private void HandleModeSelection(char key)
-        {
-            switch (key)
-            {
-                case 'e':
-                    currentState = PlayerState.EXPLORING;
-                    break;
-                case 'b':
-                    currentState = PlayerState.BUILDING;
-                    break;
-                case 't':
-                    currentState = PlayerState.MANAGING_TRANSPORT;
-                    break;
-                default:
-                    break;
             }
         }
 

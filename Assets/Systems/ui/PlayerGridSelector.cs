@@ -2,32 +2,35 @@ using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PlayerGridSelector : MonoBehaviour
+namespace Systems.UI
 {
-    public Action<WorldNode> OnNodeSelected;
-
-    void Update()
+    public class PlayerGridSelector : MonoBehaviour
     {
-        if (Mouse.current.leftButton.wasPressedThisFrame)
+        public Action<WorldNode> OnNodeSelected;
+
+        void Update()
         {
-            HandleMouseClick();
+            if (Mouse.current.leftButton.wasPressedThisFrame)
+            {
+                HandleMouseClick();
+            }
         }
-    }
 
-    private void HandleMouseClick()
-    {
-        WorldNode node = GetNodeUnderMouse();
-        if (node == null) return;
+        private void HandleMouseClick()
+        {
+            WorldNode node = GetNodeUnderMouse();
+            if (node == null) return;
 
-        OnNodeSelected?.Invoke(node);
-    }
+            OnNodeSelected?.Invoke(node);
+        }
 
-    private WorldNode GetNodeUnderMouse()
-    {
-        Vector2 mousePosition = Mouse.current.position.ReadValue();
-        Ray ray = Camera.main.ScreenPointToRay(mousePosition);
-        if (!Physics.Raycast(ray, out RaycastHit hitInfo)) return null;
-        Debug.DrawRay(ray.origin, ray.direction * 1000, Color.red);
-        return hitInfo.transform.GetComponentInParent<WorldNode>();
+        private WorldNode GetNodeUnderMouse()
+        {
+            Vector2 mousePosition = Mouse.current.position.ReadValue();
+            Ray ray = Camera.main.ScreenPointToRay(mousePosition);
+            if (!Physics.Raycast(ray, out RaycastHit hitInfo)) return null;
+            Debug.DrawRay(ray.origin, ray.direction * 1000, Color.red);
+            return hitInfo.transform.GetComponentInParent<WorldNode>();
+        }
     }
 }

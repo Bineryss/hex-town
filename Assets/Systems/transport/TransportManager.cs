@@ -19,7 +19,7 @@ namespace Systems.Transport
             }
             else
             {
-                Destroy(this.gameObject);
+                Destroy(gameObject);
             }
         }
         #endregion
