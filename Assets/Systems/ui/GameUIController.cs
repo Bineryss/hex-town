@@ -19,12 +19,27 @@ public class GameUIController : MonoBehaviour
     private InspectPanel inspectPanel;
     private BuildingSelectionPanel buildingListPanel;
     private WorldTile selectedBuilding;
+    private readonly Dictionary<UIState, IUIModeSegment> uiModes = new();
 
     void Start()
     {
         if (uiDocument == null && TryGetComponent<UIDocument>(out var uiDoc))
         {
             uiDocument = uiDoc;
+        }
+    }
+
+    void Update()
+    {
+        foreach (IUIModeSegment mode in uiModes.Values)
+        {
+            mode.ExitMode();
+        }
+
+
+        if (uiModes.TryGetValue(currentState, out var selectedMode))
+        {
+            selectedMode.EnterMode();
         }
     }
 
@@ -36,6 +51,9 @@ public class GameUIController : MonoBehaviour
         BuildUI();
         playerGridSelector.OnNodeSelected += HandleSelection;
         buildingListPanel.OnBuildingSelected += HandleBuildingSelection;
+
+        uiModes[UIState.INSPECTING] = inspectPanel;
+        uiModes[UIState.BUILDING] = buildingListPanel;
     }
 
     private void HandleBuildingSelection(WorldTile building)
@@ -111,15 +129,17 @@ public class GameUIController : MonoBehaviour
 
     private void BuildUI()
     {
+        Root.style.maxWidth = 300;
         Root.Clear();
 
         var label = new Label("Game UI Initialized");
         Root.Add(label);
 
-        Root.Add(inspectPanel);
 
-        Root.Add(buildingListPanel);
+        buildingListPanel.ExitMode();
         buildingListPanel.UpdateBuildingList(buildings);
-        Root.style.maxWidth = 300;
+        Root.Add(buildingListPanel);
+        inspectPanel.ExitMode();
+        Root.Add(inspectPanel);
     }
 }

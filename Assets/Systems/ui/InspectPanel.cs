@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class InspectPanel : VisualElement
+public class InspectPanel : VisualElement, IUIModeSegment
 {
     private readonly Label titleELement;
     private readonly Label selectedTileNameElement;
@@ -59,6 +59,16 @@ public class InspectPanel : VisualElement
         selectedTileAcceptedResourcesElement.style.fontSize = 14;
         selectedTileAcceptedResourcesElement.style.marginBottom = 5;
         Add(selectedTileAcceptedResourcesElement);
+    }
+
+    public void EnterMode()
+    {
+        style.display = DisplayStyle.Flex;
+    }
+
+    public void ExitMode()
+    {
+        style.display = DisplayStyle.None;
     }
 
     public void UpdateTileInfo(TileInformation tileInfo)

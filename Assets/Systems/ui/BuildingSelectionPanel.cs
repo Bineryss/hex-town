@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class BuildingSelectionPanel : VisualElement
+public class BuildingSelectionPanel : VisualElement, IUIModeSegment
 {
     public event Action<WorldTile> OnBuildingSelected;
 
@@ -204,5 +204,15 @@ public class BuildingSelectionPanel : VisualElement
     public WorldTile GetSelectedBuilding()
     {
         return selectedBuilding;
+    }
+
+    public void EnterMode()
+    {
+        style.display = DisplayStyle.Flex;
+    }
+
+    public void ExitMode()
+    {
+        style.display = DisplayStyle.None;
     }
 }

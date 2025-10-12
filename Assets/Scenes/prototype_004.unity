@@ -267,7 +267,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2eaec973edd88fb4dbe2740333813967, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Systems.Player.PlayerController
-  currentState: 1
+  currentState: 0
   smoothLineRendererPrefab: {fileID: 7179913176857044246, guid: 5e29c4bbaf144ce489cfac7ab7f52eb2, type: 3}
   offsetHeight: 0.5
   hexGrid: {fileID: 1626731401}
