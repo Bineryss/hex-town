@@ -20,4 +20,5 @@ MonoBehaviour:
   resourceAmount: 1
   inputBonuses:
   - input: 3
-    bonusMultiplier: 2
+    bonusMultiplier: 20
+    maxCapacity: 10

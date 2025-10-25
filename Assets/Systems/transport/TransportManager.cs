@@ -76,7 +76,9 @@ namespace Systems.Transport
                 return null;
             }
 
-            TransportRoute newRoute = new(origin, destination, origin.ResourceType, origin.GetAvailableProduction(), path);
+            destination.MaxIncomingCapacity.TryGetValue(origin.ResourceType, out int maxCapacity); 
+
+            TransportRoute newRoute = new(origin, destination, origin.ResourceType, Math.Min(maxCapacity, origin.GetAvailableProduction()), path);
             transportRoutes[newRoute.Id] = newRoute;
             origin.AddOutgoingRoute(newRoute.Id);
             destination.AddIncomingRoute(newRoute.Id);

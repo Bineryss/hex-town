@@ -32,7 +32,9 @@ public class WorldNode : SerializedMonoBehaviour, INode
     public List<Guid> incomingRoutes = new();
     [OdinSerialize, ReadOnly]
     public List<ResourceType> AcceptedInputResources => worldTile.TradeableResources;
+    public Dictionary<ResourceType, int> MaxIncomingCapacity => maxCapacities;
     private bool isSelected;
+    [OdinSerialize] private readonly Dictionary<ResourceType, int> maxCapacities = new();
 
 
 
@@ -73,6 +75,10 @@ public class WorldNode : SerializedMonoBehaviour, INode
         Quaternion rotation = Quaternion.Euler(0, rotationSteps * 60f, 0);
         tile = Instantiate(worldTile.prefab, transform.position, rotation, transform);
         CalculateProduction();
+        foreach (ResourceBonus bonus in worldTile.inputBonuses)
+        {
+            maxCapacities[bonus.input] = bonus.maxCapacity;
+        }
     }
 
     public List<INode> Neighbors(Dictionary<HexCoordinate, INode> allNodes)
@@ -122,17 +128,18 @@ public class WorldNode : SerializedMonoBehaviour, INode
 
     public void CalculateProduction()
     {
-        int newProduction = worldTile.resourceAmount;
+        float productionBonus = 0f;
 
         foreach (ResourceBonus bonus in worldTile.inputBonuses)
         {
             Dictionary<ResourceType, int> incomingResources = TransportManager.GetIncomingResourcesFor(incomingRoutes);
             if (incomingResources.TryGetValue(bonus.input, out int amount))
             {
-                newProduction = Mathf.CeilToInt(newProduction * (bonus.bonusMultiplier * amount)) + worldTile.resourceAmount;
+                float effectiveBonus = Mathf.Min(amount, bonus.maxCapacity) * (bonus.bonusMultiplier / 100f);
+                productionBonus += effectiveBonus;
             }
         }
-        Production = newProduction;
+        Production = Mathf.FloorToInt(Production * (1 + productionBonus));
     }
 
     public int GetAvailableProduction()

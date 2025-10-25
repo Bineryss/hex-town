@@ -24,7 +24,8 @@ public class WorldTile : ScriptableObject
 public class ResourceBonus
 {
     public ResourceType input;
-    public float bonusMultiplier;
+    public int bonusMultiplier;
+    public int maxCapacity;
 }
 
 public enum ResourceType

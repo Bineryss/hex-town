@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -10,7 +11,10 @@ namespace Systems.UI
         private readonly Label selectedTileProductionTypeElement;
         private readonly Label selectedTileProductionRateElement;
         private readonly Label selectedTileAvailableResourcesElement;
-        private readonly Label selectedTileAcceptedResourcesElement;
+        private readonly Label selectedTileCumulatedBonusElement;
+
+        private readonly VisualElement bonusContainer = new();
+        private readonly List<Label> bonusLabels = new();
 
         public InspectPanel()
         {
@@ -56,11 +60,13 @@ namespace Systems.UI
             selectedTileAvailableResourcesElement.style.marginBottom = 5;
             Add(selectedTileAvailableResourcesElement);
 
-            selectedTileAcceptedResourcesElement = new Label("Accepted Resources: N/A");
-            selectedTileAcceptedResourcesElement.style.color = Color.white;
-            selectedTileAcceptedResourcesElement.style.fontSize = 14;
-            selectedTileAcceptedResourcesElement.style.marginBottom = 5;
-            Add(selectedTileAcceptedResourcesElement);
+            selectedTileCumulatedBonusElement = new Label("Cumulated Bonus: N/A");
+            selectedTileCumulatedBonusElement.style.color = Color.white;
+            selectedTileCumulatedBonusElement.style.fontSize = 14;
+            selectedTileCumulatedBonusElement.style.marginBottom = 5;
+            Add(selectedTileCumulatedBonusElement);
+
+            Add(bonusContainer);
         }
 
         public void EnterMode()
@@ -79,7 +85,25 @@ namespace Systems.UI
             selectedTileProductionTypeElement.text = $"Production Type: {tileInfo.ProductionType}";
             selectedTileProductionRateElement.text = $"Production Rate: {tileInfo.ProductionRate}";
             selectedTileAvailableResourcesElement.text = $"Available Resources: {tileInfo.AvailableResources}";
-            selectedTileAcceptedResourcesElement.text = $"Accepted Resources: {string.Join(", ", tileInfo.AcceptedResources)}";
+            selectedTileCumulatedBonusElement.text = $"Cumulated Bonus: {tileInfo.CumulatedBonus}%";
+            UpdateBonusLabels(tileInfo.BonusInformations);
+        }
+
+        private void UpdateBonusLabels(List<BonusInformation> bonusInfos)
+        {
+            bonusContainer.Clear();
+            bonusLabels.Clear();
+
+            // Add new bonus labels
+            foreach (var bonusInfo in bonusInfos)
+            {
+                Label bonusLabel = new($"Bonus: {bonusInfo.ResourceType} - Multiplier: {bonusInfo.BonusMultiplier} - Max Capacity: {bonusInfo.MaxCapacity} - Current Input: {bonusInfo.CurrentInputAmount}");
+                bonusLabel.style.color = Color.white;
+                bonusLabel.style.fontSize = 12;
+                bonusLabel.style.marginBottom = 3;
+                bonusContainer.Add(bonusLabel);
+                bonusLabels.Add(bonusLabel);
+            }
         }
     }
 }

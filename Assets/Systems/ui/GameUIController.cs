@@ -168,13 +168,30 @@ namespace Systems.UI
                 }
                 else
                 {
+                    Dictionary<ResourceType, int> incomingResources = transportManager.GetIncomingResourcesFor(node.incomingRoutes);
+                    List<BonusInformation> bonusInfos = new();
+
+                    foreach (ResourceBonus bonus in node.worldTile.inputBonuses)
+                    {
+                        incomingResources.TryGetValue(bonus.input, out int amount);
+                        bonusInfos.Add(new BonusInformation
+                        {
+                            ResourceType = bonus.input,
+                            BonusMultiplier = bonus.bonusMultiplier,
+                            MaxCapacity = bonus.maxCapacity,
+                            CurrentInputAmount = amount
+                        });
+                    }
+
+
                     inspectPanel.UpdateTileInfo(new TileInformation
                     {
                         TileName = node.worldTile.name,
                         ProductionType = node.ResourceType,
                         ProductionRate = node.Production,
                         AvailableResources = node.GetAvailableProduction(),
-                        AcceptedResources = node.AcceptedInputResources.ToArray()
+                        BonusInformations = bonusInfos,
+                        CumulatedBonus = Mathf.FloorToInt(100 * (node.Production / node.worldTile.resourceAmount))
                     });
                 }
             }
