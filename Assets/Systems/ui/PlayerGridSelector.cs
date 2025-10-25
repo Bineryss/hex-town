@@ -1,4 +1,5 @@
 using System;
+using Systems.Grid;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -7,6 +8,11 @@ namespace Systems.UI
     public class PlayerGridSelector : MonoBehaviour
     {
         public Action<WorldNode> OnNodeSelected;
+        public Action<WorldNode, bool> OnChange;
+
+
+        private bool wasPressed;
+        private HexCoordinate lastHoveredCoordinate;
 
         void Update()
         {
@@ -14,6 +20,20 @@ namespace Systems.UI
             {
                 HandleMouseClick();
             }
+
+            HandleChangeDetection();
+        }
+
+        private void HandleChangeDetection()
+        {
+            WorldNode node = GetNodeUnderMouse();
+            bool isPressed = Mouse.current.leftButton.isPressed;
+            if (node == null) return;
+            if (isPressed == wasPressed && node.Position.Equals(lastHoveredCoordinate)) return;
+
+            wasPressed = isPressed;
+            lastHoveredCoordinate = node.Position;
+            OnChange?.Invoke(node, isPressed);
         }
 
         private void HandleMouseClick()

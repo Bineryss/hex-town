@@ -40,6 +40,7 @@ namespace Systems.UI
         private WorldNode selectedOrigin;
         public WorldNode SelectedOrigin => selectedOrigin;
         private WorldNode selectedDestination;
+        public WorldNode SelectedDestination => selectedDestination;
         private bool isInCreationMode = false;
 
         public TransportRoutePanel() : this(new List<TransportRoute>())
@@ -395,6 +396,12 @@ namespace Systems.UI
             }
         }
 
+        public void ConfirmRouteCreation()
+        {
+            OnCreateRouteConfirmed?.Invoke(selectedOrigin, selectedDestination);
+            ExitCreationMode();
+        }
+
         private void OnCancelButtonClicked(ClickEvent evt)
         {
             ExitCreationMode();
@@ -427,15 +434,16 @@ namespace Systems.UI
 
         public void SetOriginNode(WorldNode node)
         {
-            selectedOrigin = node;
             if (node == null)
             {
                 originNodeLabel.text = "Not Selected";
             }
             else
             {
+                EnterCreationMode();
                 originNodeLabel.text = $"{node.Position}\n{node.ResourceType}\n{node.Production}";
             }
+            selectedOrigin = node;
             UpdateConfirmButtonState();
         }
 

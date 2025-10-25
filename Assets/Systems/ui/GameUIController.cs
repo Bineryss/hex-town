@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
+using NUnit.Framework;
 using Sirenix.OdinInspector;
 using Sirenix.Serialization;
+using Systems.Grid;
 using Systems.Transport;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -20,7 +22,9 @@ namespace Systems.UI
         [SerializeField] private SmoothLineRenderer smoothLineRendererPrefab;
         [SerializeField] private HexGrid grid;
         [SerializeField] private TransportManager transportManager;
+        [SerializeField] private PathfindingController pathfindingController;
         [SerializeField] private float offsetHeight = 0.6f;
+        private SmoothLineRenderer transportRoutePreview;
 
         [Header("Debug Info")]
         [SerializeField, ReadOnly] private WorldNode selectedNode;
@@ -42,6 +46,7 @@ namespace Systems.UI
             {
                 uiDocument = uiDoc;
             }
+            transportRoutePreview = Instantiate(smoothLineRendererPrefab, transform);
         }
 
         void Update()
@@ -56,7 +61,8 @@ namespace Systems.UI
             modeSelectionPanel = new(modes);
             transportRoutePanel = new(transportManager.GetAllRoutes());
 
-            playerGridSelector.OnNodeSelected += HandleSelection;
+            // playerGridSelector.OnNodeSelected += HandleSelection;
+            playerGridSelector.OnChange += HandleMouseChange;
             buildingListPanel.OnBuildingSelected += HandleBuildingSelection;
             transportRoutePanel.OnRouteDeleted += HandleRouteDeletion;
             transportRoutePanel.OnCreateRouteConfirmed += HandleRouteCreation;
@@ -68,6 +74,98 @@ namespace Systems.UI
             uiModes[UIState.MANAGING_TRANSPORT] = transportRoutePanel;
 
             BuildUI();
+        }
+
+        private void HandleMouseChange(WorldNode node, bool isClick)
+        {
+            if (node == null) return;
+            if (currentState == UIState.EXPLORING) return;
+            if (selectedNode != null)
+            {
+                selectedNode.Deselect();
+            }
+            selectedNode = node;
+            node.Select();
+
+            if (currentState == UIState.INSPECTING)
+            {
+                if (!isClick) return;
+                if (selectedNode == null)
+                {
+                    inspectPanel.UpdateTileInfo(new TileInformation()
+                    {
+                        TileName = "NAN"
+                    });
+                }
+                else
+                {
+                    Dictionary<ResourceType, int> incomingResources = transportManager.GetIncomingResourcesFor(node.incomingRoutes);
+                    List<BonusInformation> bonusInfos = new();
+
+                    foreach (ResourceBonus bonus in node.worldTile.inputBonuses)
+                    {
+                        incomingResources.TryGetValue(bonus.input, out int amount);
+                        bonusInfos.Add(new BonusInformation
+                        {
+                            ResourceType = bonus.input,
+                            BonusMultiplier = bonus.bonusMultiplier,
+                            MaxCapacity = bonus.maxCapacity,
+                            CurrentInputAmount = amount
+                        });
+                    }
+
+
+                    inspectPanel.UpdateTileInfo(new TileInformation
+                    {
+                        TileName = node.worldTile.name,
+                        ProductionType = node.ResourceType,
+                        ProductionRate = node.Production,
+                        AvailableResources = node.GetAvailableProduction(),
+                        BonusInformations = bonusInfos,
+                        CumulatedBonus = node.worldTile.resourceAmount > 0 ? Mathf.FloorToInt(100 * (node.Production / node.worldTile.resourceAmount)) : 0f
+                    });
+                }
+            }
+            else if (currentState == UIState.BUILDING)
+            {
+                if (!isClick) return;
+                if (selectedBuilding == null) return;
+                if (!node.worldTile.isBuildable) return;
+
+                transportManager.RemoveAllRoutesForTile(node);
+                node.name = $"{selectedBuilding.resourceType}-{node.Position}";
+                node.Initialize(selectedBuilding, node.Position);
+            }
+            else if (currentState == UIState.MANAGING_TRANSPORT)
+            {
+                WorldNode origin = transportRoutePanel.SelectedOrigin;
+                WorldNode destination = transportRoutePanel.SelectedDestination;
+
+                if (origin == null && isClick)
+                {
+                    transportRoutePanel.SetOriginNode(node);
+                    return;
+                }
+
+                if (origin == null) return;
+
+                if (node.Position.Equals(origin) && isClick)
+                {
+                    transportRoutePanel.SetOriginNode(null);
+                }
+                else
+                {
+                    transportRoutePanel.SetDestinationNode(node);
+                    HandleRoutePreview(origin, node);
+                }
+
+                if (isClick && origin != null && destination != null)
+                {
+                    transportRoutePanel.ConfirmRouteCreation();
+                    transportRoutePreview.HideLine();
+                }
+            }
+
         }
 
         private void HandleRouteDeletion(Guid guid)
@@ -83,6 +181,7 @@ namespace Systems.UI
         }
         private void HandleRouteCreation(WorldNode origin, WorldNode destination)
         {
+            if (origin == null || destination == null) return;
             if (selectedRoute != null)
             {
                 selectedRoute.HideLine();
@@ -90,14 +189,28 @@ namespace Systems.UI
 
 
             TransportRoute route = transportManager.CreateRoute(origin, destination);
+            if (route == null) return;
             SmoothLineRenderer newLine = Instantiate(smoothLineRendererPrefab, transform);
             newLine.RenderLine(route.path.ConvertAll(p => grid.Grid.CellToWorld(p.ToOffset())).ConvertAll(v => new Vector3(v.x, offsetHeight, v.z)));
             transportVisuailizer[route.Id] = newLine;
             newLine.ShowLine();
             selectedRoute = newLine;
         }
+
+        private void HandleRoutePreview(WorldNode origin, WorldNode destination)
+        {
+            if (selectedRoute != null)
+            {
+                selectedRoute.HideLine();
+            }
+
+            List<HexCoordinate> path = pathfindingController.FindPath(origin, destination);
+            transportRoutePreview.RenderLine(path.ConvertAll(p => grid.Grid.CellToWorld(p.ToOffset())).ConvertAll(v => new Vector3(v.x, offsetHeight, v.z)));
+            transportRoutePreview.ShowLine();
+        }
         private void HandleRouteSelection(TransportRoute route)
         {
+            transportRoutePreview.HideLine();
             if (!transportVisuailizer.TryGetValue(route.Id, out SmoothLineRenderer line)) return;
             if (selectedRoute != null)
             {

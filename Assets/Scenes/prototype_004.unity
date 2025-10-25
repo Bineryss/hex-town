@@ -2863,7 +2863,7 @@ PrefabInstance:
     - target: {fileID: 8854486563968269141, guid: c3449e063e6a62245a9f89947c155531, type: 3}
       propertyPath: serializationData.Prefab
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 8854486563968269141, guid: c3449e063e6a62245a9f89947c155531, type: 3}
     - target: {fileID: 8854486563968269141, guid: c3449e063e6a62245a9f89947c155531, type: 3}
       propertyPath: serializationData.PrefabModifications.Array.size
       value: 1
@@ -4250,6 +4250,7 @@ MonoBehaviour:
   smoothLineRendererPrefab: {fileID: 7179913176857044246, guid: 5e29c4bbaf144ce489cfac7ab7f52eb2, type: 3}
   grid: {fileID: 1626731401}
   transportManager: {fileID: 734100045}
+  pathfindingController: {fileID: 734100048}
   offsetHeight: 0.6
   selectedNode: {fileID: 0}
   currentState: 0
