@@ -17,6 +17,7 @@ namespace Systems.UI
 
         [Header("Transport UI")]
         [SerializeField] private TransportController transportController;
+        [SerializeField] private TransportUIController transportUIController;
 
         [Header("Debug Info")]
         [SerializeField, ReadOnly] private WorldNode selectedNode;
@@ -25,7 +26,6 @@ namespace Systems.UI
         private VisualElement Root => uiDocument.rootVisualElement;
         private InspectPanel inspectPanel;
         private BuildingSelectionPanel buildingListPanel;
-        private TransportRoutePanel transportRoutePanel;
         private ModeSelectionPanel modeSelectionPanel;
         private WorldTile selectedBuilding;
         private readonly Dictionary<UIState, IUIModeSegment> uiModes = new();
@@ -37,34 +37,27 @@ namespace Systems.UI
             {
                 uiDocument = uiDoc;
             }
+
             uiModeActions[UIState.INSPECTING] = InspectAction;
             uiModeActions[UIState.BUILDING] = BuildAction;
-            uiModeActions[UIState.MANAGING_TRANSPORT] = TransportAction;
-        }
-
-        void Update()
-        {
-            transportRoutePanel.UpdateRoutes(transportController.Manager.GetAllRoutes());
+            uiModeActions[UIState.MANAGING_TRANSPORT] = transportUIController.HandleMouseInteraction;
         }
 
         void OnEnable()
         {
-            transportController.Initialize();
+            transportUIController.Initialize();
+
             inspectPanel = new();
             buildingListPanel = new(buildings);
             modeSelectionPanel = new(modes);
-            transportRoutePanel = new(transportController.Manager.GetAllRoutes());
 
             playerGridSelector.OnChange += HandleMouseChange;
             buildingListPanel.OnBuildingSelected += HandleBuildingSelection;
-            transportRoutePanel.OnRouteDeleted += HandleRouteDeletion;
-            transportRoutePanel.OnCreateRouteConfirmed += HandleRouteCreation;
-            transportRoutePanel.OnRouteSelected += HandleRouteSelection;
             modeSelectionPanel.OnModeSelected += HandleModeSelection;
 
             uiModes[UIState.INSPECTING] = inspectPanel;
             uiModes[UIState.BUILDING] = buildingListPanel;
-            uiModes[UIState.MANAGING_TRANSPORT] = transportRoutePanel;
+            uiModes[UIState.MANAGING_TRANSPORT] = transportUIController.UIModeSegment;
 
             BuildUI();
         }
@@ -130,52 +123,6 @@ namespace Systems.UI
                     CumulatedBonus = node.worldTile.resourceAmount > 0 ? Mathf.FloorToInt(100 * (node.Production / node.worldTile.resourceAmount)) : 0f
                 });
             }
-        }
-        private void TransportAction(WorldNode node, bool isClick)
-        {
-            WorldNode origin = transportRoutePanel.SelectedOrigin;
-            WorldNode destination = transportRoutePanel.SelectedDestination;
-
-            if (origin == null && isClick)
-            {
-                transportRoutePanel.SetOriginNode(node);
-                return;
-            }
-
-            if (origin == null) return;
-
-            if (node.Position.Equals(origin) && isClick)
-            {
-                transportRoutePanel.SetOriginNode(null);
-            }
-            else
-            {
-                transportRoutePanel.SetDestinationNode(node);
-                HandleRoutePreview(origin, node);
-            }
-
-            if (isClick && origin != null && destination != null)
-            {
-                transportRoutePanel.ConfirmRouteCreation();
-            }
-        }
-
-        private void HandleRouteDeletion(Guid guid)
-        {
-            transportController.TryDeleteRoute(guid);
-        }
-        private void HandleRouteCreation(WorldNode origin, WorldNode destination)
-        {
-            transportController.TryCreateRoute(origin, destination);
-        }
-
-        private void HandleRoutePreview(WorldNode origin, WorldNode destination)
-        {
-            transportController.PreviewRoute(origin, destination);
-        }
-        private void HandleRouteSelection(TransportRoute route)
-        {
-            transportController.SelectRoute(route.Id);
         }
 
         private void HandleModeSelection(UIState state)
