@@ -8,7 +8,7 @@ using UnityEngine;
 
 public class WorldNode : SerializedMonoBehaviour, INode
 {
-    private TransportManager TransportManager => TransportManager.Instance;
+    private TransportManager TransportManager => TransportController.Instance.Manager;
     public WorldTile worldTile;
 
     [Header("Debug Info")]

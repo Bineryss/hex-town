@@ -1,9 +1,6 @@
 using System;
 using System.Collections.Generic;
-using NUnit.Framework;
 using Sirenix.OdinInspector;
-using Sirenix.Serialization;
-using Systems.Grid;
 using Systems.Transport;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -19,12 +16,7 @@ namespace Systems.UI
         [SerializeField] private List<ModeElement> modes = new();
 
         [Header("Transport UI")]
-        [SerializeField] private SmoothLineRenderer smoothLineRendererPrefab;
-        [SerializeField] private HexGrid grid;
-        [SerializeField] private TransportManager transportManager;
-        [SerializeField] private PathfindingController pathfindingController;
-        [SerializeField] private float offsetHeight = 0.6f;
-        private SmoothLineRenderer transportRoutePreview;
+        [SerializeField] private TransportController transportController;
 
         [Header("Debug Info")]
         [SerializeField, ReadOnly] private WorldNode selectedNode;
@@ -37,8 +29,7 @@ namespace Systems.UI
         private ModeSelectionPanel modeSelectionPanel;
         private WorldTile selectedBuilding;
         private readonly Dictionary<UIState, IUIModeSegment> uiModes = new();
-        private readonly Dictionary<Guid, SmoothLineRenderer> transportVisuailizer = new();
-        private SmoothLineRenderer selectedRoute;
+        private readonly Dictionary<UIState, Action<WorldNode, bool>> uiModeActions = new();
 
         void Start()
         {
@@ -46,22 +37,24 @@ namespace Systems.UI
             {
                 uiDocument = uiDoc;
             }
-            transportRoutePreview = Instantiate(smoothLineRendererPrefab, transform);
+            uiModeActions[UIState.INSPECTING] = InspectAction;
+            uiModeActions[UIState.BUILDING] = BuildAction;
+            uiModeActions[UIState.MANAGING_TRANSPORT] = TransportAction;
         }
 
         void Update()
         {
-            transportRoutePanel.UpdateRoutes(transportManager.GetAllRoutes());
+            transportRoutePanel.UpdateRoutes(transportController.Manager.GetAllRoutes());
         }
 
         void OnEnable()
         {
+            transportController.Initialize();
             inspectPanel = new();
             buildingListPanel = new(buildings);
             modeSelectionPanel = new(modes);
-            transportRoutePanel = new(transportManager.GetAllRoutes());
+            transportRoutePanel = new(transportController.Manager.GetAllRoutes());
 
-            // playerGridSelector.OnNodeSelected += HandleSelection;
             playerGridSelector.OnChange += HandleMouseChange;
             buildingListPanel.OnBuildingSelected += HandleBuildingSelection;
             transportRoutePanel.OnRouteDeleted += HandleRouteDeletion;
@@ -84,143 +77,105 @@ namespace Systems.UI
             {
                 selectedNode.Deselect();
             }
-            selectedNode = node;
             node.Select();
+            uiModeActions[currentState](node, isClick);
+            selectedNode = node;
+        }
 
-            if (currentState == UIState.INSPECTING)
+        private void BuildAction(WorldNode node, bool isClick)
+        {
+            if (!isClick) return;
+            if (selectedBuilding == null) return;
+            if (!node.worldTile.isBuildable) return;
+
+            transportController.Manager.RemoveAllRoutesForTile(node);
+            node.name = $"{selectedBuilding.resourceType}-{node.Position}";
+            node.Initialize(selectedBuilding, node.Position);
+        }
+        private void InspectAction(WorldNode node, bool isClick)
+        {
+            if (!isClick) return;
+            if (node == null)
             {
-                if (!isClick) return;
-                if (selectedNode == null)
+                inspectPanel.UpdateTileInfo(new TileInformation()
                 {
-                    inspectPanel.UpdateTileInfo(new TileInformation()
+                    TileName = "NAN"
+                });
+            }
+            else
+            {
+                Dictionary<ResourceType, int> incomingResources = transportController.Manager.GetIncomingResourcesFor(node.incomingRoutes);
+                List<BonusInformation> bonusInfos = new();
+
+                foreach (ResourceBonus bonus in node.worldTile.inputBonuses)
+                {
+                    incomingResources.TryGetValue(bonus.input, out int amount);
+                    bonusInfos.Add(new BonusInformation
                     {
-                        TileName = "NAN"
+                        ResourceType = bonus.input,
+                        BonusMultiplier = bonus.bonusMultiplier,
+                        MaxCapacity = bonus.maxCapacity,
+                        CurrentInputAmount = amount
                     });
                 }
-                else
+
+
+                inspectPanel.UpdateTileInfo(new TileInformation
                 {
-                    Dictionary<ResourceType, int> incomingResources = transportManager.GetIncomingResourcesFor(node.incomingRoutes);
-                    List<BonusInformation> bonusInfos = new();
-
-                    foreach (ResourceBonus bonus in node.worldTile.inputBonuses)
-                    {
-                        incomingResources.TryGetValue(bonus.input, out int amount);
-                        bonusInfos.Add(new BonusInformation
-                        {
-                            ResourceType = bonus.input,
-                            BonusMultiplier = bonus.bonusMultiplier,
-                            MaxCapacity = bonus.maxCapacity,
-                            CurrentInputAmount = amount
-                        });
-                    }
-
-
-                    inspectPanel.UpdateTileInfo(new TileInformation
-                    {
-                        TileName = node.worldTile.name,
-                        ProductionType = node.ResourceType,
-                        ProductionRate = node.Production,
-                        AvailableResources = node.GetAvailableProduction(),
-                        BonusInformations = bonusInfos,
-                        CumulatedBonus = node.worldTile.resourceAmount > 0 ? Mathf.FloorToInt(100 * (node.Production / node.worldTile.resourceAmount)) : 0f
-                    });
-                }
+                    TileName = node.worldTile.name,
+                    ProductionType = node.ResourceType,
+                    ProductionRate = node.Production,
+                    AvailableResources = node.GetAvailableProduction(),
+                    BonusInformations = bonusInfos,
+                    CumulatedBonus = node.worldTile.resourceAmount > 0 ? Mathf.FloorToInt(100 * (node.Production / node.worldTile.resourceAmount)) : 0f
+                });
             }
-            else if (currentState == UIState.BUILDING)
+        }
+        private void TransportAction(WorldNode node, bool isClick)
+        {
+            WorldNode origin = transportRoutePanel.SelectedOrigin;
+            WorldNode destination = transportRoutePanel.SelectedDestination;
+
+            if (origin == null && isClick)
             {
-                if (!isClick) return;
-                if (selectedBuilding == null) return;
-                if (!node.worldTile.isBuildable) return;
-
-                transportManager.RemoveAllRoutesForTile(node);
-                node.name = $"{selectedBuilding.resourceType}-{node.Position}";
-                node.Initialize(selectedBuilding, node.Position);
+                transportRoutePanel.SetOriginNode(node);
+                return;
             }
-            else if (currentState == UIState.MANAGING_TRANSPORT)
+
+            if (origin == null) return;
+
+            if (node.Position.Equals(origin) && isClick)
             {
-                WorldNode origin = transportRoutePanel.SelectedOrigin;
-                WorldNode destination = transportRoutePanel.SelectedDestination;
-
-                if (origin == null && isClick)
-                {
-                    transportRoutePanel.SetOriginNode(node);
-                    return;
-                }
-
-                if (origin == null) return;
-
-                if (node.Position.Equals(origin) && isClick)
-                {
-                    transportRoutePanel.SetOriginNode(null);
-                }
-                else
-                {
-                    transportRoutePanel.SetDestinationNode(node);
-                    HandleRoutePreview(origin, node);
-                }
-
-                if (isClick && origin != null && destination != null)
-                {
-                    transportRoutePanel.ConfirmRouteCreation();
-                    transportRoutePreview.HideLine();
-                }
+                transportRoutePanel.SetOriginNode(null);
+            }
+            else
+            {
+                transportRoutePanel.SetDestinationNode(node);
+                HandleRoutePreview(origin, node);
             }
 
+            if (isClick && origin != null && destination != null)
+            {
+                transportRoutePanel.ConfirmRouteCreation();
+            }
         }
 
         private void HandleRouteDeletion(Guid guid)
         {
-            transportManager.RemoveRoute(guid);
-            if (!transportVisuailizer.TryGetValue(guid, out SmoothLineRenderer line)) return;
-            if (line.Equals(selectedRoute))
-            {
-                selectedRoute = null;
-            }
-            transportVisuailizer.Remove(guid);
-            Destroy(line.gameObject);
+            transportController.TryDeleteRoute(guid);
         }
         private void HandleRouteCreation(WorldNode origin, WorldNode destination)
         {
-            if (origin == null || destination == null) return;
-            if (selectedRoute != null)
-            {
-                selectedRoute.HideLine();
-            }
-
-
-            TransportRoute route = transportManager.CreateRoute(origin, destination);
-            if (route == null) return;
-            SmoothLineRenderer newLine = Instantiate(smoothLineRendererPrefab, transform);
-            newLine.RenderLine(route.path.ConvertAll(p => grid.Grid.CellToWorld(p.ToOffset())).ConvertAll(v => new Vector3(v.x, offsetHeight, v.z)));
-            transportVisuailizer[route.Id] = newLine;
-            newLine.ShowLine();
-            selectedRoute = newLine;
+            transportController.TryCreateRoute(origin, destination);
         }
 
         private void HandleRoutePreview(WorldNode origin, WorldNode destination)
         {
-            if (selectedRoute != null)
-            {
-                selectedRoute.HideLine();
-            }
-
-            List<HexCoordinate> path = pathfindingController.FindPath(origin, destination);
-            transportRoutePreview.RenderLine(path.ConvertAll(p => grid.Grid.CellToWorld(p.ToOffset())).ConvertAll(v => new Vector3(v.x, offsetHeight, v.z)));
-            transportRoutePreview.ShowLine();
+            transportController.PreviewRoute(origin, destination);
         }
         private void HandleRouteSelection(TransportRoute route)
         {
-            transportRoutePreview.HideLine();
-            if (!transportVisuailizer.TryGetValue(route.Id, out SmoothLineRenderer line)) return;
-            if (selectedRoute != null)
-            {
-                selectedRoute.HideLine();
-            }
-            if (line.Equals(selectedRoute)) return;
-
-            line.ShowLine();
-
-            selectedRoute = line;
+            transportController.SelectRoute(route.Id);
         }
 
         private void HandleModeSelection(UIState state)
@@ -251,93 +206,6 @@ namespace Systems.UI
             selectedBuilding = building;
             selectedNode = null;
         }
-        private void HandleSelection(WorldNode node)
-        {
-            if (node == null) return;
-            if (currentState == UIState.EXPLORING) return;
-
-            if (selectedNode != null)
-            {
-                selectedNode.Deselect();
-            }
-            if (selectedNode != null && node.Position.Equals(selectedNode.Position))
-            {
-                selectedNode = null;
-                return;
-            }
-
-
-            selectedNode = node;
-            node.Select();
-
-            if (currentState == UIState.INSPECTING)
-            {
-                if (selectedNode == null)
-                {
-                    inspectPanel.UpdateTileInfo(new TileInformation()
-                    {
-                        TileName = "NAN"
-                    });
-                }
-                else
-                {
-                    Dictionary<ResourceType, int> incomingResources = transportManager.GetIncomingResourcesFor(node.incomingRoutes);
-                    List<BonusInformation> bonusInfos = new();
-
-                    foreach (ResourceBonus bonus in node.worldTile.inputBonuses)
-                    {
-                        incomingResources.TryGetValue(bonus.input, out int amount);
-                        bonusInfos.Add(new BonusInformation
-                        {
-                            ResourceType = bonus.input,
-                            BonusMultiplier = bonus.bonusMultiplier,
-                            MaxCapacity = bonus.maxCapacity,
-                            CurrentInputAmount = amount
-                        });
-                    }
-
-
-                    inspectPanel.UpdateTileInfo(new TileInformation
-                    {
-                        TileName = node.worldTile.name,
-                        ProductionType = node.ResourceType,
-                        ProductionRate = node.Production,
-                        AvailableResources = node.GetAvailableProduction(),
-                        BonusInformations = bonusInfos,
-                        CumulatedBonus = Mathf.FloorToInt(100 * (node.Production / node.worldTile.resourceAmount))
-                    });
-                }
-            }
-            else if (currentState == UIState.BUILDING)
-            {
-                if (selectedBuilding == null) return;
-                if (!node.worldTile.isBuildable) return;
-
-                transportManager.RemoveAllRoutesForTile(node);
-                node.name = $"{selectedBuilding.resourceType}-{node.Position}";
-                node.Initialize(selectedBuilding, node.Position);
-            }
-            else if (currentState == UIState.MANAGING_TRANSPORT)
-            {
-                WorldNode origin = transportRoutePanel.SelectedOrigin;
-
-                if (origin == null)
-                {
-                    transportRoutePanel.SetOriginNode(node);
-                    return;
-                }
-
-                if (node.Position.Equals(origin))
-                {
-                    transportRoutePanel.SetOriginNode(null);
-                }
-                else
-                {
-                    transportRoutePanel.SetDestinationNode(node);
-                }
-            }
-        }
-
         private void BuildUI()
         {
             Root.Clear();

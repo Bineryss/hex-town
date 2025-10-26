@@ -1,78 +1,66 @@
 using System;
 using System.Collections.Generic;
-using Sirenix.OdinInspector;
-using Sirenix.Serialization;
 using Systems.Grid;
-using UnityEngine;
 
 namespace Systems.Transport
 {
-    public class TransportManager : SerializedMonoBehaviour
+    public class TransportManager
     {
-        #region Singleton
-        public static TransportManager Instance { get; private set; }
-        void Awake()
-        {
-            if (Instance == null)
-            {
-                Instance = this;
-            }
-            else
-            {
-                Destroy(gameObject);
-            }
-        }
-        #endregion
+        private readonly PathfindingController pathfindingController;
+        private readonly Dictionary<Guid, TransportRoute> transportRoutes = new();
 
-        [SerializeField] private PathfindingController pathfindingController;
-        [OdinSerialize] private Dictionary<Guid, TransportRoute> transportRoutes = new();
+        public TransportManager(PathfindingController pathfindingController, Dictionary<Guid, TransportRoute> transportRoutes)
+        {
+            this.pathfindingController = pathfindingController;
+            this.transportRoutes = transportRoutes;
+        }
 
         public bool CanCreateRoute(WorldNode origin, WorldNode destination, out string errorMessage, out List<HexCoordinate> path)
         {
             errorMessage = "";
+            bool canCreate = true;
             path = new List<HexCoordinate>();
 
             if (origin == null || destination == null)
             {
                 errorMessage = "Origin or destination is null.";
-                return false;
+                canCreate = false;
             }
             if (origin == destination)
             {
                 errorMessage = "Origin and destination cannot be the same.";
-                return false;
+                canCreate = false;
             }
             if (origin.ResourceType.Equals(ResourceType.NONE))
             {
                 errorMessage = "Origin does not produce any resources.";
-                return false;
+                canCreate = false;
             }
             if (!destination.AcceptedInputResources.Contains(origin.ResourceType))
             {
                 errorMessage = $"Destination does not accept {origin.ResourceType}.";
-                return false;
+                canCreate = false;
             }
             if (origin.GetAvailableProduction() <= 0)
             {
                 errorMessage = "Origin has no available production to transport.";
-                return false;
+                canCreate = false;
             }
 
             path = pathfindingController.FindPath(origin, destination);
             if (path.Count == 0)
             {
                 errorMessage = "No valid path found between origin and destination.";
-                return false;
+                canCreate = false;
             }
 
-            return true;
+            return canCreate;
         }
 
         public TransportRoute CreateRoute(WorldNode origin, WorldNode destination)
         {
             if (!CanCreateRoute(origin, destination, out string errorMessage, out List<HexCoordinate> path))
             {
-                Debug.Log($"Cannot create route: {errorMessage}");
                 return null;
             }
 

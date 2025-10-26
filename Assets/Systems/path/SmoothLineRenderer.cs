@@ -5,6 +5,8 @@ using UnityEngine;
 [RequireComponent(typeof(LineRenderer))]
 public class SmoothLineRenderer : MonoBehaviour
 {
+    private static readonly int BaseProperty = Shader.PropertyToID("_base");
+
     [SerializeField] private LineRenderer lineRenderer;
     [SerializeField] public List<Vector3> points;
     [SerializeField] private float cornerRadius = 0.1f;
@@ -36,5 +38,10 @@ public class SmoothLineRenderer : MonoBehaviour
     public void ShowLine()
     {
         lineRenderer.enabled = true;
+    }
+
+    public void ChangeColor(Color color)
+    {
+        lineRenderer.material.SetColor(BaseProperty, color);
     }
 }
