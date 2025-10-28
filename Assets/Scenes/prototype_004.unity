@@ -1742,8 +1742,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 734100047}
-  - component: {fileID: 734100045}
   - component: {fileID: 734100048}
+  - component: {fileID: 734100049}
+  - component: {fileID: 734100050}
   m_Layer: 0
   m_Name: transport-manager
   m_TagString: Untagged
@@ -1751,48 +1752,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &734100045
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 734100044}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a887bf011b549bf46a4d406dfbdea41f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Systems.Transport.TransportManager
-  serializationData:
-    SerializedFormat: 2
-    SerializedBytes: 
-    ReferencedUnityObjects: []
-    SerializedBytesString: 
-    Prefab: {fileID: 0}
-    PrefabModificationsReferencedUnityObjects: []
-    PrefabModifications: []
-    SerializationNodes:
-    - Name: transportRoutes
-      Entry: 7
-      Data: 0|System.Collections.Generic.Dictionary`2[[System.Guid, mscorlib],[Systems.Transport.TransportRoute,
-        Assembly-CSharp]], mscorlib
-    - Name: comparer
-      Entry: 7
-      Data: 1|System.Collections.Generic.GenericEqualityComparer`1[[System.Guid,
-        mscorlib]], mscorlib
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 12
-      Data: 0
-    - Name: 
-      Entry: 13
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-  pathfindingController: {fileID: 734100048}
 --- !u!4 &734100047
 Transform:
   m_ObjectHideFlags: 0
@@ -1825,6 +1784,35 @@ MonoBehaviour:
     r: 0
   generator: {fileID: 1626731402}
   smoothLineRenderer: {fileID: 0}
+--- !u!114 &734100049
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 734100044}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: edda9b118d5cf894d8f9b9a31ebc49ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Systems.Transport.TransportController
+  grid: {fileID: 1626731401}
+  smoothLineRendererPrefab: {fileID: 7179913176857044246, guid: 5e29c4bbaf144ce489cfac7ab7f52eb2, type: 3}
+  pathfindingController: {fileID: 734100048}
+  offsetHeight: 0.6
+--- !u!114 &734100050
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 734100044}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c154d65f326e48409ca1a13e42e84fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Systems.UI.TransportUIController
+  transportController: {fileID: 734100049}
 --- !u!1001 &787390062
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4247,11 +4235,8 @@ MonoBehaviour:
     <State>k__BackingField: 2
   - <Name>k__BackingField: "Handles Men\xFC"
     <State>k__BackingField: 3
-  smoothLineRendererPrefab: {fileID: 7179913176857044246, guid: 5e29c4bbaf144ce489cfac7ab7f52eb2, type: 3}
-  grid: {fileID: 1626731401}
-  transportManager: {fileID: 734100045}
-  pathfindingController: {fileID: 734100048}
-  offsetHeight: 0.6
+  transportController: {fileID: 734100049}
+  transportUIController: {fileID: 734100050}
   selectedNode: {fileID: 0}
   currentState: 0
 --- !u!114 &1816141382

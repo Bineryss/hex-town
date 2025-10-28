@@ -10,7 +10,7 @@ namespace Systems.UI
         public Action<WorldNode> OnNodeSelected;
         public Action<WorldNode, bool> OnChange;
 
-
+        [SerializeField] private HexGrid grid;
         private bool wasPressed;
         private HexCoordinate lastHoveredCoordinate;
 
@@ -49,8 +49,8 @@ namespace Systems.UI
             Vector2 mousePosition = Mouse.current.position.ReadValue();
             Ray ray = Camera.main.ScreenPointToRay(mousePosition);
             if (!Physics.Raycast(ray, out RaycastHit hitInfo)) return null;
-            Debug.DrawRay(ray.origin, ray.direction * 1000, Color.red);
-            return hitInfo.transform.GetComponentInParent<WorldNode>();
+
+            return grid.GetNode(hitInfo.point) as WorldNode;
         }
     }
 }

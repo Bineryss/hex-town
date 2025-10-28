@@ -59,6 +59,7 @@ namespace Systems.Transport
 
         public bool TryCreateRoute(WorldNode origin, WorldNode destination)
         {
+            previewedRoute.HideLine();
             if (selectedRouteId != null)
             {
                 transportRouteVisualizers[selectedRouteId.Value].HideLine();

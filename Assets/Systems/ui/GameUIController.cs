@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Sirenix.OdinInspector;
+using Systems.Grid;
 using Systems.Transport;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -14,22 +16,34 @@ namespace Systems.UI
         [SerializeField] private PlayerGridSelector playerGridSelector;
         [SerializeField] private List<WorldTile> buildings;
         [SerializeField] private List<ModeElement> modes = new();
+        [SerializeField] private WorldNode previewNode;
 
         [Header("Transport UI")]
         [SerializeField] private TransportController transportController;
         [SerializeField] private TransportUIController transportUIController;
 
         [Header("Debug Info")]
-        [SerializeField, ReadOnly] private WorldNode selectedNode;
+        [SerializeField, ReadOnly] private WorldNode prevSelectedNode;
         [SerializeField] private UIState currentState = UIState.INSPECTING;
 
         private VisualElement Root => uiDocument.rootVisualElement;
         private InspectPanel inspectPanel;
+        private ResourceOverview resourceOverview;
         private BuildingSelectionPanel buildingListPanel;
         private ModeSelectionPanel modeSelectionPanel;
         private WorldTile selectedBuilding;
         private readonly Dictionary<UIState, IUIModeSegment> uiModes = new();
         private readonly Dictionary<UIState, Action<WorldNode, bool>> uiModeActions = new();
+        private readonly List<WorldNode> placedBuildings = new();
+
+        void Update()
+        {
+            resourceOverview.UpdateResources(placedBuildings.GroupBy(b => b.ResourceType).Select(g => new ResourceInfo
+            {
+                ResourceType = g.Key.ToString(),
+                Quantity = g.Sum(b => b.GetAvailableProduction())
+            }).ToList());
+        }
 
         void Start()
         {
@@ -50,6 +64,7 @@ namespace Systems.UI
             inspectPanel = new();
             buildingListPanel = new(buildings);
             modeSelectionPanel = new(modes);
+            resourceOverview = new();
 
             playerGridSelector.OnChange += HandleMouseChange;
             buildingListPanel.OnBuildingSelected += HandleBuildingSelection;
@@ -66,24 +81,39 @@ namespace Systems.UI
         {
             if (node == null) return;
             if (currentState == UIState.EXPLORING) return;
-            if (selectedNode != null)
+            if (prevSelectedNode != null)
             {
-                selectedNode.Deselect();
+                prevSelectedNode.Deselect();
             }
             node.Select();
             uiModeActions[currentState](node, isClick);
-            selectedNode = node;
+            prevSelectedNode = node;
         }
 
         private void BuildAction(WorldNode node, bool isClick)
         {
-            if (!isClick) return;
             if (selectedBuilding == null) return;
-            if (!node.worldTile.isBuildable) return;
+            if (!node.worldTile.isBuildable)
+            {
+                prevSelectedNode?.gameObject.SetActive(true);
+                previewNode.gameObject.SetActive(false);
+                return;
+            }
 
+            previewNode.gameObject.SetActive(true);
+            node.gameObject.SetActive(false);
+            if (prevSelectedNode != null && !prevSelectedNode.Position.Equals(node.Position))
+            {
+                prevSelectedNode.gameObject.SetActive(true);
+            }
+
+            previewNode.gameObject.transform.position = node.transform.position;
+
+            if (!isClick) return;
             transportController.Manager.RemoveAllRoutesForTile(node);
             node.name = $"{selectedBuilding.resourceType}-{node.Position}";
             node.Initialize(selectedBuilding, node.Position);
+            placedBuildings.Add(node);
         }
         private void InspectAction(WorldNode node, bool isClick)
         {
@@ -129,13 +159,14 @@ namespace Systems.UI
         {
             if (state == currentState) return;
 
-            if (selectedNode != null)
+            if (prevSelectedNode != null)
             {
-                selectedNode.Deselect();
-                selectedNode = null;
+                prevSelectedNode.Deselect();
+                prevSelectedNode = null;
             }
             foreach (IUIModeSegment mode in uiModes.Values)
             {
+                previewNode.gameObject.SetActive(false);
                 mode.ExitMode();
             }
 
@@ -151,15 +182,13 @@ namespace Systems.UI
         {
             if (building == null) return;
             selectedBuilding = building;
-            selectedNode = null;
+            previewNode.Initialize(selectedBuilding, new HexCoordinate(0, 0));
+            prevSelectedNode = null;
         }
         private void BuildUI()
         {
             Root.Clear();
-
-            Label label = new("Game UI Initialized");
-            Root.Add(label);
-
+            Root.Add(resourceOverview);
 
             VisualElement menuContainer = new();
             menuContainer.style.maxWidth = 300;
