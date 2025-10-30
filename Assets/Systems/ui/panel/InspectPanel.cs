@@ -16,11 +16,13 @@ namespace Systems.UI
         private readonly VisualElement bonusContainer = new();
         private readonly List<Label> bonusLabels = new();
 
+        private readonly VisualElement subTileContainer = new();
+        private readonly List<Label> subTileLabels = new();
+
         public InspectPanel()
         {
-            style.width = 250;
-            style.height = 300;
-            style.backgroundColor = new Color(0.1f, 0.1f, 0.1f, 0.9f);
+            style.width = 300;
+            style.backgroundColor = new Color(0.15f, 0.15f, 0.15f, 1f);
             style.flexDirection = FlexDirection.Column;
             style.paddingTop = 10;
             style.paddingLeft = 10;
@@ -67,6 +69,7 @@ namespace Systems.UI
             Add(selectedTileCumulatedBonusElement);
 
             Add(bonusContainer);
+            Add(subTileContainer);
         }
 
         public void EnterMode()
@@ -87,6 +90,7 @@ namespace Systems.UI
             selectedTileAvailableResourcesElement.text = $"Available Resources: {tileInfo.AvailableResources}";
             selectedTileCumulatedBonusElement.text = $"Cumulated Bonus: {tileInfo.CumulatedBonus}%";
             UpdateBonusLabels(tileInfo.BonusInformations);
+            UpdateSubTileLabels(tileInfo.SubTiles);
         }
 
         private void UpdateBonusLabels(List<BonusInformation> bonusInfos)
@@ -94,7 +98,6 @@ namespace Systems.UI
             bonusContainer.Clear();
             bonusLabels.Clear();
 
-            // Add new bonus labels
             foreach (var bonusInfo in bonusInfos)
             {
                 Label bonusLabel = new($"Bonus: {bonusInfo.ResourceType} - Multiplier: {bonusInfo.BonusMultiplier} - Max Capacity: {bonusInfo.MaxCapacity} - Current Input: {bonusInfo.CurrentInputAmount}");
@@ -103,6 +106,22 @@ namespace Systems.UI
                 bonusLabel.style.marginBottom = 3;
                 bonusContainer.Add(bonusLabel);
                 bonusLabels.Add(bonusLabel);
+            }
+        }
+
+        private void UpdateSubTileLabels(List<SubTile> subTiles)
+        {
+            subTileContainer.Clear();
+            subTileLabels.Clear();
+
+            foreach (var subTile in subTiles)
+            {
+                Label subTileLabel = new($"Sub-Tile: {subTile.Position} - Type: {subTile.Type} - Production: {subTile.Production}");
+                subTileLabel.style.color = Color.white;
+                subTileLabel.style.fontSize = 12;
+                subTileLabel.style.marginBottom = 3;
+                subTileContainer.Add(subTileLabel);
+                subTileLabels.Add(subTileLabel);
             }
         }
     }

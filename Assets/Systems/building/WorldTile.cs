@@ -13,6 +13,7 @@ public class WorldTile : ScriptableObject
     [Header("Production Properties")]
     public ResourceType resourceType;
     public int resourceAmount;
+    public List<WorldTile> connectableTiles = new();
 
     [Header("Input Bonuses")]
     public List<ResourceBonus> inputBonuses = new();

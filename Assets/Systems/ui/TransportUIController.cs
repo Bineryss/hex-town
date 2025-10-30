@@ -25,7 +25,7 @@ namespace Systems.UI
             transportRoutePanel.UpdateRoutes(transportController.Manager.GetAllRoutes());
         }
 
-        public void HandleMouseInteraction(WorldNode node, bool isClick)
+        public void HandleMouseInteraction(WorldNode node, WorldNode prevNode, bool isClick)
         {
             WorldNode origin = transportRoutePanel.SelectedOrigin;
             WorldNode destination = transportRoutePanel.SelectedDestination;
@@ -65,6 +65,16 @@ namespace Systems.UI
         private void HandleRouteSelection(TransportRoute route)
         {
             transportController.SelectRoute(route.Id);
+        }
+
+        public void Exit()
+        {
+            transportRoutePanel.ExitMode();
+        }
+
+        public void Activate()
+        {
+            transportRoutePanel.EnterMode();
         }
     }
 }

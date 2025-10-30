@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Systems.Grid;
 
 namespace Systems.UI
 {
@@ -10,7 +11,8 @@ namespace Systems.UI
         public int AvailableResources;
         public List<BonusInformation> BonusInformations;
         public float CumulatedBonus;
-    
+        public List<SubTile> SubTiles;
+
     }
 
     public struct BonusInformation
@@ -19,5 +21,12 @@ namespace Systems.UI
         public float BonusMultiplier;
         public int MaxCapacity;
         public int CurrentInputAmount;
+    }
+
+    public struct SubTile
+    {
+        public HexCoordinate Position;
+        public ResourceType Type;
+        public int Production;
     }
 }

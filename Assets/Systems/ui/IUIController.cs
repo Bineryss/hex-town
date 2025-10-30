@@ -4,6 +4,8 @@ namespace Systems.UI
     {
         IUIModeSegment UIModeSegment { get; }
         void Initialize();
-        void HandleMouseInteraction(WorldNode node, bool isClick);
+        void HandleMouseInteraction(WorldNode node, WorldNode prevNode, bool isClick);
+        void Exit();
+        void Activate();
     }
 }

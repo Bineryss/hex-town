@@ -24,6 +24,7 @@ public class WorldNode : SerializedMonoBehaviour, INode
     public ResourceType ResourceType => worldTile.resourceType;
     [ShowInInspector, ReadOnly]
     public int Production;
+    public List<WorldTile> ConnectableTiles => worldTile.connectableTiles;
 
     [Header("Transport Info")]
     [OdinSerialize]
@@ -35,6 +36,8 @@ public class WorldNode : SerializedMonoBehaviour, INode
     public Dictionary<ResourceType, int> MaxIncomingCapacity => maxCapacities;
     private bool isSelected;
     [OdinSerialize] private readonly Dictionary<ResourceType, int> maxCapacities = new();
+    [SerializeField] public List<WorldNode> ConnectedNodes = new();
+    [SerializeField] public bool isSubTile;
 
 
 
@@ -68,6 +71,12 @@ public class WorldNode : SerializedMonoBehaviour, INode
         CalculateProduction();
     }
 
+    public void InitializeWithSubTiles(WorldTile tile, HexCoordinate position, List<WorldNode> connectedNodes)
+    {
+        this.ConnectedNodes = connectedNodes;
+        connectedNodes.ForEach(t => t.isSubTile = true);
+        Initialize(tile, position);
+    }
     private void CreateTile()
     {
         if (tile != null) Destroy(tile);
