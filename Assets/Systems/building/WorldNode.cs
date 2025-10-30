@@ -21,7 +21,7 @@ public class WorldNode : SerializedMonoBehaviour, INode
 
     [Header("Resource Info")]
     [ShowInInspector, ReadOnly]
-    public ResourceType ResourceType => worldTile.resourceType;
+    public ResourceType ResourceType => ConnectedNodes.Count == 0 ? worldTile.resourceType : ConnectedNodes[0].ResourceType;
     [ShowInInspector, ReadOnly]
     public int Production;
     public List<WorldTile> ConnectableTiles => worldTile.connectableTiles;
@@ -153,6 +153,11 @@ public class WorldNode : SerializedMonoBehaviour, INode
 
     public int GetAvailableProduction()
     {
+        if (isSubTile)
+        {
+            return 0;
+        }
+
         int totalOutput = Production;
         foreach (Guid routeId in outgoingRoutes)
         {
@@ -161,6 +166,11 @@ public class WorldNode : SerializedMonoBehaviour, INode
             {
                 totalOutput -= route.quantity;
             }
+        }
+
+        foreach (WorldNode node in ConnectedNodes)
+        {
+            totalOutput += node.Production;
         }
 
         return totalOutput;
