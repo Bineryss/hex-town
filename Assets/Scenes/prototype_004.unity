@@ -1805,7 +1805,6 @@ GameObject:
   - component: {fileID: 734100047}
   - component: {fileID: 734100048}
   - component: {fileID: 734100049}
-  - component: {fileID: 734100050}
   m_Layer: 0
   m_Name: transport-manager
   m_TagString: Untagged
@@ -1857,23 +1856,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: edda9b118d5cf894d8f9b9a31ebc49ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Systems.Transport.TransportController
-  grid: {fileID: 1626731401}
-  smoothLineRendererPrefab: {fileID: 7179913176857044246, guid: 5e29c4bbaf144ce489cfac7ab7f52eb2, type: 3}
   pathfindingController: {fileID: 734100048}
-  offsetHeight: 0.6
---- !u!114 &734100050
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 734100044}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7c154d65f326e48409ca1a13e42e84fb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Systems.UI.TransportUIController
-  transportController: {fileID: 734100049}
 --- !u!1001 &787390062
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4249,8 +4232,11 @@ GameObject:
   - component: {fileID: 1816141382}
   - component: {fileID: 1816141381}
   - component: {fileID: 1816141384}
+  - component: {fileID: 1816141385}
+  - component: {fileID: 1816141386}
+  - component: {fileID: 1816141387}
   m_Layer: 5
-  m_Name: UIDocument
+  m_Name: visual-manager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4271,22 +4257,79 @@ MonoBehaviour:
   serializationData:
     SerializedFormat: 2
     SerializedBytes: 
-    ReferencedUnityObjects: []
+    ReferencedUnityObjects:
+    - {fileID: 1816141386}
+    - {fileID: 1816141385}
+    - {fileID: 1816141387}
     SerializedBytesString: 
     Prefab: {fileID: 0}
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
-    SerializationNodes: []
+    SerializationNodes:
+    - Name: uiControllers
+      Entry: 7
+      Data: 0|System.Collections.Generic.Dictionary`2[[Systems.UI.UIState, Assembly-CSharp],[Systems.UI.IUIController,
+        Assembly-CSharp]], mscorlib
+    - Name: comparer
+      Entry: 7
+      Data: 1|System.Collections.Generic.EnumEqualityComparer`1[[Systems.UI.UIState,
+        Assembly-CSharp]], mscorlib
+    - Name: 
+      Entry: 12
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 12
+      Data: 3
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 1
+    - Name: $v
+      Entry: 10
+      Data: 0
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 2
+    - Name: $v
+      Entry: 10
+      Data: 1
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 3
+    - Name: $v
+      Entry: 10
+      Data: 2
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
   uiDocument: {fileID: 1816141382}
   playerGridSelector: {fileID: 1816141384}
-  buildings:
-  - {fileID: 11400000, guid: e4766c15c10e2f2429077ffadc1914fd, type: 2}
-  - {fileID: 11400000, guid: b668ed18ac4bde54f9327806caf03b5c, type: 2}
-  - {fileID: 11400000, guid: 63c8a39275555c044926e197bfbb355b, type: 2}
-  - {fileID: 11400000, guid: 346012ba7b132c6468f18685dba47e0b, type: 2}
-  - {fileID: 11400000, guid: f09dbe704844f7f499aeca3dbb084169, type: 2}
-  - {fileID: 11400000, guid: 873f5b155ba6f7443b4154dc2d2733e5, type: 2}
-  - {fileID: 11400000, guid: 6bca83a88b5dd0d438493a94cae0a33a, type: 2}
   modes:
   - <Name>k__BackingField: Erkunden
     <State>k__BackingField: 0
@@ -4296,9 +4339,7 @@ MonoBehaviour:
     <State>k__BackingField: 2
   - <Name>k__BackingField: "Handles Men\xFC"
     <State>k__BackingField: 3
-  previewNode: {fileID: 2130325583}
-  transportController: {fileID: 734100049}
-  transportUIController: {fileID: 734100050}
+  buildingUIController: {fileID: 1816141385}
   prevSelectedNode: {fileID: 0}
   currentState: 0
 --- !u!114 &1816141382
@@ -4353,6 +4394,62 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerGridSelector
   grid: {fileID: 1626731401}
+--- !u!114 &1816141385
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1816141380}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae85c858af8ef3c4f82c8d6aff291354, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Systems.UI.BuildingUIController
+  buildings:
+  - {fileID: 11400000, guid: 346012ba7b132c6468f18685dba47e0b, type: 2}
+  - {fileID: 11400000, guid: 0d262a060d99cd44790585001a9136ba, type: 2}
+  - {fileID: 11400000, guid: f09dbe704844f7f499aeca3dbb084169, type: 2}
+  - {fileID: 11400000, guid: 8b6c0034f7f197448ae786038f997e4e, type: 2}
+  - {fileID: 11400000, guid: 5ac87306b5ef06e4cb9a89b612a25412, type: 2}
+  - {fileID: 11400000, guid: 873f5b155ba6f7443b4154dc2d2733e5, type: 2}
+  - {fileID: 11400000, guid: 6bca83a88b5dd0d438493a94cae0a33a, type: 2}
+  - {fileID: 11400000, guid: b668ed18ac4bde54f9327806caf03b5c, type: 2}
+  - {fileID: 11400000, guid: 63c8a39275555c044926e197bfbb355b, type: 2}
+  - {fileID: 11400000, guid: e4766c15c10e2f2429077ffadc1914fd, type: 2}
+  previewNode: {fileID: 2130325583}
+  transportController: {fileID: 734100049}
+  generator: {fileID: 1626731402}
+--- !u!114 &1816141386
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1816141380}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 02e8ddaee9a5cd4418a567933730ceef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Systems.UI.InspectUIController
+  transportController: {fileID: 734100049}
+--- !u!114 &1816141387
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1816141380}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c154d65f326e48409ca1a13e42e84fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Systems.UI.TransportUIController
+  transportController: {fileID: 734100049}
+  grid: {fileID: 1626731401}
+  smoothLineRendererPrefab: {fileID: 7179913176857044246, guid: 5e29c4bbaf144ce489cfac7ab7f52eb2, type: 3}
+  pathfindingController: {fileID: 734100048}
+  offsetHeight: 0.6
 --- !u!4 &1837962395 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: d3c71811521654c4ca3cf82e253871cb, type: 3}

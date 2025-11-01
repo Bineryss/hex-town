@@ -18,6 +18,8 @@ MonoBehaviour:
   isBuildable: 1
   resourceType: 4
   resourceAmount: 1
+  connectableTiles:
+  - {fileID: 11400000, guid: e4766c15c10e2f2429077ffadc1914fd, type: 2}
   inputBonuses:
   - input: 3
     bonusMultiplier: 10

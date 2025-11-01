@@ -12,10 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c79953c82e522e4fae19ea271886369, type: 3}
   m_Name: Farm-House
   m_EditorClassIdentifier: Assembly-CSharp::WorldTile
-  prefab: {fileID: 919132149155446097, guid: 724909ff915372b418c53cd43a8a7c47, type: 3}
+  prefab: {fileID: 5087445509774835967, guid: c7a9230c1d2168f41aa9bb802b9e95bf, type: 3}
   movementCost: 1
   isWalkable: 1
   isBuildable: 1
   resourceType: 0
   resourceAmount: 0
+  connectableTiles:
+  - {fileID: 11400000, guid: e4766c15c10e2f2429077ffadc1914fd, type: 2}
+  - {fileID: 11400000, guid: b668ed18ac4bde54f9327806caf03b5c, type: 2}
   inputBonuses: []
