@@ -19,7 +19,6 @@ namespace Systems.Transport
         {
             errorMessage = "";
             bool canCreate = true;
-            path = new List<HexCoordinate>();
 
             if (origin == null || destination == null)
             {
@@ -34,6 +33,11 @@ namespace Systems.Transport
             if (origin.ResourceType.Equals(ResourceType.NONE))
             {
                 errorMessage = "Origin does not produce any resources.";
+                canCreate = false;
+            }
+            if (destination.isSubTile)
+            {
+                errorMessage = "Destination cannot be a sub-tile.";
                 canCreate = false;
             }
             if (!destination.AcceptedInputResources.Contains(origin.ResourceType))
@@ -64,7 +68,7 @@ namespace Systems.Transport
                 return null;
             }
 
-            destination.MaxIncomingCapacity.TryGetValue(origin.ResourceType, out int maxCapacity); 
+            destination.MaxIncomingCapacity.TryGetValue(origin.ResourceType, out int maxCapacity);
 
             TransportRoute newRoute = new(origin, destination, origin.ResourceType, Math.Min(maxCapacity, origin.GetAvailableProduction()), path);
             transportRoutes[newRoute.Id] = newRoute;

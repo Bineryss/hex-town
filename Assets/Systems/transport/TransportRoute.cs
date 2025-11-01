@@ -18,11 +18,11 @@ namespace Systems.Transport
         public WorldNode origin;
         public WorldNode destination;
         public ResourceType resourceType;
-        public int quantity;
+        public float quantity;
         public List<HexCoordinate> path = new();
         private readonly float efficiencyMultiplier;
 
-        public TransportRoute(WorldNode origin, WorldNode destination, ResourceType resourceType, int quantity, List<HexCoordinate> path)
+        public TransportRoute(WorldNode origin, WorldNode destination, ResourceType resourceType, float quantity, List<HexCoordinate> path)
         {
             Id = Guid.NewGuid();
             this.origin = origin;

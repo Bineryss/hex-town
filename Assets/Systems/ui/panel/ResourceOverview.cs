@@ -54,6 +54,6 @@ namespace Systems.UI
     public struct ResourceInfo
     {
         public string ResourceType;
-        public int Quantity;
+        public float Quantity;
     }
 }

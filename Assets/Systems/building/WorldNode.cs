@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Sirenix.OdinInspector;
 using Sirenix.Serialization;
 using Systems.Grid;
@@ -23,7 +24,7 @@ public class WorldNode : SerializedMonoBehaviour, INode
     [ShowInInspector, ReadOnly]
     public ResourceType ResourceType => ConnectedNodes.Count == 0 ? worldTile.resourceType : ConnectedNodes[0].ResourceType;
     [ShowInInspector, ReadOnly]
-    public int Production;
+    public float Production;
     public List<WorldTile> ConnectableTiles => worldTile.connectableTiles;
 
     [Header("Transport Info")]
@@ -32,15 +33,32 @@ public class WorldNode : SerializedMonoBehaviour, INode
     [OdinSerialize]
     public List<Guid> incomingRoutes = new();
     [OdinSerialize, ReadOnly]
-    public List<ResourceType> AcceptedInputResources => worldTile.TradeableResources;
+    public List<ResourceType> AcceptedInputResources
+    {
+        get
+        {
+            return ConnectedNodes.SelectMany(n => n.AcceptedInputResources).Concat(worldTile.TradeableResources).ToList();
+        }
+    }
+    public List<ResourceBonus> InputBonuses
+    {
+        get
+        {
+            return ConnectedNodes
+            .SelectMany(n => n.InputBonuses)
+            .Concat(worldTile.inputBonuses)
+            .GroupBy(bonus => bonus.input)
+            .Select(group => new ResourceBonus { input = group.Key, maxCapacity = group.Sum(bonus => bonus.maxCapacity), bonusMultiplier = Mathf.FloorToInt(group.Sum(bonus => bonus.bonusMultiplier) / Mathf.Pow(group.Count(), 2)) })
+            .ToList();
+        }
+    }
     public Dictionary<ResourceType, int> MaxIncomingCapacity => maxCapacities;
     private bool isSelected;
-    [OdinSerialize] private readonly Dictionary<ResourceType, int> maxCapacities = new();
-    [SerializeField] public List<WorldNode> ConnectedNodes = new();
-    [SerializeField] public bool isSubTile;
-
-
-
+    [OdinSerialize] private Dictionary<ResourceType, int> maxCapacities = new();
+    [ShowInInspector, ReadOnly] public List<WorldNode> ConnectedNodes = new();
+    [ShowInInspector, ReadOnly] public bool isSubTile;
+    public float CumulatedBonus => cumulatedBonus;
+    private float cumulatedBonus;
 
     private GameObject tile;
     private WorldTile currentTile;
@@ -65,7 +83,7 @@ public class WorldNode : SerializedMonoBehaviour, INode
     {
         worldTile = tile;
         Position = position;
-        Production = worldTile.resourceAmount;
+        Production = worldTile.resourceAmount + ConnectedNodes.Sum(n => n.worldTile.resourceAmount);
         outgoingRoutes.Clear();
         incomingRoutes.Clear();
         CalculateProduction();
@@ -73,9 +91,10 @@ public class WorldNode : SerializedMonoBehaviour, INode
 
     public void InitializeWithSubTiles(WorldTile tile, HexCoordinate position, List<WorldNode> connectedNodes)
     {
-        this.ConnectedNodes = connectedNodes;
+        ConnectedNodes = connectedNodes;
         connectedNodes.ForEach(t => t.isSubTile = true);
         Initialize(tile, position);
+        CreateTile();
     }
     private void CreateTile()
     {
@@ -84,10 +103,12 @@ public class WorldNode : SerializedMonoBehaviour, INode
         Quaternion rotation = Quaternion.Euler(0, rotationSteps * 60f, 0);
         tile = Instantiate(worldTile.prefab, transform.position, rotation, transform);
         CalculateProduction();
-        foreach (ResourceBonus bonus in worldTile.inputBonuses)
-        {
-            maxCapacities[bonus.input] = bonus.maxCapacity;
-        }
+
+        maxCapacities = ConnectedNodes
+        .SelectMany(n => n.InputBonuses)
+        .Concat(worldTile.inputBonuses)
+        .GroupBy(bonus => bonus.input)
+        .ToDictionary(group => group.Key, group => group.Sum(bonus => bonus.maxCapacity));
     }
 
     public List<INode> Neighbors(Dictionary<HexCoordinate, INode> allNodes)
@@ -137,28 +158,28 @@ public class WorldNode : SerializedMonoBehaviour, INode
 
     public void CalculateProduction()
     {
-        float productionBonus = 0f;
+        cumulatedBonus = 0f;
 
-        foreach (ResourceBonus bonus in worldTile.inputBonuses)
+        foreach (ResourceBonus bonus in InputBonuses)
         {
             Dictionary<ResourceType, int> incomingResources = TransportManager.GetIncomingResourcesFor(incomingRoutes);
             if (incomingResources.TryGetValue(bonus.input, out int amount))
             {
                 float effectiveBonus = Mathf.Min(amount, bonus.maxCapacity) * (bonus.bonusMultiplier / 100f);
-                productionBonus += effectiveBonus;
+                cumulatedBonus += effectiveBonus;
             }
         }
-        Production = Mathf.FloorToInt(Production * (1 + productionBonus));
+        Production *= 1 + cumulatedBonus;
     }
 
-    public int GetAvailableProduction()
+    public float GetAvailableProduction()
     {
         if (isSubTile)
         {
             return 0;
         }
 
-        int totalOutput = Production;
+        float totalOutput = Production;
         foreach (Guid routeId in outgoingRoutes)
         {
             TransportRoute route = TransportManager.GetRoute(routeId);
@@ -166,11 +187,6 @@ public class WorldNode : SerializedMonoBehaviour, INode
             {
                 totalOutput -= route.quantity;
             }
-        }
-
-        foreach (WorldNode node in ConnectedNodes)
-        {
-            totalOutput += node.Production;
         }
 
         return totalOutput;

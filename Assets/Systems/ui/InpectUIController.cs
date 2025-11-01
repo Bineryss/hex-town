@@ -31,7 +31,7 @@ namespace Systems.UI
                 Dictionary<ResourceType, int> incomingResources = transportController.Manager.GetIncomingResourcesFor(node.incomingRoutes);
                 List<BonusInformation> bonusInfos = new();
 
-                foreach (ResourceBonus bonus in node.worldTile.inputBonuses)
+                foreach (ResourceBonus bonus in node.InputBonuses)
                 {
                     incomingResources.TryGetValue(bonus.input, out int amount);
                     bonusInfos.Add(new BonusInformation
@@ -50,7 +50,7 @@ namespace Systems.UI
                     ProductionRate = node.Production,
                     AvailableResources = node.GetAvailableProduction(),
                     BonusInformations = bonusInfos,
-                    CumulatedBonus = node.worldTile.resourceAmount > 0 ? Mathf.FloorToInt(100 * (node.Production / node.worldTile.resourceAmount)) : 0f,
+                    CumulatedBonus = node.CumulatedBonus * 100,
                     SubTiles = node.ConnectedNodes.ConvertAll(subTile => new SubTile
                     {
                         Position = subTile.Position,

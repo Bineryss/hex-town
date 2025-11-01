@@ -7,8 +7,8 @@ namespace Systems.UI
     {
         public string TileName;
         public ResourceType ProductionType;
-        public int ProductionRate;
-        public int AvailableResources;
+        public float ProductionRate;
+        public float AvailableResources;
         public List<BonusInformation> BonusInformations;
         public float CumulatedBonus;
         public List<SubTile> SubTiles;
@@ -27,6 +27,6 @@ namespace Systems.UI
     {
         public HexCoordinate Position;
         public ResourceType Type;
-        public int Production;
+        public float Production;
     }
 }
