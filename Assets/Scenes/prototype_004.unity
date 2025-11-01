@@ -4433,6 +4433,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Systems.UI.InspectUIController
   transportController: {fileID: 734100049}
+  buildingUIController: {fileID: 1816141385}
 --- !u!114 &1816141387
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -30,10 +30,10 @@ namespace Systems.UI
 
         void Update()
         {
-            resourceOverview.UpdateResources(buildingUIController.PlacedBuildings.GroupBy(b => b.ResourceType).Select(g => new ResourceInfo
+            resourceOverview.UpdateResources(buildingUIController.PlacedBuildings.Select(b => new { Type = b.Resource.scoreType, Quantity = b.GetAvailableProduction() * b.Resource.conversionRate }).GroupBy(e => e.Type).Select(g => new ResourceInfo
             {
                 ResourceType = g.Key.ToString(),
-                Quantity = g.Sum(b => b.GetAvailableProduction())
+                Quantity = g.Sum(b => b.Quantity)
             }).ToList());
         }
 

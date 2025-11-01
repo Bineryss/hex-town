@@ -23,6 +23,7 @@ namespace Systems.UI
             style.paddingLeft = 15;
             style.paddingRight = 15;
             style.flexDirection = FlexDirection.Row;
+            style.flexWrap = Wrap.Wrap;
 
             RefreshDisplay();
         }

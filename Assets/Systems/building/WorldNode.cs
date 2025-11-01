@@ -14,25 +14,19 @@ public class WorldNode : SerializedMonoBehaviour, INode
     public WorldTile worldTile;
 
     [Header("Debug Info")]
-    [ShowInInspector, ReadOnly]
-    public HexCoordinate Position { get; set; }
-    [ShowInInspector, ReadOnly]
-    public bool IsWalkable => worldTile.isWalkable;
-    [ShowInInspector, ReadOnly]
-    public int MovementCost => worldTile.movementCost;
+    [ShowInInspector, ReadOnly] public HexCoordinate Position { get; set; }
+    [ShowInInspector, ReadOnly] public bool IsWalkable => worldTile.isWalkable;
+    [ShowInInspector, ReadOnly] public int MovementCost => worldTile.movementCost;
 
     [Header("Resource Info")]
-    [ShowInInspector, ReadOnly]
-    public ResourceType ResourceType => ConnectedNodes.Count == 0 ? worldTile.resourceType.type : ConnectedNodes[0].ResourceType;
-    [ShowInInspector, ReadOnly]
-    public float Production;
+    [ShowInInspector, ReadOnly] public ResourceType ResourceType => ConnectedNodes.Count == 0 ? worldTile.resourceType.type : ConnectedNodes[0].ResourceType;
+    [ShowInInspector, ReadOnly] public Resource Resource => ConnectedNodes.Count == 0 ? worldTile.resourceType : ConnectedNodes[0].Resource;
+    [ShowInInspector, ReadOnly] public float Production;
     public List<WorldTile> ConnectableTiles => worldTile.connectableTiles;
 
     [Header("Transport Info")]
-    [OdinSerialize]
-    public List<Guid> outgoingRoutes = new();
-    [OdinSerialize]
-    public List<Guid> incomingRoutes = new();
+    [OdinSerialize] public List<Guid> outgoingRoutes = new();
+    [OdinSerialize] public List<Guid> incomingRoutes = new();
     [OdinSerialize, ReadOnly]
     public List<ResourceType> AcceptedInputResources
     {

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using Systems.Building;
 using Systems.Transport;
 using UnityEngine;
@@ -9,12 +10,25 @@ namespace Systems.UI
     {
         public IUIModeSegment UIModeSegment => inspectPanel;
         [SerializeField] private TransportController transportController;
+        [SerializeField] private BuildingUIController buildingUIController;
 
         private InspectPanel inspectPanel;
+        private ResourceOverview resourceOverview;
+
 
         public void Initialize()
         {
-            inspectPanel = new();
+            resourceOverview = new();
+            inspectPanel = new(resourceOverview);
+        }
+
+        public void Update()
+        {
+            resourceOverview.UpdateResources(buildingUIController.PlacedBuildings.GroupBy(b => b.ResourceType).Select(g => new ResourceInfo
+            {
+                ResourceType = g.Key.ToString(),
+                Quantity = g.Sum(b => b.GetAvailableProduction())
+            }).ToList());
         }
 
         public void HandleMouseInteraction(WorldNode node, WorldNode prevNode, bool isClick)

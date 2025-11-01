@@ -19,7 +19,7 @@ namespace Systems.UI
         private readonly VisualElement subTileContainer = new();
         private readonly List<Label> subTileLabels = new();
 
-        public InspectPanel()
+        public InspectPanel(ResourceOverview resourceOverview)
         {
             style.width = 300;
             style.backgroundColor = new Color(0.15f, 0.15f, 0.15f, 1f);
@@ -70,6 +70,7 @@ namespace Systems.UI
 
             Add(bonusContainer);
             Add(subTileContainer);
+            Add(resourceOverview);
         }
 
         public void EnterMode()
