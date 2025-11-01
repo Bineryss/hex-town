@@ -13,8 +13,10 @@ MonoBehaviour:
   m_Name: Village
   m_EditorClassIdentifier: Assembly-CSharp::WorldTile
   prefab: {fileID: 7400701854268612895, guid: 0a149faedead1e241be1b1e67fe2f480, type: 3}
-  resourceType: 0
-  resourceAmount: 0
   movementCost: 1
   isWalkable: 1
   isBuildable: 1
+  resourceType: {fileID: 11400000, guid: 49bae8a678aa0d042bef7b938331ba4d, type: 2}
+  resourceAmount: 1
+  connectableTiles: []
+  inputBonuses: []

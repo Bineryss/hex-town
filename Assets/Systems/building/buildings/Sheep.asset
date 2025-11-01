@@ -16,9 +16,10 @@ MonoBehaviour:
   movementCost: 1
   isWalkable: 1
   isBuildable: 1
-  resourceType: 1
+  resourceType: {fileID: 11400000, guid: 58ca12f7da399dc489bed80623d4cf07, type: 2}
   resourceAmount: 1
+  connectableTiles: []
   inputBonuses:
-  - input: 3
+  - input: {fileID: 11400000, guid: 5cf5c74612e46b74193d25dfda9b5c2d, type: 2}
     bonusMultiplier: 50
     maxCapacity: 5

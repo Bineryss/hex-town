@@ -10,12 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4c79953c82e522e4fae19ea271886369, type: 3}
-  m_Name: Grass
+  m_Name: Hill
   m_EditorClassIdentifier: Assembly-CSharp::WorldTile
-  prefab: {fileID: 52801587995007633, guid: 1636130fe1f316f42a846bbd0c8f595e, type: 3}
-  movementCost: 1
-  isWalkable: 1
-  isBuildable: 1
-  resourceType: 0
+  prefab: {fileID: 1741757398965241550, guid: 82d7639acb2eb944294fdb9a9c748b14, type: 3}
+  movementCost: 0
+  isWalkable: 0
+  isBuildable: 0
+  resourceType: {fileID: 11400000, guid: fbbed86de2c2ba341b82783bdb960ac5, type: 2}
   resourceAmount: 0
+  connectableTiles: []
   inputBonuses: []

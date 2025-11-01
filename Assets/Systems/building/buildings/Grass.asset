@@ -10,17 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4c79953c82e522e4fae19ea271886369, type: 3}
-  m_Name: Mill
+  m_Name: Grass
   m_EditorClassIdentifier: Assembly-CSharp::WorldTile
-  prefab: {fileID: 2259304291639566087, guid: c5d4680b161c7a846b4555ac4b455247, type: 3}
+  prefab: {fileID: 52801587995007633, guid: 1636130fe1f316f42a846bbd0c8f595e, type: 3}
   movementCost: 1
   isWalkable: 1
   isBuildable: 1
-  resourceType: 4
-  resourceAmount: 1
-  connectableTiles:
-  - {fileID: 11400000, guid: e4766c15c10e2f2429077ffadc1914fd, type: 2}
-  inputBonuses:
-  - input: 3
-    bonusMultiplier: 10
-    maxCapacity: 40
+  resourceType: {fileID: 11400000, guid: fbbed86de2c2ba341b82783bdb960ac5, type: 2}
+  resourceAmount: 0
+  connectableTiles: []
+  inputBonuses: []

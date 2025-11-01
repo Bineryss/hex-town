@@ -10,18 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4c79953c82e522e4fae19ea271886369, type: 3}
-  m_Name: Bakery
+  m_Name: Mill
   m_EditorClassIdentifier: Assembly-CSharp::WorldTile
-  prefab: {fileID: 1029126736134186195, guid: d0d9480762a1ca54bba7ab229d7da864, type: 3}
+  prefab: {fileID: 2259304291639566087, guid: c5d4680b161c7a846b4555ac4b455247, type: 3}
   movementCost: 1
   isWalkable: 1
   isBuildable: 1
-  resourceType: 5
+  resourceType: {fileID: 11400000, guid: f32f6539ecb800142a37a237eea0dcf0, type: 2}
   resourceAmount: 1
+  connectableTiles:
+  - {fileID: 11400000, guid: e4766c15c10e2f2429077ffadc1914fd, type: 2}
   inputBonuses:
-  - input: 3
-    bonusMultiplier: 5
-    maxCapacity: 10
-  - input: 4
-    bonusMultiplier: 20
-    maxCapacity: 5
+  - input: {fileID: 11400000, guid: 5cf5c74612e46b74193d25dfda9b5c2d, type: 2}
+    bonusMultiplier: 10
+    maxCapacity: 40

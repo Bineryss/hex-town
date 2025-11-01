@@ -10,11 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4c79953c82e522e4fae19ea271886369, type: 3}
-  m_Name: Forest
+  m_Name: Wheat Farm
   m_EditorClassIdentifier: Assembly-CSharp::WorldTile
-  prefab: {fileID: 5449509189515064279, guid: c77e44edb4625bc4a849f8f89951272e, type: 3}
-  resourceType: 2
-  resourceAmount: 10
+  prefab: {fileID: 1069902409842897062, guid: 0672598bfb3ba1a40826d2b14ff1f4a2, type: 3}
   movementCost: 1
   isWalkable: 1
   isBuildable: 1
+  resourceType: {fileID: 11400000, guid: 5cf5c74612e46b74193d25dfda9b5c2d, type: 2}
+  resourceAmount: 10
+  connectableTiles: []
+  inputBonuses: []

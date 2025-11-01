@@ -16,16 +16,16 @@ MonoBehaviour:
   movementCost: 1
   isWalkable: 1
   isBuildable: 1
-  resourceType: 0
+  resourceType: {fileID: 11400000, guid: 49bae8a678aa0d042bef7b938331ba4d, type: 2}
   resourceAmount: 1
   connectableTiles:
   - {fileID: 11400000, guid: 63c8a39275555c044926e197bfbb355b, type: 2}
   - {fileID: 11400000, guid: 0d262a060d99cd44790585001a9136ba, type: 2}
   - {fileID: 11400000, guid: 346012ba7b132c6468f18685dba47e0b, type: 2}
   inputBonuses:
-  - input: 5
+  - input: {fileID: 11400000, guid: 43544d1f071dd194ea3d0fe81acde9a5, type: 2}
     bonusMultiplier: 10
     maxCapacity: 0
-  - input: 1
+  - input: {fileID: 11400000, guid: 58ca12f7da399dc489bed80623d4cf07, type: 2}
     bonusMultiplier: 2
     maxCapacity: 0

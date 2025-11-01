@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Systems.Building;
 using Systems.Transport;
 using UnityEngine;
 
@@ -33,10 +34,10 @@ namespace Systems.UI
 
                 foreach (ResourceBonus bonus in node.InputBonuses)
                 {
-                    incomingResources.TryGetValue(bonus.input, out int amount);
+                    incomingResources.TryGetValue(bonus.input.type, out int amount);
                     bonusInfos.Add(new BonusInformation
                     {
-                        ResourceType = bonus.input,
+                        ResourceType = bonus.input.type,
                         BonusMultiplier = bonus.bonusMultiplier,
                         MaxCapacity = bonus.maxCapacity,
                         CurrentInputAmount = amount

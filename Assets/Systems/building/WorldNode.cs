@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Sirenix.OdinInspector;
 using Sirenix.Serialization;
+using Systems.Building;
 using Systems.Grid;
 using Systems.Transport;
 using UnityEngine;
@@ -22,7 +23,7 @@ public class WorldNode : SerializedMonoBehaviour, INode
 
     [Header("Resource Info")]
     [ShowInInspector, ReadOnly]
-    public ResourceType ResourceType => ConnectedNodes.Count == 0 ? worldTile.resourceType : ConnectedNodes[0].ResourceType;
+    public ResourceType ResourceType => ConnectedNodes.Count == 0 ? worldTile.resourceType.type : ConnectedNodes[0].ResourceType;
     [ShowInInspector, ReadOnly]
     public float Production;
     public List<WorldTile> ConnectableTiles => worldTile.connectableTiles;
@@ -108,7 +109,7 @@ public class WorldNode : SerializedMonoBehaviour, INode
         .SelectMany(n => n.InputBonuses)
         .Concat(worldTile.inputBonuses)
         .GroupBy(bonus => bonus.input)
-        .ToDictionary(group => group.Key, group => group.Sum(bonus => bonus.maxCapacity));
+        .ToDictionary(group => group.Key.type, group => group.Sum(bonus => bonus.maxCapacity));
     }
 
     public List<INode> Neighbors(Dictionary<HexCoordinate, INode> allNodes)
@@ -163,7 +164,7 @@ public class WorldNode : SerializedMonoBehaviour, INode
         foreach (ResourceBonus bonus in InputBonuses)
         {
             Dictionary<ResourceType, int> incomingResources = TransportManager.GetIncomingResourcesFor(incomingRoutes);
-            if (incomingResources.TryGetValue(bonus.input, out int amount))
+            if (incomingResources.TryGetValue(bonus.input.type, out int amount))
             {
                 float effectiveBonus = Mathf.Min(amount, bonus.maxCapacity) * (bonus.bonusMultiplier / 100f);
                 cumulatedBonus += effectiveBonus;
