@@ -26,6 +26,8 @@ namespace Systems.Building
         BREAD,
         PEOPLE,
         TOOLS,
+        STONE,
+        BRICK,
     }
 
     public enum ScoreResourceType

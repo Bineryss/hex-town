@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -17,14 +18,14 @@ namespace Systems.UI
         private Label acceptedResources;
 
         private ListView buildingListView;
-        private List<WorldTile> buildings;
+        private List<BuildingOptions> buildings;
         private WorldTile selectedBuilding;
 
-        public BuildingSelectionPanel() : this(new List<WorldTile>())
+        public BuildingSelectionPanel() : this(new List<BuildingOptions>())
         {
         }
 
-        public BuildingSelectionPanel(List<WorldTile> availableBuildings)
+        public BuildingSelectionPanel(List<BuildingOptions> availableBuildings)
         {
             buildings = availableBuildings;
 
@@ -152,7 +153,7 @@ namespace Systems.UI
 
             if (nameLabel != null)
             {
-                nameLabel.text = building.name;
+                nameLabel.text = $"{building.building.name} ({building.quantity})";
             }
         }
 
@@ -160,29 +161,29 @@ namespace Systems.UI
         {
             foreach (var item in selectedItems)
             {
-                if (item is WorldTile tile)
+                if (item is BuildingOptions tile)
                 {
-                    selectedBuilding = tile;
+                    selectedBuilding = tile.building;
                     UpdateDetailView(tile);
-                    OnBuildingSelected?.Invoke(tile);
+                    OnBuildingSelected?.Invoke(tile.building);
                     break;
                 }
             }
         }
 
-        private void UpdateDetailView(WorldTile tile)
+        private void UpdateDetailView(BuildingOptions tile)
         {
-            tileName.text = $"Tile: {tile.name}";
-            productionType.text = $"Production Type: {tile.resourceType}";
-            productionRate.text = $"Production Rate: {tile.resourceAmount}";
+            tileName.text = $"Tile: {tile.building.name} {tile.quantity} available";
+            productionType.text = $"Production Type: {tile.building.resourceType}";
+            productionRate.text = $"Production Rate: {tile.building.resourceAmount}";
 
-            var tradeableList = tile.TradeableResources.Count > 0
-                ? string.Join(", ", tile.TradeableResources)
+            var tradeableList = tile.building.TradeableResources.Count > 0
+                ? string.Join(", ", tile.building.TradeableResources)
                 : "N/A";
             availableResources.text = $"Available Resources: {tradeableList}";
 
-            var acceptedList = tile.inputBonuses.Count > 0
-                ? string.Join(", ", tile.inputBonuses.ConvertAll(b => b.input.ToString()))
+            var acceptedList = tile.building.inputBonuses.Count > 0
+                ? string.Join(", ", tile.building.inputBonuses.ConvertAll(b => b.input.ToString()))
                 : "N/A";
             acceptedResources.text = $"Accepted Resources: {acceptedList}";
         }
@@ -196,7 +197,7 @@ namespace Systems.UI
             acceptedResources.text = "Accepted Resources: N/A";
         }
 
-        public void UpdateBuildingList(List<WorldTile> newBuildings)
+        public void UpdateBuildingList(List<BuildingOptions> newBuildings)
         {
             buildings = newBuildings;
             buildingListView.itemsSource = buildings;
@@ -217,5 +218,11 @@ namespace Systems.UI
         {
             style.display = DisplayStyle.None;
         }
+    }
+
+    public struct BuildingOptions
+    {
+        public WorldTile building;
+        public int quantity;
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Systems.Grid;
@@ -13,17 +14,27 @@ namespace Systems.UI
         [SerializeField] private WorldNode previewNode;
         [SerializeField] private TransportController transportController;
         [SerializeField] private HexGridGenerator generator;
+        [SerializeField] private BuildingDrawUIController buildingDrawUIController;
 
         private WorldTile selectedBuilding;
         private BuildingSelectionPanel buildingSelectionPanel;
-        private readonly List<WorldNode> placedBuildings = new();
+        [SerializeField] private List<WorldNode> placedBuildings = new();
         public List<WorldNode> PlacedBuildings => placedBuildings;
         private WorldNode current;
 
         public void Initialize()
         {
-            buildingSelectionPanel = new(buildings);
+            buildingSelectionPanel = new();
             buildingSelectionPanel.OnBuildingSelected += HandleBuildingSelection;
+        }
+
+        void Update()
+        {
+            buildingSelectionPanel.UpdateBuildingList(buildingDrawUIController.buildingInventory.Select(kv => new BuildingOptions
+            {
+                building = kv.Key,
+                quantity = kv.Value
+            }).ToList());
         }
 
         private void HandleBuildingSelection(WorldTile building)
@@ -77,7 +88,15 @@ namespace Systems.UI
             {
                 subTile.Deselect();
             }
-
+            buildingDrawUIController.buildingInventory[selectedBuilding] = Math.Max(0, buildingDrawUIController.buildingInventory[selectedBuilding] - 1);
+            if (buildingDrawUIController.buildingInventory[selectedBuilding] == 0)
+            {
+                buildingDrawUIController.buildingInventory.Remove(selectedBuilding);
+                previewNode.gameObject.SetActive(false);
+                node.gameObject.SetActive(true);
+                current = null;
+                selectedBuilding = null;
+            }
             placedBuildings.Add(node);
         }
 

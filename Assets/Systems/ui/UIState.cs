@@ -5,6 +5,7 @@ namespace Systems.UI
         EXPLORING,
         INSPECTING,
         BUILDING,
-        MANAGING_TRANSPORT
+        MANAGING_TRANSPORT,
+        DRAWING_BUILDINGS,
     }
 }

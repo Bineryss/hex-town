@@ -1,0 +1,9 @@
+using System.Collections.Generic;
+using UnityEngine;
+
+[CreateAssetMenu(fileName = "BuildingPack", menuName = "Scriptable Objects/BuildingPack")]
+public class BuildingPack : ScriptableObject
+{
+    public string packName;
+    public List<WorldTile> buildings;
+}
