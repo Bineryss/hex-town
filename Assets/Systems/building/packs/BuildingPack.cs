@@ -5,5 +5,13 @@ using UnityEngine;
 public class BuildingPack : ScriptableObject
 {
     public string packName;
-    public List<WorldTile> buildings;
+    public List<BuildingRarity> buildings;
+}
+
+[System.Serializable]
+public struct BuildingRarity
+{
+    public WorldTile building;
+    public int min;
+    public int max;
 }

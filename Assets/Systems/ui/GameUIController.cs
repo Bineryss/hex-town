@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Mono.Cecil;
 using Sirenix.OdinInspector;
 using Sirenix.Serialization;
+using Systems.Building;
 using Systems.Grid;
 using Systems.Transport;
 using UnityEngine;
@@ -18,23 +20,40 @@ namespace Systems.UI
         [SerializeField] private List<ModeElement> modes = new();
 
         [SerializeField] private BuildingUIController buildingUIController; //TODO extract with resource overview
+        [SerializeField] private BuildingDrawUIController drawUIController;
 
         [Header("Debug Info")]
         [SerializeField, ReadOnly] private WorldNode prevSelectedNode;
         [SerializeField] private UIState currentState = UIState.INSPECTING;
+
 
         private VisualElement Root => uiDocument.rootVisualElement;
         private ResourceOverview resourceOverview;
         private ModeSelectionPanel modeSelectionPanel;
         [OdinSerialize] private readonly Dictionary<UIState, IUIController> uiControllers = new();
 
+        private List<ResourceInfo> scoreInfo = new();
+
         void Update()
         {
-            resourceOverview.UpdateResources(buildingUIController.PlacedBuildings.Select(b => new { Type = b.Resource.scoreType, Quantity = b.GetAvailableProduction() * b.Resource.conversionRate }).GroupBy(e => e.Type).Select(g => new ResourceInfo
+            scoreInfo.Clear();
+            scoreInfo.Add(new ResourceInfo()
             {
-                ResourceType = g.Key.ToString(),
-                Quantity = g.Sum(b => b.Quantity)
-            }).ToList());
+                ResourceType = "Score",
+                Quantity = drawUIController.overallPoints
+            });
+            scoreInfo.Add(new ResourceInfo()
+            {
+                ResourceType = "Current Points",
+                Quantity = drawUIController.currentPoints
+            });
+            scoreInfo.Add(new ResourceInfo()
+            {
+                ResourceType = "Available Draws",
+                Quantity = drawUIController.availableDraws
+            });
+            resourceOverview.UpdateResources(scoreInfo);
+
         }
 
         void Start()

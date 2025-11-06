@@ -12,12 +12,39 @@ namespace Systems.UI
 
         [SerializeField] private List<BuildingPack> buildingPacks;
         [OdinSerialize] public Dictionary<WorldTile, int> buildingInventory;
+        [SerializeField] private int pointsThreshold;
+        [SerializeField] private BuildingUIController buildingUIController; //TODO extract to general score thing
 
+        public int overallPoints;
+        public int currentPoints;
+        public int availableDraws;
+        private int currentDrawCycle;
         private BuildingDrawPanel buildingDrawPanel;
 
         public void Activate()
         {
             buildingDrawPanel.EnterMode();
+        }
+
+        void Update()
+        {
+            overallPoints = Mathf.FloorToInt(buildingUIController.PlacedBuildings
+                .Select(b => new { Type = b.Resource.scoreType, Quantity = b.GetAvailableProduction() * b.Resource.conversionRate })
+                .GroupBy(e => e.Type)
+                .Select(g => g.Sum(b => b.Quantity))
+                .Sum());
+            currentPoints = overallPoints - pointsThreshold * currentDrawCycle;
+            Debug.Log($"overall: {overallPoints}, threshhold: {pointsThreshold}, cycle: {currentDrawCycle}, current: {currentPoints}");
+
+            if (overallPoints > pointsThreshold * (currentDrawCycle + 1))
+            {
+                currentDrawCycle++;
+                availableDraws++;
+            }
+            if (availableDraws > 0)
+            {
+                Activate();
+            }
         }
 
         private void HandleBuildingPackSelected(string packName)
@@ -30,15 +57,13 @@ namespace Systems.UI
                 // Update the building inventory with the selected pack's buildings
                 foreach (var building in selectedPack.buildings)
                 {
-                    if (buildingInventory.ContainsKey(building))
-                    {
-                        buildingInventory[building]++;
-                    }
-                    else
-                    {
-                        buildingInventory[building] = 1;
-                    }
+                    buildingInventory[building.building] = Random.Range(building.min, building.max + 1) + buildingInventory.GetValueOrDefault(building.building, 0);
                 }
+            }
+            availableDraws--;
+            if (availableDraws == 0)
+            {
+                Exit();
             }
         }
 

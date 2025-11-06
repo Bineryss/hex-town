@@ -14,6 +14,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BuildingPack
   packName: Farming
   buildings:
-  - {fileID: 11400000, guid: 0d262a060d99cd44790585001a9136ba, type: 2}
-  - {fileID: 11400000, guid: b668ed18ac4bde54f9327806caf03b5c, type: 2}
-  - {fileID: 11400000, guid: e4766c15c10e2f2429077ffadc1914fd, type: 2}
+  - building: {fileID: 11400000, guid: 0d262a060d99cd44790585001a9136ba, type: 2}
+    min: 0
+    max: 3
+  - building: {fileID: 11400000, guid: b668ed18ac4bde54f9327806caf03b5c, type: 2}
+    min: 2
+    max: 7
+  - building: {fileID: 11400000, guid: e4766c15c10e2f2429077ffadc1914fd, type: 2}
+    min: 3
+    max: 9
+  - building: {fileID: 11400000, guid: 6bca83a88b5dd0d438493a94cae0a33a, type: 2}
+    min: 0
+    max: 1

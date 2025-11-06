@@ -14,7 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BuildingPack
   packName: Village
   buildings:
-  - {fileID: 11400000, guid: 63c8a39275555c044926e197bfbb355b, type: 2}
-  - {fileID: 11400000, guid: 6bca83a88b5dd0d438493a94cae0a33a, type: 2}
-  - {fileID: 11400000, guid: 873f5b155ba6f7443b4154dc2d2733e5, type: 2}
-  - {fileID: 11400000, guid: 346012ba7b132c6468f18685dba47e0b, type: 2}
+  - building: {fileID: 11400000, guid: 346012ba7b132c6468f18685dba47e0b, type: 2}
+    min: 0
+    max: 2
+  - building: {fileID: 11400000, guid: 63c8a39275555c044926e197bfbb355b, type: 2}
+    min: 2
+    max: 5
+  - building: {fileID: 11400000, guid: 873f5b155ba6f7443b4154dc2d2733e5, type: 2}
+    min: 1
+    max: 3

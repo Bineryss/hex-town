@@ -4235,6 +4235,7 @@ GameObject:
   - component: {fileID: 1816141385}
   - component: {fileID: 1816141386}
   - component: {fileID: 1816141387}
+  - component: {fileID: 1816141388}
   m_Layer: 5
   m_Name: visual-manager
   m_TagString: Untagged
@@ -4261,6 +4262,7 @@ MonoBehaviour:
     - {fileID: 1816141386}
     - {fileID: 1816141385}
     - {fileID: 1816141387}
+    - {fileID: 1816141388}
     SerializedBytesString: 
     Prefab: {fileID: 0}
     PrefabModificationsReferencedUnityObjects: []
@@ -4285,7 +4287,7 @@ MonoBehaviour:
       Data: 
     - Name: 
       Entry: 12
-      Data: 3
+      Data: 4
     - Name: 
       Entry: 7
       Data: 
@@ -4323,6 +4325,18 @@ MonoBehaviour:
       Entry: 8
       Data: 
     - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 4
+    - Name: $v
+      Entry: 10
+      Data: 3
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
       Entry: 13
       Data: 
     - Name: 
@@ -4339,7 +4353,10 @@ MonoBehaviour:
     <State>k__BackingField: 2
   - <Name>k__BackingField: "Handles Men\xFC"
     <State>k__BackingField: 3
+  - <Name>k__BackingField: DEBUG_DRAW
+    <State>k__BackingField: 4
   buildingUIController: {fileID: 1816141385}
+  drawUIController: {fileID: 1816141388}
   prevSelectedNode: {fileID: 0}
   currentState: 0
 --- !u!114 &1816141382
@@ -4420,6 +4437,8 @@ MonoBehaviour:
   previewNode: {fileID: 2130325583}
   transportController: {fileID: 734100049}
   generator: {fileID: 1626731402}
+  buildingDrawUIController: {fileID: 1816141388}
+  placedBuildings: []
 --- !u!114 &1816141386
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4451,6 +4470,39 @@ MonoBehaviour:
   smoothLineRendererPrefab: {fileID: 7179913176857044246, guid: 5e29c4bbaf144ce489cfac7ab7f52eb2, type: 3}
   pathfindingController: {fileID: 734100048}
   offsetHeight: 0.6
+--- !u!114 &1816141388
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1816141380}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c35e55a562f42a845b58a3a7ba8d9f8e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Systems.UI.BuildingDrawUIController
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes:
+    - Name: buildingInventory
+      Entry: 6
+      Data: 
+  buildingPacks:
+  - {fileID: 11400000, guid: 2b9d2c962a21b8142af09aebee7a6292, type: 2}
+  - {fileID: 11400000, guid: 9b4f09f992c8ed94fa0d3ccb90389823, type: 2}
+  - {fileID: 11400000, guid: 1d3d7c6a6213a5d45a4915c329900bf1, type: 2}
+  pointsThreshold: 25
+  buildingUIController: {fileID: 1816141385}
+  overallPoints: 0
+  currentPoints: 0
+  availableDraws: 2
 --- !u!4 &1837962395 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: d3c71811521654c4ca3cf82e253871cb, type: 3}
