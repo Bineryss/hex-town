@@ -7950,7 +7950,7 @@
         </member>
         <member name="T:Sirenix.OdinInspector.Editor.OdinDontRegisterAttribute">
             <summary>
-            Use this attribute to prevent a type from being included in Odin systems.
+            Use this attribute to prevent a type from being included in Odin Systems.Prototype_04.
             The attribute can be applied to Odin drawers, Odin property resolvers and Odin attribute processor types.
             </summary>
         </member>
