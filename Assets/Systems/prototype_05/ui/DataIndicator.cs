@@ -5,11 +5,67 @@ namespace Systems.Prototype_05.UI
 {
     public class DataIndicator : VisualElement
     {
-        public DataIndicator()
+        private VisualElement container = new();
+        private VisualElement pointer = new();
+        private Label pointsLabel = new();
+        private Label icon = new();
+        private int offset;
+
+        public DataIndicator(DataIndicatorDO data, int offset = 10)
         {
-            style.width = 300;
-            style.height = 300;
-            style.backgroundColor = new Color(0.15f, 0.15f, 0.15f, 1);
+            this.offset = offset;
+
+            int width = 64;
+            Color bgColor = Colors.PRIMARY;
+
+            style.position = Position.Absolute;
+            style.left = 0;
+            style.bottom = 100;
+            style.width = width;
+
+            container.style.backgroundColor = bgColor;
+            container.style.fontSize = 24;
+            container.style.color = Colors.TEXT;
+            container.style.alignItems = Align.Center;
+            container.style.alignSelf = Align.Center;
+            container.style.paddingTop = 8;
+            container.style.paddingRight = 8;
+            container.style.paddingBottom = 8;
+            container.style.paddingLeft = 8;
+
+            icon.text = data.icon;
+            container.Add(icon);
+            pointsLabel.text = $"+{data.points}";
+            container.Add(pointsLabel);
+            Add(container);
+
+            pointer.style.borderBottomWidth = width / 2;
+            pointer.style.borderLeftWidth = width / 2;
+            pointer.style.borderRightWidth = width / 2;
+            pointer.style.borderTopWidth = width / 2;
+            pointer.style.borderBottomColor = Colors.TRANSPARENT;
+            pointer.style.borderLeftColor = Colors.TRANSPARENT;
+            pointer.style.borderRightColor = Colors.TRANSPARENT;
+            pointer.style.borderTopColor = bgColor;
+            Add(pointer);
         }
+
+        public void Place(Vector2 screenPosition)
+        {
+            Vector2 pos = new(screenPosition.x - resolvedStyle.width / 2, screenPosition.y);
+
+            pos.x = Mathf.Clamp(pos.x, 0, Screen.width - resolvedStyle.width);
+            pos.y = Mathf.Clamp(pos.y, 0, Screen.height);
+
+            style.left = pos.x;
+            style.bottom = pos.y + offset;
+        }
+    }
+
+    [System.Serializable]
+    public struct DataIndicatorDO
+    {
+        public int points;
+        public string icon; //TODO change to sprite
     }
 }

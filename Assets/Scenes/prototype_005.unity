@@ -196,6 +196,77 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2437988170723408357, guid: 6168dc7723b98a04abe10d44029e5cca, type: 3}
   m_PrefabInstance: {fileID: 352902942}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &406424138
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 406424141}
+  - component: {fileID: 406424140}
+  - component: {fileID: 406424139}
+  m_Layer: 5
+  m_Name: ui-document
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &406424139
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 406424138}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e4bf4db93aeea2f47976e97f92188422, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Systems.Prototype_05.UI.Debug.VisualDebugger
+  document: {fileID: 406424140}
+  mainCamera: {fileID: 1019917499}
+  target: {fileID: 1882008363}
+--- !u!114 &406424140
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 406424138}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 19102, guid: 0000000000000000e000000000000000, type: 0}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.dll::UnityEngine.UIElements.UIDocument
+  m_PanelSettings: {fileID: 11400000, guid: ab27d8d59b262ff46b3e3c981151fcd3, type: 2}
+  m_ParentUI: {fileID: 0}
+  sourceAsset: {fileID: 0}
+  m_SortingOrder: 0
+  m_Position: 0
+  m_WorldSpaceSizeMode: 1
+  m_WorldSpaceWidth: 1920
+  m_WorldSpaceHeight: 1080
+  m_PivotReferenceSize: 0
+  m_Pivot: 0
+  m_WorldSpaceCollider: {fileID: 0}
+--- !u!4 &406424141
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 406424138}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &720388661
 GameObject:
   m_ObjectHideFlags: 0
@@ -259,6 +330,63 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &727134003
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1069902409842897062, guid: 0672598bfb3ba1a40826d2b14ff1f4a2, type: 3}
+      propertyPath: m_Name
+      value: farm
+      objectReference: {fileID: 0}
+    - target: {fileID: 7052395554015136707, guid: 0672598bfb3ba1a40826d2b14ff1f4a2, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7052395554015136707, guid: 0672598bfb3ba1a40826d2b14ff1f4a2, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7052395554015136707, guid: 0672598bfb3ba1a40826d2b14ff1f4a2, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7052395554015136707, guid: 0672598bfb3ba1a40826d2b14ff1f4a2, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7052395554015136707, guid: 0672598bfb3ba1a40826d2b14ff1f4a2, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7052395554015136707, guid: 0672598bfb3ba1a40826d2b14ff1f4a2, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7052395554015136707, guid: 0672598bfb3ba1a40826d2b14ff1f4a2, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7052395554015136707, guid: 0672598bfb3ba1a40826d2b14ff1f4a2, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7052395554015136707, guid: 0672598bfb3ba1a40826d2b14ff1f4a2, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7052395554015136707, guid: 0672598bfb3ba1a40826d2b14ff1f4a2, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 0672598bfb3ba1a40826d2b14ff1f4a2, type: 3}
 --- !u!1 &1019917497
 GameObject:
   m_ObjectHideFlags: 0
@@ -617,6 +745,58 @@ MonoBehaviour:
   m_ShadowLayerMask: 1
   m_RenderingLayers: 1
   m_ShadowRenderingLayers: 1
+--- !u!1 &1663545181
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1663545183}
+  - component: {fileID: 1663545182}
+  m_Layer: 0
+  m_Name: score-manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1663545182
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1663545181}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c13df9505c8aa53448a7f71b78a94bc3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Systems.Prototype_05.Score.ScoreControler
+  overallScore: 0
+  currentScore: 0
+  scoreRequiredForNextPack: 0
+--- !u!4 &1663545183
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1663545181}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &1882008363 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7052395554015136707, guid: 0672598bfb3ba1a40826d2b14ff1f4a2, type: 3}
+  m_PrefabInstance: {fileID: 727134003}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2035515950
 GameObject:
   m_ObjectHideFlags: 0
@@ -639,7 +819,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &2035515951
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -772,11 +952,12 @@ MonoBehaviour:
     SerializationNodes:
     - Name: uiControllers
       Entry: 7
-      Data: 0|System.Collections.Generic.Dictionary`2[[Systems.UI.UIState, Assembly-CSharp],[Systems.UI.IUIController,
-        Assembly-CSharp]], mscorlib
+      Data: 0|System.Collections.Generic.Dictionary`2[[Systems.Prototype_04.UI.UIState,
+        Assembly-CSharp],[Systems.Prototype_04.UI.IUIController, Assembly-CSharp]],
+        mscorlib
     - Name: comparer
       Entry: 7
-      Data: 1|System.Collections.Generic.EnumEqualityComparer`1[[Systems.UI.UIState,
+      Data: 1|System.Collections.Generic.EnumEqualityComparer`1[[Systems.Prototype_04.UI.UIState,
         Assembly-CSharp]], mscorlib
     - Name: 
       Entry: 12
@@ -984,6 +1165,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: grid-manager
       objectReference: {fileID: 0}
+    - target: {fileID: 8975958409248746484, guid: c3449e063e6a62245a9f89947c155531, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 8450116297476948846, guid: c3449e063e6a62245a9f89947c155531, type: 3}
     m_RemovedGameObjects: []
@@ -1035,11 +1220,11 @@ MonoBehaviour:
     SerializationNodes:
     - Name: worldTiles
       Entry: 7
-      Data: 0|System.Collections.Generic.Dictionary`2[[WorldTileFactory+WorldType,
-        Assembly-CSharp],[WorldTile, Assembly-CSharp]], mscorlib
+      Data: 0|System.Collections.Generic.Dictionary`2[[Systems.Prototype_04.WorldTileFactory+WorldType,
+        Assembly-CSharp],[Systems.Prototype_04.WorldTile, Assembly-CSharp]], mscorlib
     - Name: comparer
       Entry: 7
-      Data: 1|System.Collections.Generic.EnumEqualityComparer`1[[WorldTileFactory+WorldType,
+      Data: 1|System.Collections.Generic.EnumEqualityComparer`1[[Systems.Prototype_04.WorldTileFactory+WorldType,
         Assembly-CSharp]], mscorlib
     - Name: 
       Entry: 12
@@ -1153,3 +1338,6 @@ SceneRoots:
   - {fileID: 2077997934}
   - {fileID: 720388664}
   - {fileID: 2035515958}
+  - {fileID: 406424141}
+  - {fileID: 727134003}
+  - {fileID: 1663545183}
