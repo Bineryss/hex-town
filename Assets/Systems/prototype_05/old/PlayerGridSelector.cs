@@ -1,9 +1,10 @@
 using System;
+using Systems.Prototype_04;
 using Systems.Prototype_04.Grid;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace Systems.Prototype_04.UI
+namespace Systems.Prototype_05.UI
 {
     public class PlayerGridSelector : MonoBehaviour
     {

@@ -1,21 +1,34 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
+using Sirenix.OdinInspector;
+using Sirenix.Serialization;
+using Systems.Prototype_04;
+using Systems.Prototype_05.Building;
 using Systems.Prototype_05.Score;
+using Systems.Prototype_05.Transport;
 using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace Systems.Prototype_05.UI
 {
-    [ExecuteInEditMode]
-    public class UIController : MonoBehaviour
+    public class UIController : SerializedMonoBehaviour
     {
         [SerializeField] private UIDocument document;
         [SerializeField] private Camera mainCamera;
         [SerializeField] private Transform target;
 
+        [SerializeField] private BuildingUIController buildingUIController;
+        [SerializeField] private TransportController transportController;
+
         private VisualElement container;
         private DataIndicator dataIndicator;
         private ScoreIndicator scoreIndicator;
+        private InventoryContainer inventory;
         private ScoreDatasource scoreDatasource = ScoreDatasource.Instance; //TODO add service locator
+        private BuildingInventory buildingInventory = BuildingInventory.Instance; //TODO add service locator
+
+        [OdinSerialize] private Dictionary<Guid, WorldTile> idToTile = new();
 
         private void BuildUI(VisualElement root)
         {
@@ -47,19 +60,16 @@ namespace Systems.Prototype_05.UI
                 pointsUntilNext = 90
             });
             footer.Add(scoreIndicator);
-            footer.Add(new InventoryContainer(new List<InventoryElementDO>()
+            inventory = new InventoryContainer(new List<InventoryElementDO>());
+            inventory.ItemClicked += (id) =>
             {
-                new()
+                EventBus<InventoryElementSelected>.Raise(new InventoryElementSelected()
                 {
-                    icon = "WHEAT FIELD",
-                    quantity = 3
-                },
-                new()
-                {
-                    icon = "FARM HOUSE",
-                    quantity = 2
-                }
-            }));
+                    tile = idToTile[id]
+                });
+            };
+
+            footer.Add(inventory);
             footer.Add(new VisualElement());
         }
 
@@ -86,21 +96,34 @@ namespace Systems.Prototype_05.UI
         {
             if (document == null) return;
             VisualElement root = document.rootVisualElement;
-            if (root == null)
-            {
-                root = new();
-            }
             root.Clear();
             BuildUI(root);
+            transportController.Initialize();
+            buildingUIController.Initialize();
         }
 
         void OnEnable()
         {
             Setup();
+            EventBus<BuildingInventoryChanged>.Event += UpdateInventoryUI;
         }
-        void OnValidate()
+
+        private void UpdateInventoryUI(BuildingInventoryChanged data)
         {
-            Setup();
+            idToTile.Clear();
+            inventory.Update(
+                buildingInventory.buildingInventory.Select(el =>
+                {
+                    Guid id = Guid.NewGuid();
+                    idToTile[id] = el.Key;
+                    return new InventoryElementDO()
+                    {
+                        id = id,
+                        icon = el.Key.name,
+                        quantity = el.Value
+                    };
+                }).ToList()
+            );
         }
     }
 }

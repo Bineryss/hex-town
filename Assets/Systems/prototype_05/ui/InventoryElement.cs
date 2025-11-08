@@ -6,7 +6,7 @@ namespace Systems.Prototype_05.UI
 {
     public class InventoryElement : VisualElement
     {
-        public Action onClick;
+        public Action<Guid> onClick;
 
         private Label icon = new();
         private Label quantity = new();
@@ -17,7 +17,12 @@ namespace Systems.Prototype_05.UI
             style.width = 150;
             style.color = Colors.TEXT;
 
-            Button button = new(onClick);
+            Button button = new();
+            button.RegisterCallback<ClickEvent>(
+                e =>
+                {
+                    onClick?.Invoke(data.id);
+                });
             Add(button);
             button.Add(icon);
             button.Add(quantity);
@@ -35,6 +40,7 @@ namespace Systems.Prototype_05.UI
 
     public struct InventoryElementDO
     {
+        public Guid id;
         public string icon;
         public int quantity;
     }

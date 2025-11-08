@@ -9,6 +9,4 @@ namespace Systems.Prototype_05.Score
         public int CurrentScore;
         public int ScoreToNextDeck;
     }
-
-    public struct ScoreEvent : IEvent { }
 }

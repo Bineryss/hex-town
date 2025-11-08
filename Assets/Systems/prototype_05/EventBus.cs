@@ -8,7 +8,7 @@ namespace Systems.Prototype_05
     {
         public static event Action<T> Event;
 
-        public static void Raise(T data)
+        public static void Raise(T data = default)
         {
             Event?.Invoke(data);
         }
