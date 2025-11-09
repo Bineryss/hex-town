@@ -5,8 +5,8 @@ namespace Systems.Prototype_05.Score
         public static ScoreDatasource Instance => instance ??= new ScoreDatasource();
         private static ScoreDatasource instance;
 
-        public int OverallScore;
-        public int CurrentScore;
-        public int ScoreToNextDeck;
+        public int TotalScore;
+        public int Progress;
+        public int PackUnlockThreshold;
     }
 }

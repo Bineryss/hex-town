@@ -22,6 +22,7 @@ namespace Systems.Prototype_05.UI
             style.left = 0;
             style.bottom = 100;
             style.width = width;
+            style.minWidth = width;
 
             container.style.backgroundColor = bgColor;
             container.style.fontSize = 24;
@@ -59,6 +60,12 @@ namespace Systems.Prototype_05.UI
 
             style.left = pos.x;
             style.bottom = pos.y + offset;
+        }
+
+        public void Update(DataIndicatorDO data)
+        {
+            pointsLabel.text = data.points.ToString();
+            icon.text = data.icon.ToString();
         }
     }
 

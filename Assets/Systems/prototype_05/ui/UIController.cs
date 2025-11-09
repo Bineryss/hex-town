@@ -20,6 +20,8 @@ namespace Systems.Prototype_05.UI
 
         [SerializeField] private BuildingUIController buildingUIController;
         [SerializeField] private TransportController transportController;
+        [SerializeField] private List<ProductionPack> packs;
+        [SerializeField] private ProductionPack selection; //only for testing
 
         private VisualElement container;
         private DataIndicator dataIndicator;
@@ -29,7 +31,7 @@ namespace Systems.Prototype_05.UI
         private BuildingInventory buildingInventory = BuildingInventory.Instance; //TODO add service locator
 
         [OdinSerialize] private Dictionary<Guid, WorldTile> idToTile = new();
-
+        private readonly Guid packButtonId = Guid.NewGuid();
         private void BuildUI(VisualElement root)
         {
             VisualElement footer = new();
@@ -63,6 +65,11 @@ namespace Systems.Prototype_05.UI
             inventory = new InventoryContainer(new List<InventoryElementDO>());
             inventory.ItemClicked += (id) =>
             {
+                if (id == packButtonId)
+                {
+                    HandlePackOpen();
+                    return;
+                }
                 EventBus<InventoryElementSelected>.Raise(new InventoryElementSelected()
                 {
                     tile = idToTile[id]
@@ -73,13 +80,41 @@ namespace Systems.Prototype_05.UI
             footer.Add(new VisualElement());
         }
 
+        private void HandlePackOpen()
+        {
+            foreach (Building.BuildingRarity element in selection.buildings)
+            {
+                int amount = UnityEngine.Random.Range(element.min, element.max);
+                if (amount > 0)
+                {
+                    if (buildingInventory.buildingInventory.TryGetValue(element.building, out int quantity))
+                    {
+                        buildingInventory.buildingInventory[element.building] = quantity + amount;
+                    }
+                    else
+                    {
+                        buildingInventory.buildingInventory[element.building] = amount;
+                    }
+                }
+            }
+            EventBus<PackUsed>.Raise(new PackUsed());
+        }
+
+        private void HandleScorePreview(ScoreCalculated data)
+        {
+            dataIndicator.Update(new DataIndicatorDO()
+            {
+                points = data.Score,
+                icon = "M"
+            });
+        }
         void Update()
         {
             scoreIndicator.Update(new ScoreIndicatorDO()
             {
-                currentScore = scoreDatasource.CurrentScore,
-                overallScore = scoreDatasource.OverallScore,
-                pointsUntilNext = scoreDatasource.ScoreToNextDeck
+                currentScore = scoreDatasource.Progress,
+                overallScore = scoreDatasource.TotalScore,
+                pointsUntilNext = scoreDatasource.PackUnlockThreshold
             });
             dataIndicator.Place(WorldToScreen(target.position));
         }
@@ -106,9 +141,10 @@ namespace Systems.Prototype_05.UI
         {
             Setup();
             EventBus<BuildingInventoryChanged>.Event += UpdateInventoryUI;
+            EventBus<ScoreCalculated>.Event += HandleScorePreview;
         }
 
-        private void UpdateInventoryUI(BuildingInventoryChanged data)
+        private void UpdateInventoryUI(BuildingInventoryChanged data = default)
         {
             idToTile.Clear();
             inventory.Update(
@@ -122,6 +158,11 @@ namespace Systems.Prototype_05.UI
                         icon = el.Key.name,
                         quantity = el.Value
                     };
+                }).Append(new InventoryElementDO()
+                {
+                    id = packButtonId,
+                    icon = "Pack",
+                    quantity = buildingInventory.PacksLeft
                 }).ToList()
             );
         }

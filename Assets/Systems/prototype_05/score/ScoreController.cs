@@ -4,32 +4,29 @@ namespace Systems.Prototype_05.Score
 {
     public class ScoreController : MonoBehaviour
     {
-        [SerializeField] private int totalScore;
-        [SerializeField] private int progress;
-        [SerializeField] private int packUnlockThreshold;
+        [SerializeField] private int startingUnlockThreshold;
+        [SerializeField] private int thresholdIncrease;
 
-        private ScoreDatasource datasource = ScoreDatasource.Instance;
-
-        void Update()
-        {
-            datasource.CurrentScore = progress;
-            datasource.OverallScore = totalScore;
-            datasource.ScoreToNextDeck = packUnlockThreshold;
-        }
+        private readonly ScoreDatasource datasource = ScoreDatasource.Instance;
 
         void OnEnable()
         {
             EventBus<ScoreChanged>.Event += HandleScoreEvent;
+            datasource.PackUnlockThreshold = startingUnlockThreshold;
         }
 
         private void HandleScoreEvent(ScoreChanged data)
         {
-            totalScore += data.Delta;
-            if (progress + data.Delta > packUnlockThreshold)
+            datasource.TotalScore += data.Delta;
+
+            int progress = datasource.Progress + data.Delta;
+            while (progress >= datasource.PackUnlockThreshold)
             {
                 EventBus<PackUnlockThresholdReached>.Raise();
+                progress -= datasource.PackUnlockThreshold;
+                datasource.PackUnlockThreshold += thresholdIncrease;
             }
-            progress = totalScore % packUnlockThreshold;
+            datasource.Progress = progress;
         }
     }
     public struct ScoreChanged : IEvent

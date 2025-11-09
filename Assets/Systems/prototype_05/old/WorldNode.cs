@@ -228,6 +228,10 @@ namespace Systems.Prototype_05
             {
                 int delta = Mathf.FloorToInt(Production) - currentScore;
                 currentScore += delta;
+                EventBus<ScoreCalculated>.Raise(new ScoreCalculated()
+                {
+                    Score = currentScore,
+                });
                 if (isPlaced)
                 {
                     EventBus<ScoreChanged>.Raise(new ScoreChanged()
@@ -265,5 +269,10 @@ namespace Systems.Prototype_05
             CalculateProduction();
         }
 
+    }
+
+    public struct ScoreCalculated : IEvent
+    {
+        public int Score;
     }
 }
