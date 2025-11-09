@@ -395,7 +395,7 @@ MonoBehaviour:
   target:
     q: 0
     r: 0
-  generator: {fileID: 2077997935}
+  generator: {fileID: 0}
   smoothLineRenderer: {fileID: 0}
 --- !u!4 &720388664
 Transform:
@@ -1198,7 +1198,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Systems.UI.TransportUIController
   transportController: {fileID: 0}
-  grid: {fileID: 2077997939}
+  grid: {fileID: 0}
   smoothLineRendererPrefab: {fileID: 7179913176857044246, guid: 5e29c4bbaf144ce489cfac7ab7f52eb2, type: 3}
   pathfindingController: {fileID: 720388663}
   offsetHeight: 0.6
@@ -1241,7 +1241,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: e4766c15c10e2f2429077ffadc1914fd, type: 2}
   previewNode: {fileID: 352902943}
   transportController: {fileID: 0}
-  generator: {fileID: 2077997935}
+  generator: {fileID: 0}
   buildingDrawUIController: {fileID: 2035515951}
   placedBuildings: []
 --- !u!114 &2035515955
@@ -1256,7 +1256,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45b28e332c9d31d498ee778fab73e43c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerGridSelector
-  grid: {fileID: 2077997939}
+  grid: {fileID: 0}
 --- !u!114 &2035515956
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1498,7 +1498,10 @@ MonoBehaviour:
       Entry: 8
       Data: 
   placedBuildings: []
-  packs: []
+  packs:
+  - {fileID: 11400000, guid: 75f3ff98ab899dc4bbb8749cc112f326, type: 2}
+  - {fileID: 11400000, guid: 721369eea6d095d4692e72f10064090f, type: 2}
+  - {fileID: 11400000, guid: 0b760d7f8a3871b4682b720239b05964, type: 2}
   remainingPackCount: 0
 --- !u!4 &2051312710
 Transform:
@@ -1515,253 +1518,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1001 &2077997934
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 390285218007749007, guid: c3449e063e6a62245a9f89947c155531, type: 3}
-      propertyPath: serializationData.Prefab
-      value: 
-      objectReference: {fileID: 390285218007749007, guid: c3449e063e6a62245a9f89947c155531, type: 3}
-    - target: {fileID: 8854486563968269141, guid: c3449e063e6a62245a9f89947c155531, type: 3}
-      propertyPath: gridRadius
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 8854486563968269141, guid: c3449e063e6a62245a9f89947c155531, type: 3}
-      propertyPath: serializationData.Prefab
-      value: 
-      objectReference: {fileID: 8854486563968269141, guid: c3449e063e6a62245a9f89947c155531, type: 3}
-    - target: {fileID: 8854486563968269141, guid: c3449e063e6a62245a9f89947c155531, type: 3}
-      propertyPath: serializationData.PrefabModifications.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8854486563968269141, guid: c3449e063e6a62245a9f89947c155531, type: 3}
-      propertyPath: 'serializationData.PrefabModifications.Array.data[0]'
-      value: '"path":"tileFactory","value":$eref:0'
-      objectReference: {fileID: 0}
-    - target: {fileID: 8854486563968269141, guid: c3449e063e6a62245a9f89947c155531, type: 3}
-      propertyPath: 'serializationData.ReferencedUnityObjects.Array.data[0]'
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 8854486563968269141, guid: c3449e063e6a62245a9f89947c155531, type: 3}
-      propertyPath: serializationData.PrefabModificationsReferencedUnityObjects.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8854486563968269141, guid: c3449e063e6a62245a9f89947c155531, type: 3}
-      propertyPath: 'serializationData.PrefabModificationsReferencedUnityObjects.Array.data[0]'
-      value: 
-      objectReference: {fileID: 2077997937}
-    - target: {fileID: 8892495178054348394, guid: c3449e063e6a62245a9f89947c155531, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8892495178054348394, guid: c3449e063e6a62245a9f89947c155531, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8892495178054348394, guid: c3449e063e6a62245a9f89947c155531, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8892495178054348394, guid: c3449e063e6a62245a9f89947c155531, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8892495178054348394, guid: c3449e063e6a62245a9f89947c155531, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8892495178054348394, guid: c3449e063e6a62245a9f89947c155531, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8892495178054348394, guid: c3449e063e6a62245a9f89947c155531, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8892495178054348394, guid: c3449e063e6a62245a9f89947c155531, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8892495178054348394, guid: c3449e063e6a62245a9f89947c155531, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8892495178054348394, guid: c3449e063e6a62245a9f89947c155531, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8975958409248746484, guid: c3449e063e6a62245a9f89947c155531, type: 3}
-      propertyPath: m_Name
-      value: grid-manager
-      objectReference: {fileID: 0}
-    - target: {fileID: 8975958409248746484, guid: c3449e063e6a62245a9f89947c155531, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 8450116297476948846, guid: c3449e063e6a62245a9f89947c155531, type: 3}
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 8975958409248746484, guid: c3449e063e6a62245a9f89947c155531, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 2077997937}
-  m_SourcePrefab: {fileID: 100100000, guid: c3449e063e6a62245a9f89947c155531, type: 3}
---- !u!114 &2077997935 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8854486563968269141, guid: c3449e063e6a62245a9f89947c155531, type: 3}
-  m_PrefabInstance: {fileID: 2077997934}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2077997936}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 04f14976c3d747a4eac114f6e3da2ab8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::HexGridGenerator
---- !u!1 &2077997936 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8975958409248746484, guid: c3449e063e6a62245a9f89947c155531, type: 3}
-  m_PrefabInstance: {fileID: 2077997934}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &2077997937
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2077997936}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3e683630a87a2494ca5f7a585463f2ce, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::WorldTileFactory
-  serializationData:
-    SerializedFormat: 2
-    SerializedBytes: 
-    ReferencedUnityObjects:
-    - {fileID: 11400000, guid: 8b6c0034f7f197448ae786038f997e4e, type: 2}
-    - {fileID: 11400000, guid: 5ac87306b5ef06e4cb9a89b612a25412, type: 2}
-    - {fileID: 11400000, guid: f09dbe704844f7f499aeca3dbb084169, type: 2}
-    SerializedBytesString: 
-    Prefab: {fileID: 0}
-    PrefabModificationsReferencedUnityObjects: []
-    PrefabModifications: []
-    SerializationNodes:
-    - Name: worldTiles
-      Entry: 7
-      Data: 0|System.Collections.Generic.Dictionary`2[[Systems.Prototype_04.WorldTileFactory+WorldType,
-        Assembly-CSharp],[Systems.Prototype_04.WorldTile, Assembly-CSharp]], mscorlib
-    - Name: comparer
-      Entry: 7
-      Data: 1|System.Collections.Generic.EnumEqualityComparer`1[[Systems.Prototype_04.WorldTileFactory+WorldType,
-        Assembly-CSharp]], mscorlib
-    - Name: 
-      Entry: 12
-      Data: 0
-    - Name: 
-      Entry: 13
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 12
-      Data: 3
-    - Name: 
-      Entry: 7
-      Data: 
-    - Name: $k
-      Entry: 3
-      Data: 0
-    - Name: $v
-      Entry: 10
-      Data: 0
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 
-    - Name: $k
-      Entry: 3
-      Data: 2
-    - Name: $v
-      Entry: 10
-      Data: 1
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 
-    - Name: $k
-      Entry: 3
-      Data: 1
-    - Name: $v
-      Entry: 10
-      Data: 2
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 13
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-  tilePrefab: {fileID: 4942448372873898910, guid: 6168dc7723b98a04abe10d44029e5cca, type: 3}
-  defaultTileType: 0
-  mountainCount: 9
-  mountainSize: 6
-  mountainToForestCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 0.3793617
-      value: 0.65185463
-      inSlope: 3.5378637
-      outSlope: 3.5378637
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.06073159
-    - serializedVersion: 3
-      time: 0.994751
-      value: 0.74500656
-      inSlope: -0.34369236
-      outSlope: -0.34369236
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.24291591
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
---- !u!114 &2077997939 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 390285218007749007, guid: c3449e063e6a62245a9f89947c155531, type: 3}
-  m_PrefabInstance: {fileID: 2077997934}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2077997936}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2d85a547cbd20514b82fb2fad7c3ad0e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::HexGrid
 --- !u!1 &2079650480
 GameObject:
   m_ObjectHideFlags: 0
@@ -1876,7 +1632,6 @@ SceneRoots:
   - {fileID: 1019917500}
   - {fileID: 1388979558}
   - {fileID: 1147362457}
-  - {fileID: 2077997934}
   - {fileID: 720388664}
   - {fileID: 2035515958}
   - {fileID: 406424141}

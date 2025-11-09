@@ -1,94 +1,84 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using Sirenix.OdinInspector;
-using Sirenix.Serialization;
 using Systems.Prototype_04;
-using Systems.Prototype_05.Score;
-using Systems.Prototype_05.UI;
+using Systems.Prototype_04.Grid;
+using Systems.Prototype_05.Building;
+using Systems.Prototype_05.Transport;
 using UnityEngine;
 
-namespace Systems.Prototype_05.Building
+namespace Systems.Prototype_05.UI
 {
-    public class BuildingController : SerializedMonoBehaviour
+    public class BuildingUIController : MonoBehaviour
     {
-        public List<WorldTile> placedBuildings;
-        [OdinSerialize] public Dictionary<WorldTile, int> debugInventory;
-        [SerializeField] private List<ProductionPack> packs = new();
+        [SerializeField] private TransportController transportController;
+        [SerializeField] private HexGridGenerator generator;
 
-        private readonly BuildingInventory inventoryRef = BuildingInventory.Instance;
-        [SerializeField] private int remainingPackCount;
+        [SerializeField] private List<WorldNode> placedBuildings = new();
+        public List<WorldNode> PlacedBuildings => placedBuildings;
 
-        [Button("Sync inventory")]
-        public void SyncInventory()
+        private InventoryDS buildingInventory = InventoryDS.Instance;
+
+        public bool TryPlaceBuilding(HexCoordinate position, WorldTile type)
         {
-            inventoryRef.buildingInventory = debugInventory;
-            EventBus<BuildingInventoryChanged>.Raise();
-        }
-
-        void OnEnable()
-        {
-            inventoryRef.buildingInventory = debugInventory;
-            EventBus<BuildingPlaced>.Event += RemoveBuilding;
-            EventBus<PackUnlockThresholdReached>.Event += AddPack;
-            EventBus<PackOpened>.Event += HandlePackOpen;
-        }
-
-        void Start()
-        {
-            EventBus<BuildingInventoryChanged>.Raise();
-        }
-
-
-
-        private void AddPack(PackUnlockThresholdReached data)
-        {
-            inventoryRef.PacksLeft++;
-            EventBus<BuildingInventoryChanged>.Raise();
-        }
-
-        private void RemoveBuilding(BuildingPlaced data)
-        {
-            inventoryRef.buildingInventory[data.type]--;
-            if (inventoryRef.buildingInventory[data.type] == 0)
+            if (!buildingInventory.BuildingInventory.ContainsKey(type))
             {
-                inventoryRef.buildingInventory.Remove(data.type);
+                Debug.Log($"no building of type: {type.name} in inventory");
+                return false;
             }
-            EventBus<BuildingInventoryChanged>.Raise();
-        }
-
-        private void HandlePackOpen(PackOpened data)
-        {
-            ProductionPack selected = packs.First(el => el.Id == data.PackId);
-            if (selected == null)
+            if (!generator.nodes.TryGetValue(position, out INode node) || node is not WorldNode)
             {
-                Debug.Log($"Couldnt find pack with id: {data.PackId}");
-                return;
+                Debug.Log($"couldn't find node for position {position}");
+                return false;
+            }
+            WorldNode worldNode = node as WorldNode;
+            if (worldNode == null)
+            {
+                Debug.Log($"node at position {position} is not a WorldNode!");
+                return false;
             }
 
-            foreach (BuildingRarity element in selected.buildings)
+            List<WorldNode> possibleSubTiles = GetListOfPossibleSubTiles(worldNode, type);
+            foreach (var subTile in possibleSubTiles)
             {
-                int amount = UnityEngine.Random.Range(element.min, element.max);
-                if (amount > 0)
+                subTile.Select();
+            }
+
+            transportController.Manager.RemoveAllRoutesForTile(worldNode);
+            worldNode.name = $"{type.resourceType}-{worldNode.Position}";
+            worldNode.InitializeWithSubTiles(type, worldNode.Position, possibleSubTiles);
+            worldNode.ConfirmPlacement();
+            foreach (var subTile in possibleSubTiles)
+            {
+                subTile.Deselect();
+            }
+            EventBus<BuildingPlaced>.Raise(new BuildingPlaced()
+            {
+                type = type
+            });
+            if (!buildingInventory.BuildingInventory.ContainsKey(type))
+            {
+                worldNode.gameObject.SetActive(true);
+            }
+            placedBuildings.Add(worldNode);
+            return true;
+        }
+
+        public List<WorldNode> GetListOfPossibleSubTiles(WorldNode node, WorldTile type)
+        {
+            List<WorldNode> possibleSubTiles = new();
+            foreach (WorldNode neighbor in node.Neighbors(generator.nodes).Cast<WorldNode>())
+            {
+                if (type.connectableTiles.Contains(neighbor.worldTile) && !neighbor.isSubTile)
                 {
-                    if (inventoryRef.buildingInventory.TryGetValue(element.building, out int quantity))
-                    {
-                        inventoryRef.buildingInventory[element.building] = quantity + amount;
-                    }
-                    else
-                    {
-                        inventoryRef.buildingInventory[element.building] = amount;
-                    }
+                    possibleSubTiles.Add(neighbor);
                 }
             }
-            inventoryRef.PacksLeft--;
-            EventBus<BuildingInventoryChanged>.Raise();
+            return possibleSubTiles;
         }
     }
 
-    public struct BuildingInventoryChanged : IEvent { };
-    public struct PackOpened : IEvent
+    public struct BuildingPlaced : IEvent
     {
-        public Guid PackId;
+        public WorldTile type;
     }
 }

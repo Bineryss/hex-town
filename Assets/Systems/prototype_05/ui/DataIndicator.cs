@@ -11,7 +11,7 @@ namespace Systems.Prototype_05.UI
         private Label icon = new();
         private int offset;
 
-        public DataIndicator(DataIndicatorDO data, int offset = 10)
+        public DataIndicator(int offset = 10, DataIndicatorDO? data = null)
         {
             this.offset = offset;
 
@@ -34,9 +34,7 @@ namespace Systems.Prototype_05.UI
             container.style.paddingBottom = 8;
             container.style.paddingLeft = 8;
 
-            icon.text = data.icon;
             container.Add(icon);
-            pointsLabel.text = $"+{data.points}";
             container.Add(pointsLabel);
             Add(container);
 
@@ -49,11 +47,16 @@ namespace Systems.Prototype_05.UI
             pointer.style.borderRightColor = Colors.TRANSPARENT;
             pointer.style.borderTopColor = bgColor;
             Add(pointer);
+
+            Update(data);
         }
 
         public void Place(Vector2 screenPosition)
         {
             Vector2 pos = new(screenPosition.x - resolvedStyle.width / 2, screenPosition.y);
+
+            Debug.Log(Screen.width);
+            Debug.Log(resolvedStyle.width);
 
             pos.x = Mathf.Clamp(pos.x, 0, Screen.width - resolvedStyle.width);
             pos.y = Mathf.Clamp(pos.y, 0, Screen.height);
@@ -62,10 +65,27 @@ namespace Systems.Prototype_05.UI
             style.bottom = pos.y + offset;
         }
 
-        public void Update(DataIndicatorDO data)
+        public void Update(DataIndicatorDO? data)
         {
-            pointsLabel.text = data.points.ToString();
-            icon.text = data.icon.ToString();
+            if (data.Equals(null))
+            {
+                pointsLabel.text = "+00";
+                icon.text = "###";
+                return;
+            }
+
+            char indicator = data?.points >= 0 ? '+' : '-';
+            pointsLabel.text = $"{indicator}{data?.points}";
+            icon.text = data?.icon.ToString();
+        }
+
+        public void Hide()
+        {
+            style.visibility = Visibility.Hidden;
+        }
+        public void Show()
+        {
+            style.visibility = Visibility.Visible;
         }
     }
 
