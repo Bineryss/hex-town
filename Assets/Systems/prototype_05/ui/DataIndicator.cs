@@ -55,9 +55,6 @@ namespace Systems.Prototype_05.UI
         {
             Vector2 pos = new(screenPosition.x - resolvedStyle.width / 2, screenPosition.y);
 
-            Debug.Log(Screen.width);
-            Debug.Log(resolvedStyle.width);
-
             pos.x = Mathf.Clamp(pos.x, 0, Screen.width - resolvedStyle.width);
             pos.y = Mathf.Clamp(pos.y, 0, Screen.height);
 

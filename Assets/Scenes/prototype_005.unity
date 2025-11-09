@@ -315,9 +315,8 @@ MonoBehaviour:
       Entry: 8
       Data: 
   document: {fileID: 406424140}
-  mainCamera: {fileID: 1019917499}
-  target: {fileID: 2079650481}
-  buildingUIController: {fileID: 1359538753}
+  previewManager: {fileID: 778616848}
+  inventoryController: {fileID: 2051312709}
   transportController: {fileID: 720388665}
   packs:
   - {fileID: 11400000, guid: 75f3ff98ab899dc4bbb8749cc112f326, type: 2}
@@ -371,8 +370,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 720388664}
-  - component: {fileID: 720388663}
   - component: {fileID: 720388665}
+  - component: {fileID: 720388666}
   m_Layer: 0
   m_Name: transport-manager
   m_TagString: Untagged
@@ -380,23 +379,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &720388663
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 720388661}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7c5d0d874474e20428d493e1e8c4c602, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PathfindingController
-  target:
-    q: 0
-    r: 0
-  generator: {fileID: 0}
-  smoothLineRenderer: {fileID: 0}
 --- !u!4 &720388664
 Transform:
   m_ObjectHideFlags: 0
@@ -424,7 +406,186 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ebf545db2fdd9104290fd2cc670408aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Systems.Prototype_05.Transport.TransportController
-  pathfindingController: {fileID: 720388663}
+  pathfindingController: {fileID: 720388666}
+--- !u!114 &720388666
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 720388661}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cc644df7430e04a4186ea8ffcadced7d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Systems.Prototype_05.PathfindingController
+  target:
+    q: 0
+    r: 0
+  generator: {fileID: 1148424169}
+  smoothLineRenderer: {fileID: 0}
+--- !u!1 &778616847
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 778616849}
+  - component: {fileID: 778616848}
+  m_Layer: 0
+  m_Name: preview-manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &778616848
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 778616847}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25d172b16a03ce24b9d1a841ef316c82, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Systems.Prototype_05.UI.PreviewManager
+  previewNode: {fileID: 871718751}
+  generator: {fileID: 1148424169}
+  buildingUIController: {fileID: 1359538753}
+  mainCamera: {fileID: 1019917499}
+  routePreview: {fileID: 1850292182}
+  pathfindingController: {fileID: 720388666}
+  offsetHeight: 0.6
+  transportController: {fileID: 720388665}
+  mode: 0
+--- !u!4 &778616849
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 778616847}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 871718752}
+  - {fileID: 1850292184}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &871718750
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 871718752}
+  - component: {fileID: 871718751}
+  m_Layer: 0
+  m_Name: preview-node
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &871718751
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 871718750}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b2458d13a9789142a125670d0d3bd9d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Systems.Prototype_05.WorldNode
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes:
+    - Name: outgoingRoutes
+      Entry: 7
+      Data: 0|System.Collections.Generic.List`1[[System.Guid, mscorlib]], mscorlib
+    - Name: 
+      Entry: 12
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: incomingRoutes
+      Entry: 7
+      Data: 1|System.Collections.Generic.List`1[[System.Guid, mscorlib]], mscorlib
+    - Name: 
+      Entry: 12
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: maxCapacities
+      Entry: 7
+      Data: 2|System.Collections.Generic.Dictionary`2[[Systems.Prototype_04.Building.ResourceType,
+        Assembly-CSharp],[System.Int32, mscorlib]], mscorlib
+    - Name: comparer
+      Entry: 7
+      Data: 3|System.Collections.Generic.EnumEqualityComparer`1[[Systems.Prototype_04.Building.ResourceType,
+        Assembly-CSharp]], mscorlib
+    - Name: 
+      Entry: 12
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 12
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+  worldTile: {fileID: 11400000, guid: 8b6c0034f7f197448ae786038f997e4e, type: 2}
+  Production: 0
+  ConnectedNodes: []
+  isSubTile: 0
+--- !u!4 &871718752
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 871718750}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 778616849}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1019917497
 GameObject:
   m_ObjectHideFlags: 0
@@ -936,7 +1097,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76c2cf6959dbf9945ab25c0113ca14c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Systems.Prototype_05.UI.BuildingUIController
-  previewNode: {fileID: 2079650482}
   transportController: {fileID: 720388665}
   generator: {fileID: 1148424169}
   placedBuildings: []
@@ -952,10 +1112,66 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 2079650481}
+  m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &1366036100
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 778616849}
+    m_Modifications:
+    - target: {fileID: 1565306109820233699, guid: 5e29c4bbaf144ce489cfac7ab7f52eb2, type: 3}
+      propertyPath: m_Name
+      value: smooth-line-visualizer
+      objectReference: {fileID: 0}
+    - target: {fileID: 6536071289250825043, guid: 5e29c4bbaf144ce489cfac7ab7f52eb2, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.14261
+      objectReference: {fileID: 0}
+    - target: {fileID: 6536071289250825043, guid: 5e29c4bbaf144ce489cfac7ab7f52eb2, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6536071289250825043, guid: 5e29c4bbaf144ce489cfac7ab7f52eb2, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.85447
+      objectReference: {fileID: 0}
+    - target: {fileID: 6536071289250825043, guid: 5e29c4bbaf144ce489cfac7ab7f52eb2, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6536071289250825043, guid: 5e29c4bbaf144ce489cfac7ab7f52eb2, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6536071289250825043, guid: 5e29c4bbaf144ce489cfac7ab7f52eb2, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6536071289250825043, guid: 5e29c4bbaf144ce489cfac7ab7f52eb2, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6536071289250825043, guid: 5e29c4bbaf144ce489cfac7ab7f52eb2, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6536071289250825043, guid: 5e29c4bbaf144ce489cfac7ab7f52eb2, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6536071289250825043, guid: 5e29c4bbaf144ce489cfac7ab7f52eb2, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 5e29c4bbaf144ce489cfac7ab7f52eb2, type: 3}
 --- !u!1 &1388979556
 GameObject:
   m_ObjectHideFlags: 0
@@ -1129,6 +1345,22 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1850292182 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7179913176857044246, guid: 5e29c4bbaf144ce489cfac7ab7f52eb2, type: 3}
+  m_PrefabInstance: {fileID: 1366036100}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c2cb723347510f241809bc27b7af5c98, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SmoothLineRenderer
+--- !u!4 &1850292184 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6536071289250825043, guid: 5e29c4bbaf144ce489cfac7ab7f52eb2, type: 3}
+  m_PrefabInstance: {fileID: 1366036100}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2035515950
 GameObject:
   m_ObjectHideFlags: 0
@@ -1200,7 +1432,7 @@ MonoBehaviour:
   transportController: {fileID: 0}
   grid: {fileID: 0}
   smoothLineRendererPrefab: {fileID: 7179913176857044246, guid: 5e29c4bbaf144ce489cfac7ab7f52eb2, type: 3}
-  pathfindingController: {fileID: 720388663}
+  pathfindingController: {fileID: 0}
   offsetHeight: 0.6
 --- !u!114 &2035515953
 MonoBehaviour:
@@ -1446,14 +1678,14 @@ MonoBehaviour:
     SerializedFormat: 2
     SerializedBytes: 
     ReferencedUnityObjects:
-    - {fileID: 11400000, guid: e4766c15c10e2f2429077ffadc1914fd, type: 2}
     - {fileID: 11400000, guid: 6bca83a88b5dd0d438493a94cae0a33a, type: 2}
+    - {fileID: 11400000, guid: e4766c15c10e2f2429077ffadc1914fd, type: 2}
     SerializedBytesString: 
     Prefab: {fileID: 0}
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes:
-    - Name: debugInventory
+    - Name: initialInventory
       Entry: 7
       Data: 0|System.Collections.Generic.Dictionary`2[[Systems.Prototype_04.WorldTile,
         Assembly-CSharp],[System.Int32, mscorlib]], mscorlib
@@ -1475,7 +1707,7 @@ MonoBehaviour:
       Data: 0
     - Name: $v
       Entry: 3
-      Data: 5
+      Data: 2
     - Name: 
       Entry: 8
       Data: 
@@ -1487,7 +1719,7 @@ MonoBehaviour:
       Data: 1
     - Name: $v
       Entry: 3
-      Data: 2
+      Data: 5
     - Name: 
       Entry: 8
       Data: 
@@ -1497,12 +1729,11 @@ MonoBehaviour:
     - Name: 
       Entry: 8
       Data: 
-  placedBuildings: []
+  initialPacks: 1
   packs:
   - {fileID: 11400000, guid: 75f3ff98ab899dc4bbb8749cc112f326, type: 2}
   - {fileID: 11400000, guid: 721369eea6d095d4692e72f10064090f, type: 2}
   - {fileID: 11400000, guid: 0b760d7f8a3871b4682b720239b05964, type: 2}
-  remainingPackCount: 0
 --- !u!4 &2051312710
 Transform:
   m_ObjectHideFlags: 0
@@ -1529,7 +1760,7 @@ GameObject:
   - component: {fileID: 2079650481}
   - component: {fileID: 2079650482}
   m_Layer: 0
-  m_Name: preview-node
+  m_Name: node-prefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1543,12 +1774,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2079650480}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: -10, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1359538754}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2079650482
 MonoBehaviour:
@@ -1640,3 +1871,5 @@ SceneRoots:
   - {fileID: 1359538754}
   - {fileID: 108239147}
   - {fileID: 1148424171}
+  - {fileID: 778616849}
+  - {fileID: 2079650481}

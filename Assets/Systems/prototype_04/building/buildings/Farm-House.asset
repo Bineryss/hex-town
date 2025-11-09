@@ -16,7 +16,7 @@ MonoBehaviour:
   movementCost: 1
   isWalkable: 1
   isBuildable: 1
-  resourceType: 0
+  resourceType: {fileID: 11400000, guid: fbbed86de2c2ba341b82783bdb960ac5, type: 2}
   resourceAmount: 0
   connectableTiles:
   - {fileID: 11400000, guid: e4766c15c10e2f2429077ffadc1914fd, type: 2}

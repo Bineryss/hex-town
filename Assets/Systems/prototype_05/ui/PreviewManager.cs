@@ -6,6 +6,8 @@ using UnityEngine;
 using UnityEngine.UIElements;
 using Sirenix.OdinInspector;
 using Systems.Prototype_05.Building;
+using Systems.Prototype_05.Transport;
+using Unity.VisualScripting;
 
 namespace Systems.Prototype_05.UI
 {
@@ -20,13 +22,20 @@ namespace Systems.Prototype_05.UI
         private VisualElement root;
         private DataIndicator directIndicator;
 
-        private readonly List<DataIndicator> indicator = new();
+        private readonly List<DataIndicator> indicators = new();
         private WorldTile selectedBuilding;
         private WorldNode prevNode;
         private InventoryDS buildingInventory = InventoryDS.Instance;
-
+        [SerializeField] private SmoothLineRenderer routePreview;
+        [SerializeField] private PathfindingController pathfindingController;
+        [SerializeField] private float offsetHeight = 0.6f;
+        [SerializeField] private TransportController transportController;
 
         [SerializeField, ReadOnly] private Mode mode = Mode.NONE;
+        private HexCoordinate currentMouseCoord;
+
+        private WorldNode origin;
+        private WorldNode destination;
 
         public void Initialize()
         {
@@ -47,13 +56,27 @@ namespace Systems.Prototype_05.UI
 
         void Update()
         {
-            if (mode == Mode.BUILD && previewNode.gameObject.activeSelf)
+            if (mode == Mode.BUILD)
             {
-                directIndicator.Place(WorldToScreen(generator.grid.CellToWorld(previewNode.Position.ToOffset())));
+                directIndicator.Place(WorldToScreen(generator.grid.CellToWorld(currentMouseCoord.ToOffset())));
+            }
+            if (mode == Mode.TRADE)
+            {
+                directIndicator.Place(WorldToScreen(generator.grid.CellToWorld(currentMouseCoord.ToOffset())));
             }
         }
         private void HandleMouseInteraction(TileSelectionChanged data)
         {
+            currentMouseCoord = data.node.Position;
+            if (selectedBuilding == null) //TODO add check for is building
+            {
+                mode = Mode.TRADE;
+            }
+
+            if (mode == Mode.TRADE)
+            {
+                HandleTradroutePreview(data.node, data.clicked);
+            }
             if (mode == Mode.BUILD)
             {
                 HandlePlacementPreview(data.node, data.clicked);
@@ -65,11 +88,16 @@ namespace Systems.Prototype_05.UI
             if (!buildingInventory.BuildingInventory.ContainsKey(selectedBuilding))
             {
                 Debug.Log($"no building of type: {selectedBuilding.name} in inventory");
+                selectedBuilding = null;
                 return;
             }
             if (!node.worldTile.isBuildable)
             {
-                directIndicator.Hide();
+                directIndicator.Update(new DataIndicatorDO()
+                {
+                    points = 0,
+                    icon = "XX"
+                });
                 prevNode?.gameObject.SetActive(true);
                 previewNode.gameObject.SetActive(false);
                 List<WorldNode> prevPossibleSubTiles = buildingUIController.GetListOfPossibleSubTiles(prevNode, selectedBuilding);
@@ -116,10 +144,6 @@ namespace Systems.Prototype_05.UI
             {
                 node.gameObject.SetActive(true);
             }
-            else
-            {
-                selectedBuilding = null;
-            }
             previewNode.gameObject.SetActive(false);
             prevNode = node;
             directIndicator.Hide();
@@ -141,6 +165,63 @@ namespace Systems.Prototype_05.UI
             Debug.Log($"Selected {data.tile.name}");
         }
 
+        private void HandleTradroutePreview(WorldNode node, bool clicked)
+        {
+            if (origin == null && clicked)
+            {
+                origin = node;
+                return;
+            }
+
+            if (origin == null) return;
+
+            directIndicator.Update(new DataIndicatorDO()
+            {
+                points = Mathf.FloorToInt(origin.Production),
+                icon = origin.ResourceType.ToString()
+            });
+            directIndicator.Show();
+            if (node.Position.Equals(origin) && clicked)
+            {
+                origin = null;
+            }
+            else
+            {
+                destination = node;
+                PreviewRoute(origin, node);
+            }
+
+            if (clicked && origin != null && destination != null)
+            {
+                HandleRouteCreation(origin, destination);
+            }
+        }
+
+        private void HandleRouteCreation(WorldNode origin, WorldNode destination)
+        {
+            if (!transportController.TryCreateRoute(origin, destination, out TransportRoute route)) return;
+
+            routePreview.RenderLine(route.path.ConvertAll(p => generator.grid.CellToWorld(p.ToOffset())).ConvertAll(v => new Vector3(v.x, offsetHeight, v.z)));
+            routePreview.ShowLine();
+
+        }
+
+        private void PreviewRoute(WorldNode origin, WorldNode destination)
+        {
+
+            if (!transportController.Manager.CanCreateRoute(origin, destination, out string errorMessage, out List<HexCoordinate> path))
+            {
+                routePreview.ChangeColor(Color.red);
+                Debug.Log($"Cannot commit route: {errorMessage}");
+            }
+            else
+            {
+                routePreview.ChangeColor(Color.green);
+            }
+
+            routePreview.RenderLine(path.ConvertAll(p => generator.grid.CellToWorld(p.ToOffset())).ConvertAll(v => new Vector3(v.x, offsetHeight, v.z)));
+            routePreview.ShowLine();
+        }
         private Vector2 WorldToScreen(Vector3 vector)
         {
             if (mainCamera == null) return new(0, 0);
