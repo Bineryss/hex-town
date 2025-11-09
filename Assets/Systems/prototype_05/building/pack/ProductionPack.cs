@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using Systems.Prototype_04;
 using UnityEngine;
 
@@ -9,8 +11,10 @@ namespace Systems.Prototype_05.Building
     public class ProductionPack : ScriptableObject
     {
         public string PackName;
-
         public List<BuildingRarity> buildings;
+        public Guid Id => id;
+
+        private Guid id = Guid.NewGuid();
     }
 
     [System.Serializable]

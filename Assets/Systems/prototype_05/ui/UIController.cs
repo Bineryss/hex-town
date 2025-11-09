@@ -82,22 +82,10 @@ namespace Systems.Prototype_05.UI
 
         private void HandlePackOpen()
         {
-            foreach (Building.BuildingRarity element in selection.buildings)
+            EventBus<PackOpened>.Raise(new PackOpened()
             {
-                int amount = UnityEngine.Random.Range(element.min, element.max);
-                if (amount > 0)
-                {
-                    if (buildingInventory.buildingInventory.TryGetValue(element.building, out int quantity))
-                    {
-                        buildingInventory.buildingInventory[element.building] = quantity + amount;
-                    }
-                    else
-                    {
-                        buildingInventory.buildingInventory[element.building] = amount;
-                    }
-                }
-            }
-            EventBus<PackUsed>.Raise(new PackUsed());
+                PackId = selection.Id
+            });
         }
 
         private void HandleScorePreview(ScoreCalculated data)
@@ -147,8 +135,7 @@ namespace Systems.Prototype_05.UI
         private void UpdateInventoryUI(BuildingInventoryChanged data = default)
         {
             idToTile.Clear();
-            inventory.Update(
-                buildingInventory.buildingInventory.Select(el =>
+            List<InventoryElementDO> items = buildingInventory.buildingInventory.Select(el =>
                 {
                     Guid id = Guid.NewGuid();
                     idToTile[id] = el.Key;
@@ -158,13 +145,17 @@ namespace Systems.Prototype_05.UI
                         icon = el.Key.name,
                         quantity = el.Value
                     };
-                }).Append(new InventoryElementDO()
+                }).ToList();
+            if (buildingInventory.PacksLeft > 0)
+            {
+                items.Add(new InventoryElementDO()
                 {
                     id = packButtonId,
                     icon = "Pack",
                     quantity = buildingInventory.PacksLeft
-                }).ToList()
-            );
+                });
+            }
+            inventory.Update(items);
         }
     }
 }
