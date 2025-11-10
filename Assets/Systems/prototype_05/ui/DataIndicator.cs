@@ -23,6 +23,7 @@ namespace Systems.Prototype_05.UI
             style.bottom = 100;
             style.width = width;
             style.minWidth = width;
+            style.visibility = Visibility.Hidden;
 
             container.style.backgroundColor = bgColor;
             container.style.fontSize = 24;

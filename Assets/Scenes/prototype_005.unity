@@ -434,6 +434,8 @@ GameObject:
   m_Component:
   - component: {fileID: 778616849}
   - component: {fileID: 778616848}
+  - component: {fileID: 778616850}
+  - component: {fileID: 778616851}
   m_Layer: 0
   m_Name: preview-manager
   m_TagString: Untagged
@@ -453,15 +455,66 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25d172b16a03ce24b9d1a841ef316c82, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Systems.Prototype_05.UI.PreviewManager
-  previewNode: {fileID: 871718751}
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects:
+    - {fileID: 778616850}
+    - {fileID: 778616851}
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes:
+    - Name: previewControllers
+      Entry: 7
+      Data: 0|System.Collections.Generic.Dictionary`2[[System.Guid, mscorlib],[Systems.Prototype_05.UI.IPreviewController,
+        Assembly-CSharp]], mscorlib
+    - Name: comparer
+      Entry: 7
+      Data: 1|System.Collections.Generic.GenericEqualityComparer`1[[System.Guid,
+        mscorlib]], mscorlib
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 12
+      Data: 2
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 2
+      Data: 0b92afd8f140475e8d2279f01710c3e7
+    - Name: $v
+      Entry: 10
+      Data: 0
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 2
+      Data: 7f3b67c894474ca68718d4bbcc9b58f4
+    - Name: $v
+      Entry: 10
+      Data: 1
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: currentMode
+      Entry: 2
+      Data: 00000000000000000000000000000000
   generator: {fileID: 1148424169}
-  buildingUIController: {fileID: 1359538753}
   mainCamera: {fileID: 1019917499}
-  routePreview: {fileID: 1850292182}
-  pathfindingController: {fileID: 720388666}
-  offsetHeight: 0.6
-  transportController: {fileID: 720388665}
-  mode: 0
 --- !u!4 &778616849
 Transform:
   m_ObjectHideFlags: 0
@@ -479,6 +532,39 @@ Transform:
   - {fileID: 1850292184}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &778616850
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 778616847}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3152150e33d60bc4d8e21f25116763c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Systems.Prototype_05.Building.BuildingPreviewController
+  previewNode: {fileID: 871718751}
+  generator: {fileID: 1148424169}
+  buildingUIController: {fileID: 1359538753}
+  selectedBuilding: {fileID: 0}
+--- !u!114 &778616851
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 778616847}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 03b920cb1d075824f9a172e7d90cf001, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Systems.Prototype_05.Building.TradePreviewController
+  generator: {fileID: 1148424169}
+  routePreview: {fileID: 1850292182}
+  pathfindingController: {fileID: 720388666}
+  offsetHeight: 0.6
+  transportController: {fileID: 720388665}
 --- !u!1 &871718750
 GameObject:
   m_ObjectHideFlags: 0

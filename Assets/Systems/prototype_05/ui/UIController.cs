@@ -15,7 +15,7 @@ namespace Systems.Prototype_05.UI
     public class UIController : SerializedMonoBehaviour
     {
         [SerializeField] private UIDocument document;
-        [SerializeField] private PreviewManager previewManager;
+        [SerializeField] private PreviewOrchestrator previewManager;
         [SerializeField] private InventoryController inventoryController;
         [SerializeField] private TransportController transportController;
         [SerializeField] private List<ProductionPack> packs;
