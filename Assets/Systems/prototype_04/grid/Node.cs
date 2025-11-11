@@ -1,22 +1,22 @@
 using System.Collections.Generic;
-using Systems.Prototype_04.Grid;
+using Systems.Core;
 using UnityEngine;
 
 [System.Serializable]
 public class Node: INode
 {
     public GameObject Instance { get; set; }
-    public HexCoordinate Position { get; set; }
+    public AxialCoordinate Position { get; set; }
     public int MovementCost { get; set; } = 1;
     public bool IsWalkable { get; set; } = true;
 
-    public List<Node> Neighbors(Dictionary<HexCoordinate, Node> allNodes)
+    public List<Node> Neighbors(Dictionary<AxialCoordinate, Node> allNodes)
     {
         List<Node> neighbors = new();
 
         foreach (var dir in HexMetrics.Directions)
         {
-            HexCoordinate neighborPos = Position + dir;
+            AxialCoordinate neighborPos = Position + dir;
             if (allNodes.TryGetValue(neighborPos, out Node neighbor))
             {
                 neighbors.Add(neighbor);
@@ -42,7 +42,7 @@ public class Node: INode
         return $"Node({Position}, Walkable: {IsWalkable})";
     }
 
-    public List<INode> Neighbors(Dictionary<HexCoordinate, INode> allNodes)
+    public List<INode> Neighbors(Dictionary<AxialCoordinate, INode> allNodes)
     {
         throw new System.NotImplementedException();
     }
@@ -50,10 +50,10 @@ public class Node: INode
 
 public interface INode
 {
-    HexCoordinate Position { get; }
+    AxialCoordinate Position { get; }
     bool IsWalkable { get; }
     int MovementCost { get; }
-    List<INode> Neighbors(Dictionary<HexCoordinate, INode> allNodes);
+    List<INode> Neighbors(Dictionary<AxialCoordinate, INode> allNodes);
     void Select();
     void Deselect();
 }

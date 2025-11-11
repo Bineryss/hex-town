@@ -1,5 +1,5 @@
 using System;
-using Systems.Prototype_04.Grid;
+using Systems.Core;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -11,7 +11,7 @@ namespace Systems.Prototype_04.UI
 
         [SerializeField] private HexGrid grid;
         private bool wasPressed;
-        private HexCoordinate lastHoveredCoordinate;
+        private AxialCoordinate lastHoveredCoordinate;
 
         void Update()
         {

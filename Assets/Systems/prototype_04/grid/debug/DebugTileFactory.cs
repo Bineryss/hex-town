@@ -1,4 +1,4 @@
-using Systems.Prototype_04.Grid;
+using Systems.Core;
 using TMPro;
 using UnityEngine;
 
@@ -6,7 +6,7 @@ public class DebugTileFactory : MonoBehaviour, ITileFactory
 {
     [SerializeField] private GameObject debugTilePrefab;
 
-    public INode CreateTile(HexCoordinate cellPosition, Vector3 worldPosition)
+    public INode CreateTile(AxialCoordinate cellPosition, Vector3 worldPosition)
     {
         if (debugTilePrefab == null) return null;
 

@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Systems.Prototype_04.Grid;
+using Systems.Core;
 using Systems.Prototype_04.Transport;
 using UnityEngine;
 
@@ -76,7 +76,7 @@ namespace Systems.Prototype_04.UI
                 selectedRouteId = null;
             }
 
-            if (!transportController.Manager.CanCreateRoute(origin, destination, out string errorMessage, out List<HexCoordinate> path))
+            if (!transportController.Manager.CanCreateRoute(origin, destination, out string errorMessage, out List<AxialCoordinate> path))
             {
                 previewedRoute.ChangeColor(Color.red);
                 Debug.Log($"Cannot commit route: {errorMessage}");

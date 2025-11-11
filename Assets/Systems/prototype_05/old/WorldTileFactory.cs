@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using Sirenix.OdinInspector;
 using Sirenix.Serialization;
+using Systems.Core;
 using Systems.Prototype_04;
-using Systems.Prototype_04.Grid;
 using UnityEngine;
 
 namespace Systems.Prototype_05
@@ -19,13 +19,13 @@ namespace Systems.Prototype_05
         [SerializeField] private AnimationCurve mountainToForestCurve;
 
         private Transform parentTransform;
-        private Dictionary<HexCoordinate, WorldType> tileMap = new();
+        private Dictionary<AxialCoordinate, WorldType> tileMap = new();
 
         public void SetParent(Transform parent)
         {
             parentTransform = parent;
         }
-        public INode CreateTile(HexCoordinate cellPosition, Vector3 worldPosition)
+        public INode CreateTile(AxialCoordinate cellPosition, Vector3 worldPosition)
         {
             WorldNode instance = Instantiate(tilePrefab, worldPosition, Quaternion.identity, parentTransform);
             instance.name = $"{instance.ResourceType}_{cellPosition}";
@@ -51,15 +51,15 @@ namespace Systems.Prototype_05
             GenerateMountains(mountainPositions, mountainSize);
         }
 
-        private List<HexCoordinate> SeedMountains(int count, int gridRadius)
+        private List<AxialCoordinate> SeedMountains(int count, int gridRadius)
         {
-            List<HexCoordinate> mountainPositions = new();
+            List<AxialCoordinate> mountainPositions = new();
 
             for (int i = 0; i < count; i++)
             {
                 int q = Random.Range(-gridRadius, gridRadius + 1);
                 int r = Random.Range(-gridRadius, gridRadius + 1);
-                HexCoordinate coord = new(q, r);
+                AxialCoordinate coord = new(q, r);
 
                 if (!tileMap.ContainsKey(coord))
                 {
@@ -70,7 +70,7 @@ namespace Systems.Prototype_05
 
             return mountainPositions;
         }
-        private void GenerateMountains(List<HexCoordinate> mountainPositions, int range)
+        private void GenerateMountains(List<AxialCoordinate> mountainPositions, int range)
         {
             int size = range;
 
@@ -80,7 +80,7 @@ namespace Systems.Prototype_05
                 {
                     for (int dr = -size; dr <= size; dr++)
                     {
-                        HexCoordinate neighbor = new(pos.Q + dq, pos.R + dr);
+                        AxialCoordinate neighbor = new(pos.Q + dq, pos.R + dr);
                         if (!tileMap.ContainsKey(neighbor))
                         {
                             int distance = neighbor.Distance(pos);

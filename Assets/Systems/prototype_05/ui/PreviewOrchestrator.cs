@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using Systems.Prototype_04.Grid;
 using UnityEngine;
 using UnityEngine.UIElements;
 using Sirenix.OdinInspector;
@@ -130,7 +129,7 @@ namespace Systems.Prototype_05.UI
     }
     public struct ScorePreview
     {
-        public HexCoordinate Position;
+        public AxialCoordinate Position;
         public string Icon;
         public int Score;
     }

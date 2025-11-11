@@ -1,16 +1,16 @@
 using System.Collections.Generic;
 using System.Linq;
-using Systems.Prototype_04.Grid;
+using Systems.Core;
 
 namespace Systems.Prototype_04
 {
     public class PathFinder
     {
-        public static List<HexCoordinate> FindPath(INode start, INode end, Dictionary<HexCoordinate, INode> allNodes)
+        public static List<AxialCoordinate> FindPath(INode start, INode end, Dictionary<AxialCoordinate, INode> allNodes)
         {
             if (start.IsWalkable == false || end.IsWalkable == false)
             {
-                return new List<HexCoordinate>();
+                return new List<AxialCoordinate>();
             }
 
             PathNode startNode = new() { instance = start, G = 0, H = 0 };
@@ -36,7 +36,7 @@ namespace Systems.Prototype_04
                 if (current.Equals(endNode))
                 {
                     var currentPathTile = current;
-                    List<HexCoordinate> path = new();
+                    List<AxialCoordinate> path = new();
 
                     while (!currentPathTile.Equals(startNode))
                     {

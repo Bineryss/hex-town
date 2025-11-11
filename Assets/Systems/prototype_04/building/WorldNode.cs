@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using Sirenix.OdinInspector;
 using Sirenix.Serialization;
+using Systems.Core;
 using Systems.Prototype_04.Building;
-using Systems.Prototype_04.Grid;
 using Systems.Prototype_04.Transport;
 using UnityEngine;
 
@@ -16,7 +16,7 @@ namespace Systems.Prototype_04
         public WorldTile worldTile;
 
         [Header("Debug Info")]
-        [ShowInInspector, ReadOnly] public HexCoordinate Position { get; set; }
+        [ShowInInspector, ReadOnly] public AxialCoordinate Position { get; set; }
         [ShowInInspector, ReadOnly] public bool IsWalkable => worldTile.isWalkable;
         [ShowInInspector, ReadOnly] public int MovementCost => worldTile.movementCost;
 
@@ -76,7 +76,7 @@ namespace Systems.Prototype_04
         }
 
 
-        public void Initialize(WorldTile tile, HexCoordinate position)
+        public void Initialize(WorldTile tile, AxialCoordinate position)
         {
             worldTile = tile;
             Position = position;
@@ -86,7 +86,7 @@ namespace Systems.Prototype_04
             CalculateProduction();
         }
 
-        public void InitializeWithSubTiles(WorldTile tile, HexCoordinate position, List<WorldNode> connectedNodes)
+        public void InitializeWithSubTiles(WorldTile tile, AxialCoordinate position, List<WorldNode> connectedNodes)
         {
             ConnectedNodes = connectedNodes;
             connectedNodes.ForEach(t => t.isSubTile = true);
@@ -108,13 +108,13 @@ namespace Systems.Prototype_04
             .ToDictionary(group => group.Key.type, group => group.Sum(bonus => bonus.maxCapacity));
         }
 
-        public List<INode> Neighbors(Dictionary<HexCoordinate, INode> allNodes)
+        public List<INode> Neighbors(Dictionary<AxialCoordinate, INode> allNodes)
         {
             List<INode> neighbors = new();
 
             foreach (var dir in HexMetrics.Directions)
             {
-                HexCoordinate neighborPos = Position + dir;
+                AxialCoordinate neighborPos = Position + dir;
                 if (allNodes.TryGetValue(neighborPos, out INode neighbor))
                 {
                     neighbors.Add(neighbor);

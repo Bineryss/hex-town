@@ -1,6 +1,6 @@
 using System.Collections.Generic;
+using Systems.Core;
 using Systems.Prototype_04.Building;
-using Systems.Prototype_04.Grid;
 
 namespace Systems.Prototype_04.UI
 {
@@ -26,7 +26,7 @@ namespace Systems.Prototype_04.UI
 
     public struct SubTile
     {
-        public HexCoordinate Position;
+        public AxialCoordinate Position;
         public ResourceType Type;
         public float Production;
     }

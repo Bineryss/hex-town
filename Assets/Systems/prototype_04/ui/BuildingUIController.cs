@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Systems.Prototype_04.Grid;
+using Systems.Core;
 using Systems.Prototype_04.Transport;
 using UnityEngine;
 
@@ -41,7 +41,7 @@ namespace Systems.Prototype_04.UI
         {
             if (building == null) return;
             selectedBuilding = building;
-            previewNode.Initialize(selectedBuilding, new HexCoordinate(0, 0));
+            previewNode.Initialize(selectedBuilding, new AxialCoordinate(0, 0));
             previewNode.gameObject.SetActive(false);
         }
 

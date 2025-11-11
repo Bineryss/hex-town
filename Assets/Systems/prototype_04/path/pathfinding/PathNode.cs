@@ -1,4 +1,4 @@
-using Systems.Prototype_04.Grid;
+using Systems.Core;
 
 public class PathNode
 {
@@ -8,7 +8,7 @@ public class PathNode
     public int F => G + H; // Total cost
     public INode instance;
 
-    public HexCoordinate Position => instance.Position;
+    public AxialCoordinate Position => instance.Position;
 
     public int Distance(PathNode other)
     {

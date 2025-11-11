@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using Systems.Core;
 using Systems.Prototype_04;
-using Systems.Prototype_04.Grid;
 using Systems.Prototype_05.Player;
 using Systems.Prototype_05.UI;
 using UnityEngine;
@@ -155,7 +154,7 @@ namespace Systems.Prototype_05.Building
             }
 
             selectedBuilding = data.tile;
-            previewNode.Initialize(selectedBuilding, new HexCoordinate(0, 0));
+            previewNode.Initialize(selectedBuilding, new AxialCoordinate(0, 0));
             previewNode.gameObject.SetActive(false);
             Debug.Log($"Selected {data.tile.name}");
             EventBus<PreviewActivationRequested>.Raise(new PreviewActivationRequested()

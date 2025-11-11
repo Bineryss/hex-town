@@ -547,7 +547,6 @@ MonoBehaviour:
   previewNode: {fileID: 871718751}
   generator: {fileID: 1148424169}
   buildingUIController: {fileID: 1359538753}
-  selectedBuilding: {fileID: 0}
 --- !u!114 &778616851
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1060,11 +1059,11 @@ MonoBehaviour:
     SerializationNodes:
     - Name: nodes
       Entry: 7
-      Data: 0|System.Collections.Generic.Dictionary`2[[Systems.Prototype_04.Grid.HexCoordinate,
+      Data: 0|System.Collections.Generic.Dictionary`2[[Systems.Core.AxialCoordinate,
         Assembly-CSharp],[INode, Assembly-CSharp]], mscorlib
     - Name: comparer
       Entry: 7
-      Data: 1|System.Collections.Generic.ObjectEqualityComparer`1[[Systems.Prototype_04.Grid.HexCoordinate,
+      Data: 1|System.Collections.Generic.ObjectEqualityComparer`1[[Systems.Core.AxialCoordinate,
         Assembly-CSharp]], mscorlib
     - Name: 
       Entry: 8
@@ -1107,11 +1106,11 @@ MonoBehaviour:
       Data: 0
     - Name: nodes
       Entry: 7
-      Data: 0|System.Collections.Generic.Dictionary`2[[Systems.Prototype_04.Grid.HexCoordinate,
+      Data: 0|System.Collections.Generic.Dictionary`2[[Systems.Core.AxialCoordinate,
         Assembly-CSharp],[INode, Assembly-CSharp]], mscorlib
     - Name: comparer
       Entry: 7
-      Data: 1|System.Collections.Generic.ObjectEqualityComparer`1[[Systems.Prototype_04.Grid.HexCoordinate,
+      Data: 1|System.Collections.Generic.ObjectEqualityComparer`1[[Systems.Core.AxialCoordinate,
         Assembly-CSharp]], mscorlib
     - Name: 
       Entry: 8

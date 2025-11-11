@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
+using Systems.Core;
 using Systems.Prototype_04.Building;
-using Systems.Prototype_04.Grid;
 using UnityEngine;
 
 namespace Systems.Prototype_04.Transport
@@ -20,10 +20,10 @@ namespace Systems.Prototype_04.Transport
         public WorldNode destination;
         public ResourceType resourceType;
         public float quantity;
-        public List<HexCoordinate> path = new();
+        public List<AxialCoordinate> path = new();
         private readonly float efficiencyMultiplier;
 
-        public TransportRoute(WorldNode origin, WorldNode destination, ResourceType resourceType, float quantity, List<HexCoordinate> path)
+        public TransportRoute(WorldNode origin, WorldNode destination, ResourceType resourceType, float quantity, List<AxialCoordinate> path)
         {
             Id = Guid.NewGuid();
             this.origin = origin;

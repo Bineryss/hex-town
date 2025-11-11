@@ -1,11 +1,11 @@
 using Sirenix.OdinInspector;
 using UnityEngine;
 
-namespace Systems.Prototype_04.Grid
+namespace Systems.Core
 {
     [System.Serializable]
     [InlineProperty]
-    public struct HexCoordinate
+    public struct AxialCoordinate
     {
 
         [SerializeField, LabelWidth(13), HorizontalGroup("Cube", 0.33f)]
@@ -18,24 +18,24 @@ namespace Systems.Prototype_04.Grid
         [ShowInInspector, LabelWidth(13), HorizontalGroup("Cube")]
         public readonly int S => -Q - R;
 
-        public HexCoordinate(int q, int r)
+        public AxialCoordinate(int q, int r)
         {
             this.q = q;
             this.r = r;
         }
 
-        public static HexCoordinate operator -(HexCoordinate a, HexCoordinate b)
+        public static AxialCoordinate operator -(AxialCoordinate a, AxialCoordinate b)
         {
-            return new HexCoordinate(a.Q - b.Q, a.R - b.R);
+            return new AxialCoordinate(a.Q - b.Q, a.R - b.R);
         }
-        public static HexCoordinate operator +(HexCoordinate a, HexCoordinate b)
+        public static AxialCoordinate operator +(AxialCoordinate a, AxialCoordinate b)
         {
-            return new HexCoordinate(a.Q + b.Q, a.R + b.R);
+            return new AxialCoordinate(a.Q + b.Q, a.R + b.R);
         }
-        public static HexCoordinate FromOffsetCoordinates(int col, int row)
+        public static AxialCoordinate FromOffsetCoordinates(int col, int row)
         {
             int q = col - ((row - (row & 1)) / 2);
-            return new HexCoordinate(q, row);
+            return new AxialCoordinate(q, row);
         }
         public Vector3Int ToOffset()
         {
@@ -43,9 +43,9 @@ namespace Systems.Prototype_04.Grid
             int row = R;
             return new Vector3Int(col, row, 0);
         }
-        public int Distance(HexCoordinate other)
+        public int Distance(AxialCoordinate other)
         {
-            HexCoordinate vector = this - other;
+            AxialCoordinate vector = this - other;
             return (
                 (Mathf.Abs(vector.Q) + Mathf.Abs(vector.R) + Mathf.Abs(vector.S)) / 2
             );
@@ -63,8 +63,8 @@ namespace Systems.Prototype_04.Grid
         public override bool Equals(object obj)
         {
             if (obj is null) return false;
-            if (obj is not HexCoordinate) return false;
-            var hc = (HexCoordinate)obj;
+            if (obj is not AxialCoordinate) return false;
+            var hc = (AxialCoordinate)obj;
             return q == hc.q && r == hc.r;
         }
         public override int GetHashCode()

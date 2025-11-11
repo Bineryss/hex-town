@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using Sirenix.OdinInspector;
-using Sirenix.Serialization;
-using Systems.Prototype_04.Grid;
+using Systems.Core;
 using UnityEngine;
 
 namespace Systems.Prototype_04
@@ -14,11 +13,11 @@ namespace Systems.Prototype_04
 
         [SerializeField] private ITileFactory tileFactory;
 
-        public Dictionary<HexCoordinate, INode> nodes;
+        public Dictionary<AxialCoordinate, INode> nodes;
 
-        public Dictionary<HexCoordinate, INode> GenerateGrid()
+        public Dictionary<AxialCoordinate, INode> GenerateGrid()
         {
-            if (nodes == null) nodes = new Dictionary<HexCoordinate, INode>();
+            if (nodes == null) nodes = new Dictionary<AxialCoordinate, INode>();
             if (grid == null) grid = GetComponent<GridLayout>();
 
             tileFactory.PregenerateTiles(gridRadius);
@@ -30,7 +29,7 @@ namespace Systems.Prototype_04
                 {
                     var cell = new Vector3Int(x, y, 0);
                     Vector3 worldPos = grid.CellToWorld(cell);
-                    HexCoordinate hexCoord = HexCoordinate.FromOffsetCoordinates(cell.x, cell.y);
+                    AxialCoordinate hexCoord = AxialCoordinate.FromOffsetCoordinates(cell.x, cell.y);
                     INode instance = tileFactory.CreateTile(hexCoord, worldPos);
                     if (instance != null)
                     {

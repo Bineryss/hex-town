@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Systems.Core;
 using Systems.Prototype_04;
-using Systems.Prototype_04.Grid;
 using Systems.Prototype_05.Building;
 using Systems.Prototype_05.Transport;
 using UnityEngine;
@@ -19,7 +18,7 @@ namespace Systems.Prototype_05.UI
 
         private InventoryDS buildingInventory = InventoryDS.Instance;
 
-        public bool TryPlaceBuilding(HexCoordinate position, WorldTile type)
+        public bool TryPlaceBuilding(AxialCoordinate position, WorldTile type)
         {
             if (!buildingInventory.BuildingInventory.ContainsKey(type))
             {

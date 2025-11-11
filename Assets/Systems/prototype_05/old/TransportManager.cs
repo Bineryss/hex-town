@@ -1,9 +1,7 @@
 using System;
 using System.Collections.Generic;
-using Systems.Prototype_04;
+using Systems.Core;
 using Systems.Prototype_04.Building;
-using Systems.Prototype_04.Grid;
-using Systems.Prototype_04.Transport;
 
 namespace Systems.Prototype_05.Transport
 {
@@ -18,7 +16,7 @@ namespace Systems.Prototype_05.Transport
             this.transportRoutes = transportRoutes;
         }
 
-        public bool CanCreateRoute(WorldNode origin, WorldNode destination, out string errorMessage, out List<HexCoordinate> path)
+        public bool CanCreateRoute(WorldNode origin, WorldNode destination, out string errorMessage, out List<AxialCoordinate> path)
         {
             errorMessage = "";
             bool canCreate = true;
@@ -66,7 +64,7 @@ namespace Systems.Prototype_05.Transport
 
         public TransportRoute CreateRoute(WorldNode origin, WorldNode destination)
         {
-            if (!CanCreateRoute(origin, destination, out string errorMessage, out List<HexCoordinate> path))
+            if (!CanCreateRoute(origin, destination, out string errorMessage, out List<AxialCoordinate> path))
             {
                 return null;
             }

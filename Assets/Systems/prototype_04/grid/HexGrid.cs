@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Sirenix.OdinInspector;
 using Sirenix.Serialization;
-using Systems.Prototype_04.Grid;
+using Systems.Core;
 using UnityEngine;
 
 namespace Systems.Prototype_04
@@ -12,14 +12,14 @@ namespace Systems.Prototype_04
         [SerializeField] private GridLayout grid;
         public GridLayout Grid => grid;
         [SerializeField] private HexGridGenerator generator;
-        [OdinSerialize, ReadOnly] private Dictionary<HexCoordinate, INode> nodes = new();
-        public HexCoordinate WorldToHex(Vector3 position)
+        [OdinSerialize, ReadOnly] private Dictionary<AxialCoordinate, INode> nodes = new();
+        public AxialCoordinate WorldToHex(Vector3 position)
         {
             Vector3Int cell = grid.WorldToCell(position);
-            return HexCoordinate.FromOffsetCoordinates(cell.x, cell.y);
+            return AxialCoordinate.FromOffsetCoordinates(cell.x, cell.y);
         }
 
-        public INode GetNode(HexCoordinate hex)
+        public INode GetNode(AxialCoordinate hex)
         {
             if (nodes.TryGetValue(hex, out INode node))
             {
@@ -30,7 +30,7 @@ namespace Systems.Prototype_04
 
         public INode GetNode(Vector3 position)
         {
-            HexCoordinate hex = WorldToHex(position);
+            AxialCoordinate hex = WorldToHex(position);
             return GetNode(hex);
         }
 

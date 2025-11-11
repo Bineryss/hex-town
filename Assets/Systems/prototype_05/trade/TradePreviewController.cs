@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using Systems.Core;
 using Systems.Prototype_04;
-using Systems.Prototype_04.Grid;
 using Systems.Prototype_05.Player;
 using Systems.Prototype_05.Transport;
 using Systems.Prototype_05.UI;
@@ -127,7 +126,7 @@ namespace Systems.Prototype_05.Building
         private void PreviewRoute(WorldNode origin, WorldNode destination)
         {
 
-            if (!transportController.Manager.CanCreateRoute(origin, destination, out string errorMessage, out List<HexCoordinate> path))
+            if (!transportController.Manager.CanCreateRoute(origin, destination, out string errorMessage, out List<AxialCoordinate> path))
             {
                 routePreview.ChangeColor(Color.red);
                 Debug.Log($"Cannot commit route: {errorMessage}");
