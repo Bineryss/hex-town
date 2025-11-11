@@ -177,7 +177,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b0cd9471f9d48a4684b729beb20ee84, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Systems.Prototype_05.UI.PlayerGridSelector
-  grid: {fileID: 1148424168}
+  grid: {fileID: 1148424172}
 --- !u!1001 &352902942
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -911,9 +911,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1148424171}
-  - component: {fileID: 1148424170}
+  - component: {fileID: 1148424172}
   - component: {fileID: 1148424169}
-  - component: {fileID: 1148424168}
   - component: {fileID: 1148424167}
   m_Layer: 0
   m_Name: grid-manager
@@ -1036,49 +1035,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &1148424168
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1148424166}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 560795c606cd4cd499c3d9267e89d80a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Systems.Prototype_05.HexGrid
-  serializationData:
-    SerializedFormat: 2
-    SerializedBytes: 
-    ReferencedUnityObjects: []
-    SerializedBytesString: 
-    Prefab: {fileID: 0}
-    PrefabModificationsReferencedUnityObjects: []
-    PrefabModifications: []
-    SerializationNodes:
-    - Name: nodes
-      Entry: 7
-      Data: 0|System.Collections.Generic.Dictionary`2[[Systems.Core.AxialCoordinate,
-        Assembly-CSharp],[INode, Assembly-CSharp]], mscorlib
-    - Name: comparer
-      Entry: 7
-      Data: 1|System.Collections.Generic.ObjectEqualityComparer`1[[Systems.Core.AxialCoordinate,
-        Assembly-CSharp]], mscorlib
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 12
-      Data: 0
-    - Name: 
-      Entry: 13
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-  grid: {fileID: 1148424170}
-  generator: {fileID: 1148424169}
 --- !u!114 &1148424169
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1124,20 +1080,11 @@ MonoBehaviour:
     - Name: 
       Entry: 8
       Data: 
-  grid: {fileID: 1148424170}
+    - Name: layout
+      Entry: 6
+      Data: 
+  grid: {fileID: 1148424172}
   gridRadius: 6
---- !u!156049354 &1148424170
-Grid:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1148424166}
-  m_Enabled: 1
-  m_CellSize: {x: 1, y: 1.15, z: 1}
-  m_CellGap: {x: 0, y: 0, z: 0}
-  m_CellLayout: 1
-  m_CellSwizzle: 1
 --- !u!4 &1148424171
 Transform:
   m_ObjectHideFlags: 0
@@ -1153,6 +1100,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1148424172
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1148424166}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 911de465893c867419cefaf7937d8626, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Systems.Prototype_05.Grid.HexGrid
+  size: {x: 0.57, y: 0.57}
+  generator: {fileID: 1148424169}
 --- !u!1 &1359538752
 GameObject:
   m_ObjectHideFlags: 0

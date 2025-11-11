@@ -59,7 +59,7 @@ namespace Systems.Prototype_05.UI
                 indicatorUpdatePositions.Add(() =>
                 {
                     el.Hide();
-                    el.Place(WorldToScreen(generator.grid.CellToWorld(indicator.Position.ToOffset())));
+                    el.Place(WorldToScreen(generator.layout.AxialToWorld(indicator.Position)));
                     el.Show();
                 });
             }

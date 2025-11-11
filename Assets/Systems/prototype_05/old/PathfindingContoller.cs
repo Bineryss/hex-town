@@ -16,7 +16,7 @@ namespace Systems.Prototype_05
         {
             List<AxialCoordinate> path = PathFinder.FindPath(generator.nodes[new(0, 0)], generator.nodes[target], generator.nodes);
 
-            Vector3[] worldPositions = path.Select(p => generator.grid.CellToWorld(p.ToOffset())).Select(v => new Vector3(v.x, 0.3f, v.z)).ToArray();
+            Vector3[] worldPositions = path.Select(p => generator.layout.AxialToWorld(p)).Select(v => new Vector3(v.x, 0.3f, v.z)).ToArray();
             smoothLineRenderer.points = worldPositions.ToList();
         }
 
@@ -25,7 +25,7 @@ namespace Systems.Prototype_05
             List<AxialCoordinate> path = PathFinder.FindPath(generator.nodes[a.Position], generator.nodes[b.Position], generator.nodes);
             if (smoothLineRenderer == null) return path;
 
-            Vector3[] worldPositions = path.Select(p => generator.grid.CellToWorld(p.ToOffset())).Select(v => new Vector3(v.x, 0.3f, v.z)).ToArray();
+            Vector3[] worldPositions = path.Select(p => generator.layout.AxialToWorld(p)).Select(v => new Vector3(v.x, 0.3f, v.z)).ToArray();
             smoothLineRenderer.points = worldPositions.ToList();
 
             return path;

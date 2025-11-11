@@ -113,7 +113,7 @@ namespace Systems.Prototype_05.Building
         {
             if (!transportController.TryCreateRoute(origin, destination, out TransportRoute route)) return;
 
-            routePreview.RenderLine(route.path.ConvertAll(p => generator.grid.CellToWorld(p.ToOffset())).ConvertAll(v => new Vector3(v.x, offsetHeight, v.z)));
+            routePreview.RenderLine(route.path.ConvertAll(p => generator.layout.AxialToWorld(p)).ConvertAll(v => new Vector3(v.x, offsetHeight, v.z)));
             routePreview.ShowLine();
             origin = null;
             destination = null;
@@ -136,7 +136,7 @@ namespace Systems.Prototype_05.Building
                 routePreview.ChangeColor(Color.green);
             }
 
-            routePreview.RenderLine(path.ConvertAll(p => generator.grid.CellToWorld(p.ToOffset())).ConvertAll(v => new Vector3(v.x, offsetHeight, v.z)));
+            routePreview.RenderLine(path.ConvertAll(p => generator.layout.AxialToWorld(p)).ConvertAll(v => new Vector3(v.x, offsetHeight, v.z)));
             routePreview.ShowLine();
         }
 

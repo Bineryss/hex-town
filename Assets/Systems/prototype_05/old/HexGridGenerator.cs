@@ -1,43 +1,50 @@
 using System.Collections.Generic;
 using Sirenix.OdinInspector;
 using Systems.Core;
+using Systems.Prototype_05.Grid;
 using UnityEngine;
 
 namespace Systems.Prototype_05
 {
-    [RequireComponent(typeof(GridLayout))]
     public class HexGridGenerator : SerializedMonoBehaviour
     {
-        public GridLayout grid;
+        public Grid.HexGrid grid;
         public int gridRadius = 5;
 
         [SerializeField] private ITileFactory tileFactory;
 
         public Dictionary<AxialCoordinate, INode> nodes;
+        public HexGridLayout layout;
 
         public Dictionary<AxialCoordinate, INode> GenerateGrid()
         {
-            if (nodes == null) nodes = new Dictionary<AxialCoordinate, INode>();
-            if (grid == null) grid = GetComponent<GridLayout>();
+            nodes ??= new Dictionary<AxialCoordinate, INode>();
+            if (grid == null) return new();
+            layout = grid.Layout;
+
 
             tileFactory.PregenerateTiles(gridRadius);
             tileFactory.SetParent(grid.transform);
 
-            for (int y = -gridRadius; y <= gridRadius; y++)
+            for (int q = -gridRadius; q <= gridRadius; q++)
             {
-                for (int x = -gridRadius; x <= gridRadius; x++)
+                for (int r = Mathf.Max(-gridRadius, -q - gridRadius); r <= Mathf.Min(gridRadius, -q + gridRadius); r++)
                 {
-                    var cell = new Vector3Int(x, y, 0);
-                    Vector3 worldPos = grid.CellToWorld(cell);
-                    AxialCoordinate hexCoord = AxialCoordinate.FromOffsetCoordinates(cell.x, cell.y);
-                    INode instance = tileFactory.CreateTile(hexCoord, worldPos);
-                    if (instance != null)
-                    {
-                        nodes[hexCoord] = instance;
-                    }
+                    CreateCell(q, r);
                 }
             }
             return nodes;
+        }
+
+        private void CreateCell(int q, int r)
+        {
+            AxialCoordinate axialCoordinate = new AxialCoordinate(q, r);
+            Vector3 worldPos = layout.AxialToWorld(axialCoordinate);
+            INode instance = tileFactory.CreateTile(axialCoordinate, worldPos);
+            if (instance != null)
+            {
+                nodes[axialCoordinate] = instance;
+            }
         }
 
         [ContextMenu("Generate Test Grid")]
@@ -57,5 +64,22 @@ namespace Systems.Prototype_05
             GenerateGrid();
         }
 
+        void Update()
+        {
+            HexGridLayout layout = grid.Layout;
+            for (int q = -gridRadius; q <= gridRadius; q++)
+            {
+                for (int r = Mathf.Max(-gridRadius, -q - gridRadius); r <= Mathf.Min(gridRadius, -q + gridRadius); r++)
+                {
+                    if (nodes.TryGetValue(new AxialCoordinate(q, r), out INode node))
+                    {
+                        if (node is WorldNode worldNode)
+                        {
+                            worldNode.gameObject.transform.position = layout.AxialToWorld(new AxialCoordinate(q, r));
+                        }
+                    }
+                }
+            }
+        }
     }
 }
