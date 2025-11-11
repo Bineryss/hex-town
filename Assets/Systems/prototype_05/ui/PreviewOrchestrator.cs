@@ -5,6 +5,7 @@ using UnityEngine.UIElements;
 using Sirenix.OdinInspector;
 using System;
 using Sirenix.Serialization;
+using Systems.Core;
 
 namespace Systems.Prototype_05.UI
 {
