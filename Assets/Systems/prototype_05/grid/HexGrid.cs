@@ -10,7 +10,7 @@ namespace Systems.Prototype_05.Grid
 
         public HexGridLayout Layout => layout;
         private HexGridLayout layout;
-        private HexGridDS hexGridDS = HexGridDS.Instance;
+        private readonly HexGridDS hexGridDS = HexGridDS.Instance;
 
         void OnEnable()
         {

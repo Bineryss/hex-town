@@ -8,7 +8,7 @@ namespace Systems.Prototype_05
 {
     public class HexGridGenerator : SerializedMonoBehaviour
     {
-        public Grid.HexGrid grid;
+        public HexGrid grid;
         public int gridRadius = 5;
 
         [SerializeField] private ITileFactory tileFactory;
@@ -38,7 +38,7 @@ namespace Systems.Prototype_05
 
         private void CreateCell(int q, int r)
         {
-            AxialCoordinate axialCoordinate = new AxialCoordinate(q, r);
+            AxialCoordinate axialCoordinate = new(q, r);
             Vector3 worldPos = layout.AxialToWorld(axialCoordinate);
             INode instance = tileFactory.CreateTile(axialCoordinate, worldPos);
             if (instance != null)
@@ -62,24 +62,6 @@ namespace Systems.Prototype_05
             }
             nodes.Clear();
             GenerateGrid();
-        }
-
-        void Update()
-        {
-            HexGridLayout layout = grid.Layout;
-            for (int q = -gridRadius; q <= gridRadius; q++)
-            {
-                for (int r = Mathf.Max(-gridRadius, -q - gridRadius); r <= Mathf.Min(gridRadius, -q + gridRadius); r++)
-                {
-                    if (nodes.TryGetValue(new AxialCoordinate(q, r), out INode node))
-                    {
-                        if (node is WorldNode worldNode)
-                        {
-                            worldNode.gameObject.transform.position = layout.AxialToWorld(new AxialCoordinate(q, r));
-                        }
-                    }
-                }
-            }
         }
     }
 }
