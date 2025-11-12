@@ -18,6 +18,7 @@ namespace Systems.Prototype_05.UI
             int width = 64;
             Color bgColor = Colors.PRIMARY;
 
+            pickingMode = PickingMode.Ignore;
             style.position = Position.Absolute;
             style.left = 0;
             style.bottom = 100;
@@ -25,6 +26,10 @@ namespace Systems.Prototype_05.UI
             style.minWidth = width;
             style.visibility = Visibility.Hidden;
 
+            pointsLabel.pickingMode = PickingMode.Ignore;
+            icon.pickingMode = PickingMode.Ignore;
+            
+            container.pickingMode = PickingMode.Ignore;
             container.style.backgroundColor = bgColor;
             container.style.fontSize = 24;
             container.style.color = Colors.TEXT;
@@ -39,6 +44,7 @@ namespace Systems.Prototype_05.UI
             container.Add(pointsLabel);
             Add(container);
 
+            pointer.pickingMode = PickingMode.Ignore;
             pointer.style.borderBottomWidth = width / 2;
             pointer.style.borderLeftWidth = width / 2;
             pointer.style.borderRightWidth = width / 2;

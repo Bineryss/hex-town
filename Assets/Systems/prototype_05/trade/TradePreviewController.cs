@@ -47,6 +47,8 @@ namespace Systems.Prototype_05.Building
             WorldNode node = data.node;
             bool clicked = data.clicked;
 
+            if (node == null) return;
+
             if (active)
             {
                 EventBus<ScorePreviewRequested>.Raise(new ScorePreviewRequested()

@@ -26,6 +26,7 @@ namespace Systems.Prototype_05.UI
         public void Initialize()
         {
             root = new();
+            root.pickingMode = PickingMode.Ignore;
             root.style.position = Position.Absolute;
             root.style.top = 0;
             root.style.right = 0;

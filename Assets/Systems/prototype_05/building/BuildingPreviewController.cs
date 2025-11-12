@@ -54,6 +54,15 @@ namespace Systems.Prototype_05.Building
             WorldNode node = data.node;
             bool clicked = data.clicked;
 
+            if (node == null)
+            {
+                Debug.Log("node null");
+                EventBus<ScorePreviewRequested>.Raise(new ScorePreviewRequested());
+                prevNode?.gameObject.SetActive(true);
+                previewNode.gameObject.SetActive(false);
+                return;
+            }
+
             if (selectedBuilding == null) return;
             if (!buildingInventory.BuildingInventory.ContainsKey(selectedBuilding))
             {

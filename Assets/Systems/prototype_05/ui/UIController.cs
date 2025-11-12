@@ -9,6 +9,7 @@ using Systems.Prototype_05.Building;
 using Systems.Prototype_05.Score;
 using Systems.Prototype_05.Transport;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
 
 namespace Systems.Prototype_05.UI
@@ -30,9 +31,14 @@ namespace Systems.Prototype_05.UI
 
         [OdinSerialize] private Dictionary<Guid, WorldTile> idToTile = new();
         private readonly Guid packButtonId = Guid.NewGuid();
+        private bool pointerOverBlockingUIElement;
+
         private void BuildUI(VisualElement root)
         {
-            VisualElement footer = new();
+            VisualElement footer = new()
+            {
+                pickingMode = PickingMode.Ignore
+            };
             footer.style.alignSelf = Align.FlexEnd;
             footer.style.paddingBottom = 32;
             footer.style.paddingRight = 32;
@@ -40,7 +46,10 @@ namespace Systems.Prototype_05.UI
             footer.style.flexDirection = FlexDirection.Row;
             footer.style.justifyContent = Justify.SpaceBetween;
             footer.style.flexGrow = 1;
-            container = new();
+            container = new()
+            {
+                pickingMode = PickingMode.Ignore
+            };
             container.Add(footer);
             container.style.flexDirection = FlexDirection.Row;
             container.style.alignItems = Align.FlexEnd;
@@ -69,7 +78,10 @@ namespace Systems.Prototype_05.UI
             };
             UpdateInventoryUI();
             footer.Add(inventory);
-            footer.Add(new VisualElement());
+            footer.Add(new VisualElement()
+            {
+                pickingMode = PickingMode.Ignore
+            });
         }
 
         private void HandlePackOpen()
@@ -84,6 +96,7 @@ namespace Systems.Prototype_05.UI
         {
             if (document == null) return;
             VisualElement root = document.rootVisualElement;
+            root.pickingMode = PickingMode.Ignore;
             root.Clear();
             inventoryController.Initialize();
             transportController.Initialize();
@@ -104,6 +117,18 @@ namespace Systems.Prototype_05.UI
             EventBus<BuildingInventoryChanged>.Event += UpdateInventoryUI;
         }
 
+        void Update()
+        {
+            bool currentValue = IsPointerOverUIElement(Mouse.current.position.ReadValue());
+            if (currentValue != pointerOverBlockingUIElement)
+            {
+                pointerOverBlockingUIElement = currentValue;
+                EventBus<PointerOverUIElement>.Raise(new PointerOverUIElement()
+                {
+                    Blocking = pointerOverBlockingUIElement
+                });
+            }
+        }
         private void UpdateInventoryUI(BuildingInventoryChanged data = default)
         {
             idToTile.Clear();
@@ -129,9 +154,34 @@ namespace Systems.Prototype_05.UI
             }
             inventory.Update(items);
         }
+
+        private bool IsPointerOverUIElement(Vector2 screenPosition)
+        {
+            if (document == null) return false;
+
+            VisualElement root = document.rootVisualElement;
+            if (root == null || root.panel == null) return false;
+
+            Vector2 adjustedPosition = new(
+                screenPosition.x,
+                Screen.height - screenPosition.y
+            );
+
+            Vector2 panelPosition = RuntimePanelUtils.ScreenToPanel(
+                root.panel,
+                adjustedPosition
+            );
+
+            VisualElement pickedElement = root.panel.Pick(panelPosition);
+            return pickedElement != null;
+        }
     }
     public struct InventoryElementSelected : IEvent
     {
         public WorldTile tile;
+    }
+    public struct PointerOverUIElement : IEvent
+    {
+        public bool Blocking;
     }
 }
