@@ -20,10 +20,14 @@ namespace Systems.Prototype_05.Building
         [SerializeField] private PathfindingController pathfindingController;
         [SerializeField] private float offsetHeight = 0.6f;
         [SerializeField] private TransportController transportController;
+        [SerializeField] private GameObject tradeRouteOriginIndicator;
 
         private ObjectPool<SmoothLineRenderer> lineVis;
         private HashSet<SmoothLineRenderer> activeLines = new();
+        private HashSet<GameObject> activeIndicators = new();
         private TradeRouteDS tradeRoutes = TradeRouteDS.Instance;
+        private Transform cameraTransform;
+
 
         public Guid Mode => mode;
 
@@ -45,6 +49,7 @@ namespace Systems.Prototype_05.Building
 
         public void Initialize(Guid mode)
         {
+            cameraTransform = Camera.main.transform;
             tradeRoutes.routes = new();
             this.mode = mode;
             lineVis = new(
@@ -56,28 +61,76 @@ namespace Systems.Prototype_05.Building
             );
 
             EventBus<TileSelectionChanged>.Event += HandleMouseInteraction;
-            EventBus<TradeRouteVisualizationRequested>.Event += HandleVisualization;
+            // EventBus<TradeRouteVisualizationRequested>.Event += HandleVisualization;
         }
 
-        private void HandleVisualization(TradeRouteVisualizationRequested data)
+        void LateUpdate()
         {
+            foreach (GameObject gO in activeIndicators)
+            {
+                gO.transform.rotation = cameraTransform.rotation;
+            }
+        }
+
+        private List<ScorePreview> HandleVisualization(TradeRouteVisualizationRequested data)
+        {
+            foreach (GameObject gO in activeIndicators)
+            {
+                Destroy(gO);
+            }
+            activeIndicators.Clear();
             foreach (SmoothLineRenderer line in activeLines)
             {
                 lineVis.Release(line);
             }
             activeLines.Clear();
-            foreach (Guid id in data.Routes)
+            List<ScorePreview> tradeInformations = new();
+            foreach (Guid id in data.Incoming)
             {
                 if (tradeRoutes.routes.TryGetValue(id, out TransportRoute route))
                 {
-                    Debug.Log($"creating new route for id {id}, {string.Join("->", route.path)}");
                     SmoothLineRenderer line = lineVis.Get();
                     line.RenderLine(route.path.ConvertAll(p => generator.layout.AxialToWorld(p)).ConvertAll(v => new Vector3(v.x, offsetHeight, v.z)));
                     line.ChangeColor(Color.white);
-                    Debug.Log($"created new route for id {id}, {string.Join("->", line.points)}");
                     activeLines.Add(line);
+
+                    Vector3 vector3 = generator.layout.AxialToWorld(route.origin.Position);
+                    GameObject originIndiactor = Instantiate(tradeRouteOriginIndicator, new(vector3.x, offsetHeight + 0.01f, vector3.z), Quaternion.identity, transform);
+                    activeIndicators.Add(originIndiactor);
+
+                    tradeInformations.Add(new ScorePreview()
+                    {
+                        Position = route.origin.Position,
+                        Icon = route.resourceType.ToString(),
+                        Score = Mathf.FloorToInt(route.quantity)
+                    });
                 }
             }
+
+            foreach (Guid id in data.Outgoing)
+            {
+                if (tradeRoutes.routes.TryGetValue(id, out TransportRoute route))
+                {
+                    SmoothLineRenderer line = lineVis.Get();
+                    line.RenderLine(route.path.ConvertAll(p => generator.layout.AxialToWorld(p)).ConvertAll(v => new Vector3(v.x, offsetHeight, v.z)));
+                    line.ChangeColor(Color.white);
+                    activeLines.Add(line);
+                    activeIndicators.Add(Instantiate(tradeRouteOriginIndicator, generator.layout.AxialToWorld(route.destination.Position), Quaternion.identity, transform));
+
+                    Vector3 vector3 = generator.layout.AxialToWorld(route.origin.Position);
+                    GameObject originIndiactor = Instantiate(tradeRouteOriginIndicator, new(vector3.x, offsetHeight + 0.01f, vector3.z), Quaternion.identity, transform);
+                    activeIndicators.Add(originIndiactor);
+
+                    tradeInformations.Add(new ScorePreview()
+                    {
+                        Position = route.destination.Position,
+                        Icon = route.resourceType.ToString(),
+                        Score = Mathf.FloorToInt(route.quantity)
+                    });
+                }
+            }
+            Debug.Log(tradeInformations.Count);
+            return tradeInformations;
         }
 
         private void HandleMouseInteraction(TileSelectionChanged data)
@@ -87,30 +140,35 @@ namespace Systems.Prototype_05.Building
 
             if (node == null) return;
 
+            List<ScorePreview> preview = HandleVisualization(new TradeRouteVisualizationRequested()
+            {
+                Incoming = node.incomingRoutes,
+                Outgoing = node.outgoingRoutes
+            });
+
             if (active)
             {
                 EventBus<ScorePreviewRequested>.Raise(new ScorePreviewRequested()
                 {
                     Tooltips = new List<ScorePreview>()
-                    {
-                        new()
-                        {
-                            Position = node.Position,
-                            Icon = node.ResourceType.ToString(),
-                            Score = Mathf.FloorToInt(node.Production)
-                        }
+                              {
+                    new()
+                                        {
+                        Position = node.Position,
+                        Icon = node.ResourceType.ToString(),
+                        Score = Mathf.FloorToInt(node.Production)
                     }
+                    }.Concat(preview).ToList()
                 });
             }
 
             if (origin == null && clicked)
             {
-                List<Guid> allRoutes = data.node.incomingRoutes.Concat(data.node.outgoingRoutes).ToList();
-                Debug.Log($"Displaying {data.node.incomingRoutes.Count}: {allRoutes.Count} routes for {node.ResourceType}");
-                EventBus<TradeRouteVisualizationRequested>.Raise(new TradeRouteVisualizationRequested()
-                {
-                    Routes = allRoutes
-                });
+                // EventBus<TradeRouteVisualizationRequested>.Raise(new TradeRouteVisualizationRequested()
+                // {
+                //     Outgoing = data.node.outgoingRoutes,
+                //     Incoming = data.node.incomingRoutes
+                // });
 
                 EventBus<PreviewActivationRequested>.Raise(new PreviewActivationRequested()
                 {
@@ -137,7 +195,7 @@ namespace Systems.Prototype_05.Building
                             Icon = origin.ResourceType.ToString(),
                             Score = Mathf.FloorToInt(origin.Production)
                         }
-                    }
+                    }.Concat(preview).ToList()
             });
             if (node.Position.Equals(origin.Position) && clicked)
             {
@@ -190,6 +248,7 @@ namespace Systems.Prototype_05.Building
 
     public struct TradeRouteVisualizationRequested : IEvent
     {
-        public List<Guid> Routes;
+        public List<Guid> Incoming;
+        public List<Guid> Outgoing;
     }
 }

@@ -61,6 +61,7 @@ namespace Systems.Prototype_05.UI
 
         private void HandleScorePreview(ScorePreviewRequested data)
         {
+            Debug.Log($"handling {data.Tooltips?.Count}");
             root.Clear();
             foreach (DataIndicator indicator in indicators)
             {
