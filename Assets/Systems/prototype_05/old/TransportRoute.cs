@@ -32,6 +32,7 @@ namespace Systems.Prototype_05.Transport
             this.quantity = quantity;
             this.path = path;
             efficiencyMultiplier = CalculateEfficiency(path.Count);
+            Debug.Log($"creating new route with id {Id}, {string.Join("->", path)}");
         }
 
         private float CalculateEfficiency(int distance)

@@ -178,6 +178,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Systems.Prototype_05.UI.PlayerGridSelector
   grid: {fileID: 1148424172}
+  uiDocument: {fileID: 406424140}
+  planeHeight: 0
 --- !u!1001 &352902942
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -479,7 +481,7 @@ MonoBehaviour:
       Data: 
     - Name: 
       Entry: 12
-      Data: 2
+      Data: 3
     - Name: 
       Entry: 7
       Data: 
@@ -505,6 +507,18 @@ MonoBehaviour:
       Entry: 8
       Data: 
     - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 2
+      Data: e7c3bf27e6f846cc997d99b1a25009c4
+    - Name: $v
+      Entry: 6
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
       Entry: 13
       Data: 
     - Name: 
@@ -512,7 +526,7 @@ MonoBehaviour:
       Data: 
     - Name: currentMode
       Entry: 2
-      Data: 00000000000000000000000000000000
+      Data: e7c3bf27e6f846cc997d99b1a25009c4
   generator: {fileID: 1148424169}
   mainCamera: {fileID: 1019917499}
 --- !u!4 &778616849
@@ -559,6 +573,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03b920cb1d075824f9a172e7d90cf001, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Systems.Prototype_05.Building.TradePreviewController
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
   generator: {fileID: 1148424169}
   routePreview: {fileID: 1850292182}
   pathfindingController: {fileID: 720388666}

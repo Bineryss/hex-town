@@ -8,12 +8,12 @@ namespace Systems.Prototype_05.Transport
     public class TransportManager
     {
         private readonly PathfindingController pathfindingController;
-        private readonly Dictionary<Guid, TransportRoute> transportRoutes = new();
+        private readonly TradeRouteDS tradeRouteDS = TradeRouteDS.Instance;
 
         public TransportManager(PathfindingController pathfindingController, Dictionary<Guid, TransportRoute> transportRoutes)
         {
             this.pathfindingController = pathfindingController;
-            this.transportRoutes = transportRoutes;
+            tradeRouteDS.routes = transportRoutes;
         }
 
         public bool CanCreateRoute(WorldNode origin, WorldNode destination, out string errorMessage, out List<AxialCoordinate> path)
@@ -72,7 +72,7 @@ namespace Systems.Prototype_05.Transport
             destination.MaxIncomingCapacity.TryGetValue(origin.ResourceType, out int maxCapacity);
 
             TransportRoute newRoute = new(origin, destination, origin.ResourceType, Math.Min(maxCapacity, origin.GetAvailableProduction()), path);
-            transportRoutes[newRoute.Id] = newRoute;
+            tradeRouteDS.routes[newRoute.Id] = newRoute;
             origin.AddOutgoingRoute(newRoute.Id);
             destination.AddIncomingRoute(newRoute.Id);
             return newRoute;
@@ -80,11 +80,11 @@ namespace Systems.Prototype_05.Transport
 
         public void RemoveRoute(Guid routeId)
         {
-            if (!transportRoutes.TryGetValue(routeId, out TransportRoute route)) return;
+            if (!tradeRouteDS.routes.TryGetValue(routeId, out TransportRoute route)) return;
 
             route.origin.RemoveRoute(routeId);
             route.destination.RemoveRoute(routeId);
-            transportRoutes.Remove(routeId);
+            tradeRouteDS.routes.Remove(routeId);
         }
 
         public void RemoveAllRoutesForTile(WorldNode tile)
@@ -102,7 +102,7 @@ namespace Systems.Prototype_05.Transport
 
         public TransportRoute GetRoute(Guid routeId)
         {
-            transportRoutes.TryGetValue(routeId, out TransportRoute route);
+            tradeRouteDS.routes.TryGetValue(routeId, out TransportRoute route);
             return route;
         }
 
@@ -111,7 +111,7 @@ namespace Systems.Prototype_05.Transport
             Dictionary<ResourceType, int> resources = new();
             foreach (Guid routeId in routeIds)
             {
-                if (transportRoutes.TryGetValue(routeId, out TransportRoute route))
+                if (tradeRouteDS.routes.TryGetValue(routeId, out TransportRoute route))
                 {
                     if (resources.TryGetValue(route.resourceType, out int currentAmount))
                     {
@@ -128,7 +128,7 @@ namespace Systems.Prototype_05.Transport
 
         public List<TransportRoute> GetAllRoutes()
         {
-            return new List<TransportRoute>(transportRoutes.Values);
+            return new List<TransportRoute>(tradeRouteDS.routes.Values);
         }
     }
 }

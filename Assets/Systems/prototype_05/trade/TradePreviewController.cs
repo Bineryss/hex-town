@@ -1,21 +1,29 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using Sirenix.OdinInspector;
+using Sirenix.Serialization;
 using Systems.Core;
 using Systems.Prototype_04;
 using Systems.Prototype_05.Player;
 using Systems.Prototype_05.Transport;
 using Systems.Prototype_05.UI;
 using UnityEngine;
+using UnityEngine.Pool;
 
 namespace Systems.Prototype_05.Building
 {
-    public class TradePreviewController : MonoBehaviour, IPreviewController
+    public class TradePreviewController : SerializedMonoBehaviour, IPreviewController
     {
         [SerializeField] private HexGridGenerator generator;
         [SerializeField] private SmoothLineRenderer routePreview;
         [SerializeField] private PathfindingController pathfindingController;
         [SerializeField] private float offsetHeight = 0.6f;
         [SerializeField] private TransportController transportController;
+
+        private ObjectPool<SmoothLineRenderer> lineVis;
+        private List<SmoothLineRenderer> activeLines = new();
+        private TradeRouteDS tradeRoutes = TradeRouteDS.Instance;
 
         public Guid Mode => mode;
 
@@ -37,9 +45,39 @@ namespace Systems.Prototype_05.Building
 
         public void Initialize(Guid mode)
         {
+            tradeRoutes.routes = new();
             this.mode = mode;
+            lineVis = new(
+                () => Instantiate(routePreview, transform),
+                (line) => line.ShowLine(),
+                (line) => line.HideLine(),
+                (line) => Destroy(line),
+                true, 10, 50
+            );
 
             EventBus<TileSelectionChanged>.Event += HandleMouseInteraction;
+            EventBus<TradeRouteVisualizationRequested>.Event += HandleVisualization;
+        }
+
+        private void HandleVisualization(TradeRouteVisualizationRequested data)
+        {
+            foreach (SmoothLineRenderer line in activeLines)
+            {
+                lineVis.Release(line);
+            }
+            activeLines.Clear();
+            foreach (Guid id in data.Routes)
+            {
+                if (tradeRoutes.routes.TryGetValue(id, out TransportRoute route))
+                {
+                    Debug.Log($"creating new route for id {id}, {string.Join("->", route.path)}");
+                    SmoothLineRenderer line = lineVis.Get();
+                    line.RenderLine(route.path.ConvertAll(p => generator.layout.AxialToWorld(p)).ConvertAll(v => new Vector3(v.x, offsetHeight, v.z)));
+                    line.ChangeColor(Color.white);
+                    Debug.Log($"created new route for id {id}, {string.Join("->", line.points)}");
+                    activeLines.Add(line);
+                }
+            }
         }
 
         private void HandleMouseInteraction(TileSelectionChanged data)
@@ -67,6 +105,13 @@ namespace Systems.Prototype_05.Building
 
             if (origin == null && clicked)
             {
+                List<Guid> allRoutes = data.node.incomingRoutes.Concat(data.node.outgoingRoutes).ToList();
+                Debug.Log($"Displaying {data.node.incomingRoutes.Count}: {allRoutes.Count} routes for {node.ResourceType}");
+                EventBus<TradeRouteVisualizationRequested>.Raise(new TradeRouteVisualizationRequested()
+                {
+                    Routes = allRoutes
+                });
+
                 EventBus<PreviewActivationRequested>.Raise(new PreviewActivationRequested()
                 {
                     Mode = mode
@@ -141,6 +186,10 @@ namespace Systems.Prototype_05.Building
             routePreview.RenderLine(path.ConvertAll(p => generator.layout.AxialToWorld(p)).ConvertAll(v => new Vector3(v.x, offsetHeight, v.z)));
             routePreview.ShowLine();
         }
+    }
 
+    public struct TradeRouteVisualizationRequested : IEvent
+    {
+        public List<Guid> Routes;
     }
 }
