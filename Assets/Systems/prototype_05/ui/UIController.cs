@@ -20,8 +20,7 @@ namespace Systems.Prototype_05.UI
         [SerializeField] private PreviewOrchestrator previewManager;
         [SerializeField] private InventoryController inventoryController;
         [SerializeField] private TransportController transportController;
-        [SerializeField] private List<ProductionPack> packs;
-        [SerializeField] private ProductionPack selection; //only for testing
+        [SerializeField] private PackController packController;
 
         private VisualElement container;
         private ScoreIndicator scoreIndicator;
@@ -35,6 +34,7 @@ namespace Systems.Prototype_05.UI
 
         private void BuildUI(VisualElement root)
         {
+            root.Add(packController.Root);
             VisualElement footer = new()
             {
                 pickingMode = PickingMode.Ignore
@@ -53,7 +53,6 @@ namespace Systems.Prototype_05.UI
             container.Add(footer);
             container.style.flexDirection = FlexDirection.Row;
             container.style.alignItems = Align.FlexEnd;
-            container.style.flexGrow = 1;
             container.style.alignContent = Align.Stretch;
             root.Add(container);
             scoreIndicator = new ScoreIndicator(new ScoreIndicatorDO()
@@ -68,10 +67,10 @@ namespace Systems.Prototype_05.UI
             {
                 if (id == packButtonId)
                 {
-                    HandlePackOpen();
+                    EventBus<PackSelected>.Raise();
                     return;
                 }
-                EventBus<InventoryElementSelected>.Raise(new InventoryElementSelected()
+                EventBus<PlaceableElementSelected>.Raise(new PlaceableElementSelected()
                 {
                     tile = idToTile[id]
                 });
@@ -84,14 +83,6 @@ namespace Systems.Prototype_05.UI
             });
         }
 
-        private void HandlePackOpen()
-        {
-            EventBus<PackOpened>.Raise(new PackOpened()
-            {
-                PackId = selection.Id
-            });
-        }
-
         private void Setup()
         {
             if (document == null) return;
@@ -101,6 +92,7 @@ namespace Systems.Prototype_05.UI
             inventoryController.Initialize();
             transportController.Initialize();
             previewManager.Initialize();
+            packController.Initialize();
             root.Add(previewManager.Root);
             EventBus<ScoreChanged>.Event += (data) => scoreIndicator.Update(new ScoreIndicatorDO()
             {
@@ -176,9 +168,12 @@ namespace Systems.Prototype_05.UI
             return pickedElement != null;
         }
     }
-    public struct InventoryElementSelected : IEvent
+    public struct PlaceableElementSelected : IEvent
     {
         public WorldTile tile;
+    }
+    public struct PackSelected : IEvent
+    {
     }
     public struct PointerOverUIElement : IEvent
     {

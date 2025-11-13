@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Bakery
   m_EditorClassIdentifier: Assembly-CSharp::Systems.Prototype_05.Building.ProductionPack
   PackName: Bakery
+  Icon: \\\
   buildings:
   - building: {fileID: 11400000, guid: 0d262a060d99cd44790585001a9136ba, type: 2}
     min: 1

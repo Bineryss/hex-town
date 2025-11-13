@@ -129,7 +129,6 @@ namespace Systems.Prototype_05.Building
                     });
                 }
             }
-            Debug.Log(tradeInformations.Count);
             return tradeInformations;
         }
 

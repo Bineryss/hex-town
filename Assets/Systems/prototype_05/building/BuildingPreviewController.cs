@@ -44,7 +44,7 @@ namespace Systems.Prototype_05.Building
             this.mode = mode;
             previewNode.gameObject.SetActive(false);
 
-            EventBus<InventoryElementSelected>.Event += HandleBuildingSelection;
+            EventBus<PlaceableElementSelected>.Event += HandleBuildingSelection;
             EventBus<TileSelectionChanged>.Event += HandleMouseInteraction;
         }
 
@@ -149,7 +149,7 @@ namespace Systems.Prototype_05.Building
             }
             EventBus<ScorePreviewRequested>.Raise(new ScorePreviewRequested());
         }
-        private void HandleBuildingSelection(InventoryElementSelected data)
+        private void HandleBuildingSelection(PlaceableElementSelected data)
         {
             if (data.tile == null) return;
             if (data.tile.Equals(selectedBuilding))
