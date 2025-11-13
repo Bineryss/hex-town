@@ -5,6 +5,7 @@ using Sirenix.OdinInspector;
 using System;
 using Sirenix.Serialization;
 using Systems.Core;
+using UnityEngine.Pool;
 
 namespace Systems.Prototype_05.UI
 {
@@ -19,7 +20,8 @@ namespace Systems.Prototype_05.UI
         public VisualElement Root => root;
         private VisualElement root;
 
-        private readonly List<DataIndicator> indicators = new();
+        private ObjectPool<DataIndicator> indicatorPool;
+        private readonly HashSet<DataIndicator> indicators = new();
         private readonly List<Action> indicatorUpdatePositions = new();
         [SerializeField] private Guid currentMode = Guid.Empty;
 
@@ -32,6 +34,20 @@ namespace Systems.Prototype_05.UI
             root.style.right = 0;
             root.style.left = 0;
             root.style.bottom = 0;
+
+            indicatorPool = new(
+            () => new DataIndicator(10),
+            (indicator) => root.Add(indicator),
+            (indicator) =>
+            {
+                indicator.Hide();
+            },
+            (indicator) =>
+            {
+                indicator = null;
+            },
+            true, 5, 30
+        );
 
             foreach (var kvp in previewControllers)
             {
@@ -46,20 +62,23 @@ namespace Systems.Prototype_05.UI
         private void HandleScorePreview(ScorePreviewRequested data)
         {
             root.Clear();
+            foreach (DataIndicator indicator in indicators)
+            {
+                indicatorPool.Release(indicator);
+            }
             indicators.Clear();
             indicatorUpdatePositions.Clear();
             if (data.Tooltips is null) return;
             foreach (var indicator in data.Tooltips)
             {
-                DataIndicator el = new(10, new DataIndicatorDO()
+                DataIndicator el = indicatorPool.Get();
+                el.Update(new DataIndicatorDO()
                 {
                     points = indicator.Score,
                     icon = indicator.Icon,
                 });
-                root.Add(el);
                 indicatorUpdatePositions.Add(() =>
                 {
-                    el.Hide();
                     el.Place(WorldToScreen(generator.layout.AxialToWorld(indicator.Position)));
                     el.Show();
                 });

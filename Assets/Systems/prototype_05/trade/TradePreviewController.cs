@@ -22,7 +22,7 @@ namespace Systems.Prototype_05.Building
         [SerializeField] private TransportController transportController;
 
         private ObjectPool<SmoothLineRenderer> lineVis;
-        private List<SmoothLineRenderer> activeLines = new();
+        private HashSet<SmoothLineRenderer> activeLines = new();
         private TradeRouteDS tradeRoutes = TradeRouteDS.Instance;
 
         public Guid Mode => mode;
